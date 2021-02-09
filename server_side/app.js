@@ -15,8 +15,13 @@ app.get('/', (request, response) => {
 
 app.post('/site', async (request, response) => {
     console.log('req body', request.body);
-    let res = await mainProcc.runServer(request.body.sites);
-    response.send(res);
+    try {
+        let res = await mainProcc.runServer(request.body.sites);
+        response.send(res);
+    } catch (error) {
+        response.send(error);
+    }
+
 })
 
 app.listen(port, (err) => {

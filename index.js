@@ -94,7 +94,7 @@ async function runLocal() {
 
 };
 
-runLocal();
+// runLocal();
 
 const runServer = async function(sites) {
 
@@ -188,6 +188,8 @@ async function checkNeogara(startDate) {
 
   console.log('lastResultObj empty: ', lastResultObj);
   console.log('neogararesults', neogararesults);
+
+  if (neogararesults.length === 0) return 'neogara is empty'
   
   let count = neogararesults[0].totals.count;
   let total = neogararesults[0].totals.total;

@@ -172,15 +172,6 @@ async function fillForm(driver, inputUrl, i) {
     let oldUrl = inputUrl.href;
     console.log('in fillForm', inputUrl.href);
 
-    // // добавляем параметры для отправки на dev.neogara
-    // let searchParams = inputUrl.searchParams;
-    // searchParams.set('action', 'test');
-    // searchParams.set('pid', 'kag318');
-    // searchParams.set('group', '1');
-    // inputUrl.search = searchParams.toString();
-    // // переходим на ссылку с параметрами дял dev
-    // await driver.get(inputUrl.href);
-
     let firstname = await driver.findElements(By.name('firstname'));
     await setValue('firstname', firstname.length, firstname, i); 
 
@@ -198,11 +189,7 @@ async function fillForm(driver, inputUrl, i) {
 
     
     await driver.sleep(5000);
-    // const documentInitialised = async function() {
-    //     if (oldUrl !== await driver.getCurrentUrl()) return true;
-    //     else return false;
-    // }
-    // await driver.wait(() => documentInitialised(), 30000);
+
     
     inputUrl = new URL(await driver.getCurrentUrl());
     await checkLastUrl(driver, inputUrl.href);
