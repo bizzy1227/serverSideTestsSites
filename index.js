@@ -61,10 +61,10 @@ async function runLocal() {
     let nodeUrl = new URL(inputURL);
 
     // делаю selfUpdate для каждого сайта
-    await selfUpdateModule.selfUpdate(nodeUrl.href);
+    await selfUpdateModule.selfUpdate(nodeUrl.href, true);
 
     // проверка settings.json на каждом сайте
-    let localCheckJsonResult = await checkJsonModule.checkJson(nodeUrl.href);
+    let localCheckJsonResult = await checkJsonModule.checkJson(nodeUrl.href, true);
     let relink;
     if (!localCheckJsonResult.hasError) {
       relink = localCheckJsonResult.result;
@@ -75,7 +75,7 @@ async function runLocal() {
 
     // запуск для теста формы для разных девайсов c browserstack
     for (let device of deviceSettings.DEVICES) {
-      await sendModule.checkSend(nodeUrl, false, device, false);
+      await sendModule.checkSend(nodeUrl, false, device, false, true);
     }
 
     // перезаписываю nodeUrl на relink, если илд будет отправлен с другого url
@@ -94,7 +94,7 @@ async function runLocal() {
 
 };
 
-// runLocal();
+runLocal();
 
 const runServer = async function(sites) {
 
@@ -125,10 +125,10 @@ const runServer = async function(sites) {
       let nodeUrl = new URL(inputURL);
   
       // делаю selfUpdate для каждого сайта
-      selfUpdateResult = await selfUpdateModule.selfUpdate(nodeUrl.href);
+      selfUpdateResult = await selfUpdateModule.selfUpdate(nodeUrl.href, false);
   
       // проверка settings.json на каждом сайте
-      checkJsonResult = await checkJsonModule.checkJson(nodeUrl.href);
+      checkJsonResult = await checkJsonModule.checkJson(nodeUrl.href, false);
       let relink;
       if (!checkJsonResult.hasError) {
         relink = checkJsonResult.result;
@@ -139,7 +139,7 @@ const runServer = async function(sites) {
   
       // запуск для теста формы для разных девайсов c browserstack
       for (let device of deviceSettings.DEVICES) {
-        sendFormResult.push(await sendModule.checkSend(nodeUrl, false, device, false));
+        sendFormResult.push(await sendModule.checkSend(nodeUrl, false, device, false, false));
       }
   
       // перезаписываю nodeUrl на relink, если илд будет отправлен с другого url
@@ -171,82 +171,10 @@ const runServer = async function(sites) {
 }
 
 
-async function processSite(nodeUrl) {
-
-  // делаю selfUpdate для каждого сайта
-  // await selfUpdateModule.selfUpdate(nodeUrl.href);
-
-  // проверка settings.json на каждом сайте
-  // await checkJsonModule.checkJson(nodeUrl.href);
-
-  // запуск локально для сбора ошибок консоли
-  // await sendModule.checkSend(nodeUrl, true, false, false);
-
-  // запуск локально c с разных прокси
-  // if (testCountry) {
-  //   await sendModule.checkSend(nodeUrl, false, false, await getProxy(testCountry));
-  // }
-
-  // запуск для теста формы для разных девайсов c browserstack
-  // for (let device of deviceSettings.DEVICES) {
-  //   additionalСhecks++;
-  //   await sendModule.checkSend(nodeUrl, false, device, false);
-  // }
-
-  // запуск для теста формы с определенной страны для browserstack
-  // if (testCountry) {
-  //   additionalСhecks++;
-  //   let device = {
-  //     'os_version' : '10',
-  //     'resolution' : '1920x1080',
-  //     'browserName' : 'Chrome',
-  //     'browser_version' : '87.0',
-  //     'os' : 'Windows',
-  //     'name': 'BStack-[NodeJS] Sample Test', // test name
-  //     'build': 'BStack Build Number 1', // CI/CD job or build name
-  //     'browserstack.user' : 'yaroslavsolovev1',
-  //     'browserstack.key' : 'Y5QWsrsNx9pjNdHkZnKN',
-  //     'browserstack.geoLocation': testCountry
-  //    };
-  //    await sendModule.checkSend(nodeUrl, false, device, false);
-  // }
-}
-
 async function getProxy(testCountry) {
   if (testCountry) return CONSTS.PROXY[testCountry];
   else return false;
 }
-
-// checkNeogara для работы с сайтами в каждой итерации
-// async function checkNeogara(startDate, Url) {
-//   const neogararesults = await parseNeogara.NeogaraGetConversions(startDate);
-
-//   console.log('neogararesults', neogararesults);
-
-//   console.log('in checkNeogara');
-//   let lastResultObj = {};
-//   lastResultObj[Url.host] = [];
-
-//   console.log('empty', lastResultObj);
-
-//   for (let ngIndex of neogararesults) {
-//     let neogaraUrl = new URL(ngIndex.ref);
-//     if (neogaraUrl.host === Url.host && ngIndex.email === 'testmail5@gmail.com') {
-//       lastResultObj[Url.href].push(ngIndex);
-//     }
-//   }
-
-//   console.log('after push', lastResultObj);
-
-//   if (lastResultObj[Url.href].length === deviceSettings.DEVICES.length + 1) {
-//     delete lastResultObj[Url.href];
-//   }
-
-//   console.log('after deleted', lastResultObj);
-
-//   if (Object.keys(lastResultObj).length !== 0) sendFormErrors.push(lastResultObj);
-
-// }
 
 // checkNeogara для работы с сайтами после всех итераций
 async function checkNeogara(startDate) {
@@ -266,16 +194,6 @@ async function checkNeogara(startDate) {
   // добавляем +1 для следующего запроса
   let page = neogararesults[0].totals.page + 1;
   let pageCount = neogararesults[0].totals.pageCount;
-
-
-  // console.log('siteQuery.length:', siteQuery.length);
-  // console.log('deviceSettings.DEVICES.length:', deviceSettings.DEVICES.length);
-  // console.log('additionalСhecks:', additionalСhecks);
-  // console.log('total:', total);
-  // console.log('count:', count);
-  // console.log('page:', page);
-  // console.log('pageCount:', pageCount);
-  // console.log('res:', siteQuery.length * (deviceSettings.DEVICES.length + additionalСhecks));
   
   // возвращаемся из функции если совпало количество конверсий с количеством запросов
   if (total === updatedSiteQuery.length * additionalСhecks) {

@@ -4,7 +4,7 @@ const winston = require('winston');
 
 let driver;
 
-const selfUpdate  = async function(inputURL) {
+const selfUpdate  = async function(inputURL, withLogs) {
 
     let logger = winston.createLogger({
         level: 'error',
@@ -32,21 +32,26 @@ const selfUpdate  = async function(inputURL) {
         if (result.match(/^Archive downloaded/)) return true;
         else {
             console.log('selfUpdate failed!');
-            logger.log({
-                level: 'error',
-                message: result,
-                URL: nodeUrl.href
-            });
+            if (withLogs) {
+                logger.log({
+                    level: 'error',
+                    message: result,
+                    URL: nodeUrl.href
+                });
+            }
+            
             return result;
         } 
 
     } catch (e) {
         console.log(e);
-        logger.log({
-            level: 'error',
-            message: e.message,
-            URL: nodeUrl.href
-        });
+        if (withLogs) {
+            logger.log({
+                level: 'error',
+                message: e.message,
+                URL: nodeUrl.href
+            });
+        }
         return {message: e.message, URL: nodeUrl.href};
     } finally {
         driver.quit();

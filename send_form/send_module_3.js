@@ -13,10 +13,11 @@ let logger;
 let capabilities = false;
 let processWebErrors = false;
 let proxyAddress = false;
+let writeLogs = false;
 
 let mainResult;
 
-const checkSend  = async function(URL, getWebErr, cp, myProxy) {
+const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
     
     console.log('in checkSend');
     let driver;
@@ -24,6 +25,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy) {
     console.log('cp =', capabilities);
     processWebErrors = getWebErr;
     proxyAddress = myProxy;
+    writeLogs = withLogs;
 
     console.log('run on', capabilities ? 'browser-stack' : 'browser');
 
@@ -81,12 +83,14 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy) {
 
     } catch (e) {
         console.log(e);
-        logger.log({
-            level: 'error',
-            message: e.message,
-            URL: URL,
-            capabilities: capabilities
-        });
+        if (writeLogs) {
+            logger.log({
+                level: 'error',
+                message: e.message,
+                URL: URL,
+                capabilities: capabilities
+            });
+        }
         driver.quit();
         mainResult = {error: e.message, capabilities: capabilities, URL: URL.href};
         return mainResult;
@@ -202,11 +206,13 @@ async function checkLastUrl(driver, inputUrl) {
         else {
             console.log(`The limit (${countRedirect}) of clicks on links has been exceeded`, currentUrl.href);
             countRedirect = 0;
-            logger.log({
-                level: 'error',
-                message: `The limit (${countRedirect}) of clicks on links has been exceeded`,
-                URL: currentUrl.href
-            });
+            if (writeLogs) {
+                logger.log({
+                    level: 'error',
+                    message: `The limit (${countRedirect}) of clicks on links has been exceeded`,
+                    URL: currentUrl.href
+                });
+            }
             mainResult ={error: `The limit (${countRedirect}) of clicks on links has been exceeded`, capabilities: capabilities, URL: currentUrl.href};
             return mainResult;
         }
@@ -219,11 +225,13 @@ async function checkLastUrl(driver, inputUrl) {
         mainResult = true;
         return mainResult;
     } else {
-        logger.log({
-            level: 'error',
-            message: 'Test send form failed',
-            URL: currentUrl.href
-        });
+        if (writeLogs) {
+            logger.log({
+                level: 'error',
+                message: 'Test send form failed',
+                URL: currentUrl.href
+            });
+        }
         driver.quit();
         mainResult = {error: 'Test send form failed', URL: currentUrl.href};
         return mainResult;

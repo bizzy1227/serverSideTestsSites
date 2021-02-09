@@ -4,7 +4,7 @@ const winston = require('winston');
 
 let driver;
 
-const checkJson  = async function(inputURL) {
+const checkJson  = async function(inputURL, withLogs) {
     console.log('in checkJson');
     // '--headless'
     driver = await new Builder().forBrowser('chrome')
@@ -40,11 +40,13 @@ const checkJson  = async function(inputURL) {
         
         // если объект не пустой, логируем его
         if (Object.keys(errorObj).length !== 0) {
-            logger.log({
-                level: 'error',
-                message: errorObj,
-                URL: nodeUrl.href
-            });
+            if (withLogs) {
+                logger.log({
+                    level: 'error',
+                    message: errorObj,
+                    URL: nodeUrl.href
+                });
+            }
             return {hasError: true, result: {err: errorObj, URL: nodeUrl.href}};
         }
 
@@ -54,11 +56,13 @@ const checkJson  = async function(inputURL) {
         return {hasError: false, result: false};
 
     } catch (e) {
-        logger.log({
-            level: 'error',
-            message: e.message,
-            URL: nodeUrl.href
-        });
+        if (withLogs) {
+            logger.log({
+                level: 'error',
+                message: e.message,
+                URL: nodeUrl.href
+            });
+        }
         return {hasError: true, result: {err: e.message, URL: nodeUrl.href}};
     } finally {
         driver.quit();
