@@ -58,7 +58,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
     } else {
         console.log('useProxy', proxyAddress);
         if (proxyAddress) opts.setProxy(proxy.manual({https: proxyAddress}));
-        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors'])
+        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless'])
         driver = await new Builder().forBrowser('chrome')
         .setChromeOptions(opts)
         .build();
@@ -122,26 +122,42 @@ async function checkForm(driver, inputURL) {
         const originalWindow = await driver.getWindowHandle();
         console.log('originalWindow.length',  originalWindow.length);
         let link = await driver.findElement(By.xpath('//a'));
-
-        // проверка открывается ли ссылка в новой вкладке
-        let targetLink = await link.getAttribute('target');
         let href = await link.getAttribute('href');
-        console.log('href', href);
-        console.log('targetLink', targetLink);
-        await link.click();
-        // await driver.get(href);
-
-        // если открывается ссылка в новой вкладке
-        if (targetLink === '_blank') {
-            await driver.sleep(5000);
-            const windows = await driver.getAllWindowHandles();
-            console.log('windows.length', windows.length);
-            windows.forEach(async handle => {
-                if (handle !== originalWindow) {
-                    await driver.switchTo().window(handle);
-                }
-            });
+        let testNodeUrl = new URL(href);
+        if (testNodeUrl.protocol === 'chrome-error:') {
+            if (writeLogs) {
+                logger.log({
+                    level: 'error',
+                    message: href,
+                    URL: inputURL.href,
+                    capabilities: capabilities
+                });
+            }
+            driver.quit();
+            mainResult = {error:  href, capabilities: capabilities, URL: inputURL.href};
+            return mainResult;
         }
+        await link.click();
+
+        // // проверка открывается ли ссылка в новой вкладке
+        // let targetLink = await link.getAttribute('target');
+        // let href = await link.getAttribute('href');
+        // console.log('href', href);
+        // console.log('targetLink', targetLink);
+        // await link.click();
+        // // await driver.get(href);
+
+        // // если открывается ссылка в новой вкладке
+        // if (targetLink === '_blank') {
+        //     await driver.sleep(5000);
+        //     const windows = await driver.getAllWindowHandles();
+        //     console.log('windows.length', windows.length);
+        //     windows.forEach(async handle => {
+        //         if (handle !== originalWindow) {
+        //             await driver.switchTo().window(handle);
+        //         }
+        //     });
+        // }
 
         // жду когда появится форма (возможно улучшить, что бы ждать загрузку страницы)
         // await driver.wait(until.elementLocated(By.css('form')), 10000);
