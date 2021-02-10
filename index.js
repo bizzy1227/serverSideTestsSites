@@ -153,7 +153,7 @@ const runServer = async function(sites) {
         selfUpdateResult: selfUpdateResult,
         checkJsonResult: checkJsonResult,
         sendFormResult: sendFormResult,
-        neogaraResults: []
+        neogaraResults: true
       }
   
     }
@@ -163,7 +163,8 @@ const runServer = async function(sites) {
     let neogaraRes = await checkNeogara(startDate);
     if (Object.keys(lastResultObj).length !== 0) {
       for (let key in lastResultObj) {
-        mainRespone[key].neogaraResults = lastResultObj[key];
+        if (neogaraRes === 'neogara is empty') mainRespone[key].neogaraResults = neogaraRes;
+        else mainRespone[key].neogaraResults = lastResultObj[key];
       }
     }
 
