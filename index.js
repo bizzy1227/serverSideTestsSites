@@ -97,6 +97,8 @@ async function runLocal() {
 // runLocal();
 
 const runServer = async function(sites) {
+    lastResultObj = {};
+    updatedSiteQuery = [];
 
     let mainRespone = {};
 
