@@ -7,7 +7,8 @@ const selfUpdateModule = require('./self_update/self_update_module');
 const checkJsonModule = require('./check_json/check_json_module');
 const deviceSettings = require('./devices');
 const parseNeogara = require('./parsers/neogaraParser');
-const CONSTS = require('./consts')
+const checkLighthouse = require('./lighthouse/lighthouse_module');
+const CONSTS = require('./consts');
 const countries = ['PL', 'UA', 'US', 'RU', 'EN', 'GR', 'GB', 'HR', 'HU', 'HK', 'PH', 'ZA', 'IT', 'ES', 'FR', 'NL', 'CH', 'CA', 'CZ', 'SK', 'KR', 'SI', 'SG', 'DE', 'TR', 'AE', 'IS', 'AU', 'BE', 'GB', 'HK', 'FI', 'NL', 'NO', 'NZ', 'CH', 'CA', 'SE', 'DK', 'DE', 'AU', 'AT', 'IE'];
 
 let myArgs = String(process.argv.slice(2));
@@ -97,8 +98,10 @@ async function runLocal() {
 // runLocal();
 
 const runServer = async function(sites) {
+    // обновляем при каждом запросе данные
     lastResultObj = {};
     updatedSiteQuery = [];
+    additionalСhecks = 0;
 
     let mainRespone = {};
 
@@ -117,6 +120,7 @@ const runServer = async function(sites) {
       let selfUpdateResult;
       let checkJsonResult;
       let sendFormResult = [];
+      let lighthouseResult;
 
 
       let inputURL = '';
@@ -138,6 +142,9 @@ const runServer = async function(sites) {
       } else {
         checkJsonResult = checkJsonResult.result;
       }
+
+      // проверка lighthouse на каждом сайте
+      lighthouseResult = await checkLighthouse.checkLighthouse(nodeUrl.href, false);
   
       // запуск для теста формы для разных девайсов c browserstack
       for (let device of deviceSettings.DEVICES) {
@@ -153,6 +160,7 @@ const runServer = async function(sites) {
         selfUpdateResult: selfUpdateResult,
         checkJsonResult: checkJsonResult,
         sendFormResult: sendFormResult,
+        lighthouseResult: lighthouseResult,
         neogaraResults: true
       }
   
@@ -200,6 +208,7 @@ async function checkNeogara(startDate) {
   let page = neogararesults[0].totals.page + 1;
   let pageCount = neogararesults[0].totals.pageCount;
   
+  // console.log('new test log in neogara', total, updatedSiteQuery.length * additionalСhecks);
   // возвращаемся из функции если совпало количество конверсий с количеством запросов
   if (total === updatedSiteQuery.length * additionalСhecks) {
     console.log('better outcome condition');
