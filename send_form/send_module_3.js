@@ -169,30 +169,37 @@ async function checkForm(driver, inputURL) {
 }
 
 async function fillForm(driver, inputUrl, i) {
-    let oldUrl = inputUrl.href;
-    console.log('in fillForm', inputUrl.href);
-
-    let firstname = await driver.findElements(By.name('firstname'));
-    await setValue('firstname', firstname.length, firstname, i); 
-
-    let lastname = await driver.findElements(By.name('lastname'));
-    await setValue('lastname', lastname.length, lastname, i);
-
-    let tel = await driver.findElements(By.name('phone_number'));
-    await setValue('tel', tel.length, tel, i);
-
-    let email = await driver.findElements(By.name('email'));
-    await setValue('email', email.length, email, i);
-
-    let submit = await driver.findElements(By.xpath(`//*[@type='submit']`));
-    await clickBtn(submit, i);
-
+    try {
+        let oldUrl = inputUrl.href;
+        console.log('in fillForm', inputUrl.href);
     
-    await driver.sleep(5000);
-
+        let firstname = await driver.findElements(By.name('firstname'));
+        await setValue('firstname', firstname.length, firstname, i); 
     
-    inputUrl = new URL(await driver.getCurrentUrl());
-    await checkLastUrl(driver, inputUrl.href);
+        let lastname = await driver.findElements(By.name('lastname'));
+        await setValue('lastname', lastname.length, lastname, i);
+    
+        let tel = await driver.findElements(By.name('phone_number'));
+        await setValue('tel', tel.length, tel, i);
+    
+        let email = await driver.findElements(By.name('email'));
+        await setValue('email', email.length, email, i);
+    
+        let submit = await driver.findElements(By.xpath(`//*[@type='submit']`));
+        await submit[i].click();
+    
+        
+        await driver.sleep(5000);
+    
+        
+        inputUrl = new URL(await driver.getCurrentUrl());
+        await checkLastUrl(driver, inputUrl.href);
+
+    } catch (error) {
+        console.log('test log', error.message);
+        throw new Error('fill form failed');
+    }
+
 }
 
 async function checkLastUrl(driver, inputUrl) {
@@ -252,8 +259,14 @@ async function setValue(name, length, element, i) {
 }
 
 async function clickBtn(submit, i) {
-    console.log('in clickBtn');
-    submit[i].click();
+    try {
+        console.log('in clickBtn');
+        submit[i].click();
+    } catch (error) {
+        console.log('test log', error.message);
+        throw new Error('Click submit failed');
+    }
+
 }
 
 // checkSend('https://magxeomizpeper.pl/');
