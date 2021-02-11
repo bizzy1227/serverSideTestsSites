@@ -19,6 +19,7 @@ app.post('/site', async (request, response) => {
         let res = await mainProcc.runServer(request.body.sites);
         response.send(res);
     } catch (error) {
+        console.log(error);
         response.send(error.message);
     }
 
