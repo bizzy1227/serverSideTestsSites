@@ -8,7 +8,7 @@ const winston = require('winston');
 
 const checkLighthouse  = async function(URL, withLogs) {
   try {
-    const chrome = await chromeLauncher.launch({chromeFlags: ['--headless']});
+    const chrome = await chromeLauncher.launch({chromeFlags: ['--headless', "--disable-gpu","--no-sandbox","--disable-dev-shm-usage"]});
     const options = {logLevel: 'info', output: 'json', onlyCategories: ['performance'], port: chrome.port};
     const runnerResult = await lighthouse(URL, options, config);
 

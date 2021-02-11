@@ -8,7 +8,7 @@ const checkJson  = async function(inputURL, withLogs) {
     console.log('in checkJson');
     // '--headless'
     driver = await new Builder().forBrowser('chrome')
-    .setChromeOptions(new chrome.Options().addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless']))
+    .setChromeOptions(new chrome.Options().addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless', "--disable-gpu","--no-sandbox","--disable-dev-shm-usage"]))
     .build();
 
     logger = winston.createLogger({
