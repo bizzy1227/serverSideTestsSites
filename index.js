@@ -131,20 +131,20 @@ const runServer = async function(sites) {
       let nodeUrl = new URL(inputURL);
   
       // делаю selfUpdate для каждого сайта
-      // selfUpdateResult = await selfUpdateModule.selfUpdate(nodeUrl.href, false);
+      selfUpdateResult = await selfUpdateModule.selfUpdate(nodeUrl.href, false);
   
       // проверка settings.json на каждом сайте
-     //  checkJsonResult = await checkJsonModule.checkJson(nodeUrl.href, false);
+      checkJsonResult = await checkJsonModule.checkJson(nodeUrl.href, false);
       let relink;
-      // if (!checkJsonResult.hasError) {
-      //   relink = checkJsonResult.result;
-      //   checkJsonResult = true;
-      // } else {
-      //   checkJsonResult = checkJsonResult.result;
-      // }
+      if (!checkJsonResult.hasError) {
+        relink = checkJsonResult.result;
+        checkJsonResult = true;
+      } else {
+        checkJsonResult = checkJsonResult.result;
+      }
 
       // проверка lighthouse на каждом сайте
-      // lighthouseResult = await checkLighthouse.checkLighthouse(nodeUrl.href, false);
+      lighthouseResult = await checkLighthouse.checkLighthouse(nodeUrl.href, false);
   
       // запуск для теста формы для разных девайсов c browserstack
       for (let device of deviceSettings.DEVICES) {
