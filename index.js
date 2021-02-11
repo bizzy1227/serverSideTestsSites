@@ -136,12 +136,12 @@ const runServer = async function(sites) {
       // проверка settings.json на каждом сайте
      //  checkJsonResult = await checkJsonModule.checkJson(nodeUrl.href, false);
       let relink;
-      if (!checkJsonResult.hasError) {
-        relink = checkJsonResult.result;
-        checkJsonResult = true;
-      } else {
-        checkJsonResult = checkJsonResult.result;
-      }
+      // if (!checkJsonResult.hasError) {
+      //   relink = checkJsonResult.result;
+      //   checkJsonResult = true;
+      // } else {
+      //   checkJsonResult = checkJsonResult.result;
+      // }
 
       // проверка lighthouse на каждом сайте
       // lighthouseResult = await checkLighthouse.checkLighthouse(nodeUrl.href, false);
