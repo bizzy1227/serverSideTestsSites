@@ -7,7 +7,7 @@ let driver;
 const checkJson  = async function(inputURL, withLogs) {
     console.log('in checkJson');
     // '--headless'
-    driver = await new Builder().forBrowser('../../../usr/local/bin/chromedriver')
+    driver = await new Builder().forBrowser('usr/local/bin/chromedriver')
     .setChromeOptions(new chrome.Options().addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless']))
     .build();
 
