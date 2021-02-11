@@ -3,7 +3,6 @@ const lighthouse = require('lighthouse');
 const config = require('lighthouse/lighthouse-core/config/lr-mobile-config.js');
 const chromeLauncher = require('chrome-launcher');
 const winston = require('winston');
-chrome.setDefaultService(new chrome.ServiceBuilder('usr/local/bin/chromedriver').build());
 
 // let URL = 'https://maxwmuizazer.info/';
 
