@@ -16,7 +16,7 @@ const selfUpdate  = async function(inputURL, withLogs) {
     });
     // '--headless'
     driver = await new Builder().forBrowser('chrome')
-    .setChromeOptions(new chrome.Options().addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless']))
+    .setChromeOptions(new chrome.Options().addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless', '--disable-dev-shm-usage', '--no-sandbox']))
     .build();
 
     let nodeUrl = new URL(inputURL);
