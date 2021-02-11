@@ -54,7 +54,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
 
     if (capabilities) {
         driver = await new Builder().usingServer('http://hub-cloud.browserstack.com/wd/hub')
-        .withCapabilities(capabilities).setChromeOptions(new chrome.Options().addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless', "--disable-gpu","--no-sandbox","--disable-dev-shm-usage"]))
+        .withCapabilities(capabilities).setChromeOptions(new chrome.Options().addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless']))
         .build();
     } else {
         console.log('useProxy', proxyAddress);
