@@ -7,7 +7,7 @@ let driver;
 
 const options = new Options()
 // options.setChromeBinaryPath('/usr/local/bin/chromedriver');
-options.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless', '--disable-gpu']);
+options.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless', '--disable-gpu', '--no-sandbox']);
 
 const selfUpdate  = async function(inputURL, withLogs) {
 
