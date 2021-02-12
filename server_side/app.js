@@ -25,9 +25,10 @@ app.post('/site', async (request, response) => {
 
 })
 
-app.listen(port, (err) => {
+const server = app.listen(port, (err) => {
     if (err) {
         return console.log('something bad happened', err)
     }
     console.log(`server is listening on ${port}`)
 })
+server.keepAliveTimeout = 0;
