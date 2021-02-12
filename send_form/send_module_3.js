@@ -59,7 +59,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
     } else {
         console.log('useProxy', proxyAddress);
         if (proxyAddress) opts.setProxy(proxy.manual({https: proxyAddress}));
-        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless'])
+        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless',  '--disable-gpu', '--no-sandbox'])
         driver = await new Builder().forBrowser('chrome')
         .setChromeOptions(opts)
         .build();
