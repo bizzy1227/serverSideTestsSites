@@ -1,8 +1,12 @@
 const {Builder, By, Key, until} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
+const { Options } = require('selenium-webdriver/chrome');
 const winston = require('winston');
 
 let driver;
+
+const options = new Options().setBinary('/usr/local/bin/chromedriver');
+options.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless']);
 
 const selfUpdate  = async function(inputURL, withLogs) {
 
@@ -16,7 +20,7 @@ const selfUpdate  = async function(inputURL, withLogs) {
     });
     // '--headless'
     driver = await new Builder().forBrowser('chrome')
-    .setChromeOptions(new chrome.Options().setBinary('/usr/local/bin/chromedriver').addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless']))
+    .setChromeOptions(options)
     .build();
 
     let nodeUrl = new URL(inputURL);
