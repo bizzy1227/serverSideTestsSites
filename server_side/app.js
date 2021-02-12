@@ -16,6 +16,11 @@ app.get('/', (request, response) => {
 app.post('/site', async (request, response) => {
     console.log('req body', request.body);
     try {
+        response.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive'
+        });
         let res = await mainProcc.runServer(request.body.sites);
         response.send(res);
     } catch (error) {
@@ -25,10 +30,9 @@ app.post('/site', async (request, response) => {
 
 })
 
-const server = app.listen(port, (err) => {
+app.listen(port, (err) => {
     if (err) {
         return console.log('something bad happened', err)
     }
     console.log(`server is listening on ${port}`)
 })
-server.keepAliveTimeout = 0;
