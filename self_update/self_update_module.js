@@ -5,7 +5,8 @@ const winston = require('winston');
 
 let driver;
 
-const options = new Options().setChromeBinaryPath('/usr/local/bin/chromedriver');
+const options = new Options()
+// options.setChromeBinaryPath('/usr/local/bin/chromedriver');
 options.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless']);
 
 const selfUpdate  = async function(inputURL, withLogs) {
