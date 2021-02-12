@@ -14,13 +14,13 @@ app.get('/', (request, response) => {
 })
 
 app.post('/site', async (request, response) => {
+    response.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive'
+    });
     console.log('req body', request.body);
     try {
-        response.writeHead(200, {
-            'Content-Type': 'text/event-stream',
-            'Cache-Control': 'no-cache',
-            'Connection': 'keep-alive'
-        });
         let res = await mainProcc.runServer(request.body.sites);
         response.send(res);
     } catch (error) {
