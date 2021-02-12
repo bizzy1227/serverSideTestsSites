@@ -122,8 +122,15 @@ async function checkForm(driver, inputURL) {
         console.log('in block no form');
         const originalWindow = await driver.getWindowHandle();
         console.log('originalWindow.length',  originalWindow.length);
-        let link = await driver.findElement(By.xpath('//a'));
-        let href = await link.getAttribute('href');
+        let link = await driver.findElements(By.xpath('//a'));
+        // проверить видна ли ссылка
+        for(i of link) {
+            if (await i.isDisplayed() === true) {
+                link = i;
+                break;
+            }
+            else continue
+        };        let href = await link.getAttribute('href');
         let testNodeUrl = new URL(href);
         if (testNodeUrl.protocol === 'chrome-error:') {
             if (writeLogs) {
@@ -138,6 +145,7 @@ async function checkForm(driver, inputURL) {
             mainResult = {error:  href, capabilities: capabilities, URL: inputURL.href};
             return mainResult;
         }
+
         await link.click();
 
         // // проверка открывается ли ссылка в новой вкладке
@@ -187,6 +195,7 @@ async function fillForm(driver, inputUrl, i) {
         await setValue('email', email.length, email, i);
     
         let submit = await driver.findElements(By.xpath(`//*[@type='submit']`));
+        
         await submit[i].click();
     
         
