@@ -7,15 +7,7 @@ const mainProcc = require('../index');
 
 app.use(express.urlencoded());
 app.use(express.json());
-app.use((req, res, next) => {
-    res.append('Access-Control-Allow-Origin', ['*']);
-    res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.append('Access-Control-Allow-Headers', 'Content-Type');
-    res.append('Content-Type', 'text/event-stream');
-    res.append('Cache-Control', 'no-cache');
-    res.append('Connection', 'keep-alive');
-    next();
-});
+
 
 
 app.get('/', (request, response) => {
@@ -26,6 +18,10 @@ app.post('/site', async (request, response) => {
     console.log('req body', request.body);
     try {
         let res = await mainProcc.runServer(request.body.sites);
+        let timeout = setInterval(() => {
+            if (res) clearInterval(timeout);
+            response.wrtie('in process');
+        }, 2000);
         response.send(res);
     } catch (error) {
         console.log(error);
