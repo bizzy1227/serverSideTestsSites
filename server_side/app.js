@@ -5,9 +5,20 @@ const port = 8080;
 const mainProcc = require('../index');
 
 
+var server = app.listen(port, (err) => {
+    if (err) {
+        return console.log('something bad happened', err)
+    }
+    console.log(`server is listening on ${port}`)
+})
+
+server.setTimeout(720000, () => {
+    console.log('after wait 2m');
+});
+
+
 app.use(express.urlencoded());
 app.use(express.json());
-
 
 
 app.get('/', (request, response) => {
@@ -26,9 +37,4 @@ app.post('/site', async (request, response) => {
 
 })
 
-app.listen(port, (err) => {
-    if (err) {
-        return console.log('something bad happened', err)
-    }
-    console.log(`server is listening on ${port}`)
-})
+
