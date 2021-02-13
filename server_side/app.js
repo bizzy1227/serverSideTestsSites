@@ -3,12 +3,10 @@ const { request } = require('express');
 const app = express();
 const port = 8080;
 const mainProcc = require('../index');
-const timeout = require('connect-timeout');
 
 
 app.use(express.urlencoded());
 app.use(express.json());
-app.use(timeout(0));
 
 
 
