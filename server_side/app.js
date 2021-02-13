@@ -15,8 +15,10 @@ app.get('/', (request, response) => {
 })
 
 app.post('/site', async (request, response) => {
+    request.body = JSON.parse(request.body);
     console.log('req body', request.body);
     try {
+
         let res = await mainProcc.runServer(request.body.sites);
         response.send(res);
     } catch (error) {
