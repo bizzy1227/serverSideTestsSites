@@ -15,6 +15,7 @@ var server = app.listen(port, (err) => {
 server.setTimeout(720000, () => {
     console.log('after wait 2m');
 });
+server.maxConnections(1);
 
 
 app.use(express.urlencoded());
