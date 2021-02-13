@@ -18,10 +18,6 @@ app.post('/site', async (request, response) => {
     console.log('req body', request.body);
     try {
         let res = await mainProcc.runServer(request.body.sites);
-        let timeout = setInterval(() => {
-            if (res) clearInterval(timeout);
-            response.wrtie('in process');
-        }, 2000);
         response.send(res);
     } catch (error) {
         console.log(error);
