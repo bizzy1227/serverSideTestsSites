@@ -1,7 +1,7 @@
 const express = require('express');
 const { request } = require('express');
 const app = express();
-const port = 8080;
+const port = 9000;
 const mainProcc = require('../index');
 
 
@@ -12,10 +12,7 @@ var server = app.listen(port, (err) => {
     console.log(`server is listening on ${port}`)
 })
 
-server.setTimeout(720000, () => {
-    console.log('after wait 2m');
-});
-server.maxConnections = 2;
+server.setTimeout(300000);
 
 
 app.use(express.urlencoded());
@@ -29,7 +26,7 @@ app.get('/', (request, response) => {
 app.post('/site', async (request, response) => {
     console.log('req body', request.body);
     try {
-        let res = await mainProcc.runServer(request.body.sites);
+        let res = await mainProcc.runServerWebErrors(request.body.sites);
         response.send(res);
     } catch (error) {
         console.log(error);

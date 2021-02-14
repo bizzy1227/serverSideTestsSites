@@ -3,7 +3,7 @@ const fs = require("fs");
 const winston = require('winston');
 const chrome = require('selenium-webdriver/chrome');
 let proxy = require('selenium-webdriver/proxy');
-// const webErrorsModule = require('../web_errors/web_errors_module');
+const webErrorsModule = require('../web_errors/web_errors_module');
 let opts = new chrome.Options();
 const CONSTS = require('../consts');
 
@@ -14,10 +14,12 @@ let capabilities = false;
 let processWebErrors = false;
 let proxyAddress = false;
 let writeLogs = false;
+let webErrosrResult = {};
 
 let mainResult;
 
 const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
+    webErrosrResult = {};
     
     console.log('in checkSend');
     let driver;
@@ -106,8 +108,8 @@ async function checkForm(driver, inputURL) {
 
     console.log('in checkForm');
     // получаем ошибки консоли
-    // if (processWebErrors) await webErrorsModule.processUrl(inputURL.href, false, driver, capabilities);
-
+    if (processWebErrors) webErrosrResult[inputURL] = await webErrorsModule.processUrl(inputURL.href, false, driver, capabilities, writeLogs);
+    console.log('11111111111111111', webErrosrResult)
     let indexElements = 0;
     let form = await driver.findElements(By.css('form'));
     // console.log(await form[0].isDisplayed());
@@ -241,12 +243,11 @@ async function checkLastUrl(driver, inputUrl) {
             return mainResult;
         }
     } else if (currentUrl.pathname === '/thanks.php') {
-        // получаем ошибки консоли страницы thanks.php
-        // if (processWebErrors) await webErrorsModule.processUrl(currentUrl.href, false, driver, capabilities);
         countRedirect = 0;
         console.log('Test send form done', currentUrl.href);
         driver.quit();
         mainResult = true;
+        if (processWebErrors) mainResult = webErrosrResult;
         return mainResult;
     } else {
         if (writeLogs) {
@@ -267,6 +268,10 @@ async function setValue(name, length, element, i) {
 
     if (length > 0) {
         await element[i].clear();
+        if (name === 'email' && processWebErrors) {
+            await element[i].sendKeys(CONSTS.USER_DATA['emailWebErrors']);
+            return;
+        }
         await element[i].sendKeys(CONSTS.USER_DATA[name]);
     } 
 

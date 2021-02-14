@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.20.0",
     "chrome-launcher": "^0.13.4",
+    "express": "^4.17.1",
     "lighthouse": "^7.0.0",
     "selenium-webdriver": "^3.6.0",
     "winston": "^3.3.3"

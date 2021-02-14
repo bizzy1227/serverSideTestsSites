@@ -11,6 +11,7 @@ const USER_DATA = {
     firstname: 'test',
     lastname: 'test',
     email: 'testmail5@gmail.com',
+    emailWebErrors: 'testmail6@gmail.com',
     tel: 111111111
 };
 

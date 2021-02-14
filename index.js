@@ -181,6 +181,48 @@ const runServer = async function(sites) {
     return mainRespone;
 }
 
+const runServerWebErrors = async function(sites) {
+  // обновляем при каждом запросе данные
+  // lastResultObj = {};
+  // updatedSiteQuery = [];
+  // additionalСhecks = 0;
+
+  let mainRespone = {};
+  let webErrors;
+
+
+  console.log('server side sites web errors', sites);
+
+  for (let i of sites) {
+
+    webErrors = [];
+
+    let inputURL = '';
+    // проверка на домен и если надо добавляем https://
+    if (i.match(/^https:\/\//)) inputURL = i;
+    else inputURL = 'https://' + i;
+  
+    let nodeUrl = new URL(inputURL);
+
+    webErrors = await sendModule.checkSend(nodeUrl, true, false, '45.159.147.232:8000', false);
+
+
+    console.log('before mainRespone', mainRespone);
+    
+    mainRespone[nodeUrl.origin] = {
+      webErrors: webErrors
+    }
+
+    console.log('after mainRespone', mainRespone);
+
+  }
+
+  console.log('log response mainRespone', JSON.stringify(mainRespone));
+  return mainRespone;
+}
+
+// runServerWebErrors(['poflsmkacikis.info/b.php']);
+
 
 async function getProxy(testCountry) {
   if (testCountry) return CONSTS.PROXY[testCountry];
@@ -276,6 +318,7 @@ async function checkNeogara(startDate) {
 }
 
 module.exports.runServer = runServer;
+module.exports.runServerWebErrors = runServerWebErrors;
 
 // 'browserstack.user' : 'yaroslavsolovev1',
 // 'browserstack.key' : 'Y5QWsrsNx9pjNdHkZnKN'
