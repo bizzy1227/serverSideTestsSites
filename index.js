@@ -204,7 +204,7 @@ const runServerWebErrors = async function(sites) {
   
     let nodeUrl = new URL(inputURL);
 
-    webErrors = await sendModule.checkSend(nodeUrl, true, false, '45.159.147.232:8000', false);
+    webErrors = await sendModule.checkSend(nodeUrl, true, false, false, false);
 
 
     console.log('before mainRespone', mainRespone);
