@@ -132,7 +132,8 @@ async function checkForm(driver, inputURL) {
                 break;
             }
             else continue
-        };        let href = await link.getAttribute('href');
+        };        
+        let href = await link.getAttribute('href');
         let testNodeUrl = new URL(href);
         if (testNodeUrl.protocol === 'chrome-error:') {
             if (writeLogs) {
