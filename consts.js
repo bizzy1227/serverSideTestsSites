@@ -12,7 +12,7 @@ const USER_DATA = {
     lastname: 'test',
     email: 'testmail5@gmail.com',
     emailWebErrors: 'testmail6@gmail.com',
-    tel: 111111111
+    tel: 9111111111
 };
 
 module.exports.USER_DATA = USER_DATA;

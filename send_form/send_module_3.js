@@ -197,7 +197,7 @@ async function fillForm(driver, inputUrl, i, form) {
         await setValue('email', email);
 
         let submit = await form.findElement(By.xpath(`//*[@type='submit']`));
-        await submit.click();
+        // await submit.click();
 
 
 
@@ -222,10 +222,10 @@ async function fillForm(driver, inputUrl, i, form) {
         // console.log(await submit[i].getText());
 
         // скролим к кнопке
-        // driver.executeScript("arguments[0].scrollIntoView()", submit);
-        // driver.sleep(300);
+        driver.executeScript("arguments[0].scrollIntoView()", submit);
+        driver.sleep(300);
         
-        // await submit[i].click();
+        await submit.click();
     
         
         await driver.sleep(5000);
