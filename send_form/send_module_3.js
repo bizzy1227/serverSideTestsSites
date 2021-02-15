@@ -61,7 +61,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
     } else {
         console.log('useProxy', proxyAddress);
         if (proxyAddress) opts.setProxy(proxy.manual({https: proxyAddress}));
-        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless',  '--disable-gpu', '--no-sandbox'])
+        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors',  '--headless', '--disable-gpu', '--no-sandbox'])
         driver = await new Builder().forBrowser('chrome')
         .setChromeOptions(opts)
         .build();
@@ -113,11 +113,18 @@ async function checkForm(driver, inputURL) {
     let indexElements = 0;
     let form = await driver.findElements(By.css('form'));
     // console.log(await form[0].isDisplayed());
+    console.log('form length', form.length);
 
     // если есть форма
     if (form.length > 0) {
-        if (!await form[indexElements].isDisplayed()) indexElements = 1;
-        await fillForm(driver, inputURL, indexElements);
+        for (let item of form) {
+            if (await item.isDisplayed()) {
+                form = item;
+                break;
+             } 
+        }
+        // if (!await form[indexElements].isDisplayed()) indexElements = 1;
+        await fillForm(driver, inputURL, indexElements, form);
     } 
     else {
         // если нет формы
@@ -180,30 +187,50 @@ async function checkForm(driver, inputURL) {
     } 
 }
 
-async function fillForm(driver, inputUrl, i) {
+async function fillForm(driver, inputUrl, i, form) {
     try {
-        let oldUrl = inputUrl.href;
-        console.log('in fillForm', inputUrl.href);
+        let firstname = await form.findElement(By.name('firstname'));
+        await setValue('firstname', firstname);
+
+        let lastname = await form.findElement(By.name('lastname'));
+        await setValue('lastname',lastname);
+
+        let tel = await form.findElement(By.name('phone_number'));
+        await setValue('tel',tel);
     
-        let firstname = await driver.findElements(By.name('firstname'));
-        await setValue('firstname', firstname.length, firstname, i); 
+        let email = await form.findElement(By.name('email'));
+        await setValue('email', email);
+
+        let submit = await form.findElement(By.xpath(`//*[@type='submit']`));
+        await submit.click();
+
+
+
+
+        // let oldUrl = inputUrl.href;
+        // console.log('in fillForm', inputUrl.href);
     
-        let lastname = await driver.findElements(By.name('lastname'));
-        await setValue('lastname', lastname.length, lastname, i);
+        // let firstname = await driver.findElements(By.name('firstname'));
+        // await setValue('firstname', firstname.length, firstname, i); 
     
-        let tel = await driver.findElements(By.name('phone_number'));
-        await setValue('tel', tel.length, tel, i);
+        // let lastname = await driver.findElements(By.name('lastname'));
+        // await setValue('lastname', lastname.length, lastname, i);
     
-        let email = await driver.findElements(By.name('email'));
-        await setValue('email', email.length, email, i);
+        // let tel = await driver.findElements(By.name('phone_number'));
+        // await setValue('tel', tel.length, tel, i);
     
-        let submit = await driver.findElements(By.xpath(`//*[@type='submit']`));
+        // let email = await driver.findElements(By.name('email'));
+        // await setValue('email', email.length, email, i);
+    
+        // let submit = await driver.findElements(By.xpath(`//*[@type='submit']`));
+
+        // console.log(await submit[i].getText());
 
         // скролим к кнопке
-        driver.executeScript("arguments[0].scrollIntoView()", submit[i]);
-        driver.sleep(300);
+        // driver.executeScript("arguments[0].scrollIntoView()", submit);
+        // driver.sleep(300);
         
-        await submit[i].click();
+        // await submit[i].click();
     
         
         await driver.sleep(5000);
@@ -264,17 +291,17 @@ async function checkLastUrl(driver, inputUrl) {
     }
 }
 
-async function setValue(name, length, element, i) {
+async function setValue(name, element) {
     console.log('in setValue');
 
-    if (length > 0) {
-        await element[i].clear();
+
+        await element.clear();
         if (name === 'email' && processWebErrors) {
-            await element[i].sendKeys(CONSTS.USER_DATA['emailWebErrors']);
+            await element.sendKeys(CONSTS.USER_DATA['emailWebErrors']);
             return;
         }
-        await element[i].sendKeys(CONSTS.USER_DATA[name]);
-    } 
+        await element.sendKeys(CONSTS.USER_DATA[name]);
+
 
 }
 
