@@ -34,15 +34,10 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
     /*
         
         
-        1. разобратся почему не запускается checkNeogara если много сайтов + ошибка
-        2. Сделать так что бы вспомогательные модули не ломали тест
-        3. Придмать как работать с relink
-            maxmeimibztzer.info
-            maxwesminzpzer.info
-            mazxemizer.info
-            koduyrurspeha.ru
+        1. Возвращая ошибки консоли приходит то путстой массив то пустой обьект
+            - maxigjmizer.info
+            - papgtekgdtefrvcrn.info/b.php
 
-            https://dailyrfrlesh.ru/b.php
     */
 
     logger = winston.createLogger({
