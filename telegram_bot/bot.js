@@ -23,12 +23,12 @@ const BOT_TOKEN = '1668307994:AAGzNQ1wG8A2_0q2khMUhkPk7NzBi3wEvFE';
 
         console.log(domains);
 		
-		let lastresult;
+		let lastresult = '';
         let result = await request.post('/site', { "sites": domains }).then(res => {
 			console.log('11111111', res.data);
 			for (let site in res.data) {
 				console.log('site', site);
-				lastresult = `>>>>>>>SITE: ${site}<<<<<<<\n`;
+				lastresult += `>>>>>>>SITE: ${site}<<<<<<<\n`;
 				for (let page in res.data[site].webErrors) {
 					console.log('res.data[site].webErrors', res.data[site].webErrors);
 					lastresult += `PAGE: ${page}\n`;
@@ -43,7 +43,7 @@ const BOT_TOKEN = '1668307994:AAGzNQ1wG8A2_0q2khMUhkPk7NzBi3wEvFE';
 					})
 					lastresult += '\n';
 				}
-				lastresult += '---------------------------';
+				lastresult += '---------------------------\n';
 			}
             ctx.reply(lastresult)
         });
