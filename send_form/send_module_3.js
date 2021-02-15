@@ -57,7 +57,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
     } else {
         console.log('useProxy', proxyAddress);
         if (proxyAddress) opts.setProxy(proxy.manual({https: proxyAddress}));
-        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors',  '--headless', '--disable-gpu', '--no-sandbox'])
+        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless', '--disable-gpu', '--no-sandbox'])
         driver = await new Builder().forBrowser('chrome')
         .setChromeOptions(opts)
         .build();
@@ -120,7 +120,7 @@ async function checkForm(driver, inputURL) {
              } 
         }
         // if (!await form[indexElements].isDisplayed()) indexElements = 1;
-        await fillForm(driver, inputURL, indexElements, form);
+        await fillForm(driver, inputURL, form);
     } 
     else {
         // если нет формы
@@ -183,7 +183,8 @@ async function checkForm(driver, inputURL) {
     } 
 }
 
-async function fillForm(driver, inputUrl, i, form) {
+async function fillForm(driver, inputUrl, form) {
+    
     try {
         let firstname = await form.findElement(By.name('firstname'));
         await setValue('firstname', firstname);
@@ -198,6 +199,7 @@ async function fillForm(driver, inputUrl, i, form) {
         await setValue('email', email);
 
         let submit = await form.findElement(By.xpath(`//*[@type='submit']`));
+        if (!await submit.isDisplayed()) submit = await form.findElement(By.css(`button`));
         // await submit.click();
 
 
@@ -225,7 +227,7 @@ async function fillForm(driver, inputUrl, i, form) {
         // скролим к кнопке
         driver.executeScript("arguments[0].scrollIntoView()", submit);
         driver.sleep(300);
-        
+
         await submit.click();
     
         
