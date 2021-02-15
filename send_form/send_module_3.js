@@ -37,6 +37,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
         1. Возвращая ошибки консоли приходит то путстой массив то пустой обьект
             - maxigjmizer.info
             - papgtekgdtefrvcrn.info/b.php
+        2. Пересмотреть как возвращать результат с проклой.
 
     */
 
