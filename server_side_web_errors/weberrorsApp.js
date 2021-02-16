@@ -47,13 +47,13 @@ const addToSiteQuery = async function(newSites) {
     oldUrls = oldSites.map(function(site) {
         if (!site.startsWith('http')) site = 'https://' + site;
         let data = new URL(site);
-        return data.origin;
+        return data.href;
     });
 
     newUrls = newSites.map(function(site) {
         if (!site.startsWith('http')) site = 'https://' + site;
         let data = new URL(site);
-        return data.origin;
+        return data.href;
     });
 
     console.log('oldUrls', oldUrls)
