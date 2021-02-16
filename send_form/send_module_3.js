@@ -40,6 +40,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
             - maxigjmizer.info
             - papgtekgdtefrvcrn.info/b.php
         2. Пересмотреть как возвращать результат с проклой.
+        3. Автозапуск сбора консольных ошибок
 
     */
 
