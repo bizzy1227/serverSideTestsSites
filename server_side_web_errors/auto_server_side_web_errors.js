@@ -1,5 +1,5 @@
 const mainProcc = require('../index');
-const minutes = 1
+const hourse = 12;
 
 
 setInterval(() => {
@@ -11,5 +11,5 @@ async function autoRunServerWebErrorsIndex() {
 }
 
 function getMs() {
-    return minutes * 60 * 1000
+    return ((hourse * 60) * 60) * 1000;
 }
