@@ -13,12 +13,13 @@ let logger;
 let capabilities = false;
 let processWebErrors = false;
 let proxyAddress = false;
-let writeLogs = false;
+let writeLogsWeb = false;
+let writeLogsForm = false;
 let webErrosrResult = {};
 
 let mainResult;
 
-const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
+const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, withLogsForm) {
     webErrosrResult = {};
     
     console.log('in checkSend');
@@ -27,7 +28,8 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
     console.log('cp =', capabilities);
     processWebErrors = getWebErr;
     proxyAddress = myProxy;
-    writeLogs = withLogs;
+    writeLogsWeb = withLogsWeb;
+    writeLogsForm = withLogsForm;
 
     console.log('run on', capabilities ? 'browser-stack' : 'browser');
 
@@ -41,14 +43,17 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
 
     */
 
-    logger = winston.createLogger({
-        level: 'error',
-        format: winston.format.json(),
-        defaultMeta: { service: capabilities ? 'browser-stack' : 'browser' },
-        transports: [
-          new winston.transports.File({ filename: 'send_form_errors.log', level: 'error' }),
-        ]
-    });
+    if (withLogsForm) {
+        logger = winston.createLogger({
+            level: 'error',
+            format: winston.format.json(),
+            defaultMeta: { service: capabilities ? 'browser-stack' : 'browser' },
+            transports: [
+            new winston.transports.File({ filename: 'send_form_errors.log', level: 'error' }),
+            ]
+        });
+    }
+
 
     if (capabilities) {
         driver = await new Builder().usingServer('http://hub-cloud.browserstack.com/wd/hub')
@@ -82,7 +87,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogs) {
 
     } catch (e) {
         console.log(e);
-        if (writeLogs) {
+        if (writeLogsForm) {
             logger.log({
                 level: 'error',
                 message: e.message,
@@ -104,7 +109,7 @@ async function checkForm(driver, inputURL) {
 
     console.log('in checkForm');
     // получаем ошибки консоли
-    if (processWebErrors) webErrosrResult[inputURL.origin + inputURL.pathname] = await webErrorsModule.processUrl(inputURL.href, false, driver, capabilities, writeLogs);
+    if (processWebErrors) webErrosrResult[inputURL.origin + inputURL.pathname] = await webErrorsModule.processUrl(inputURL.href, false, driver, capabilities, writeLogsWeb);
     console.log('11111111111111111', webErrosrResult)
     let indexElements = 0;
     let form = await driver.findElements(By.css('form'));
@@ -139,7 +144,7 @@ async function checkForm(driver, inputURL) {
         let href = await link.getAttribute('href');
         let testNodeUrl = new URL(href);
         if (testNodeUrl.protocol === 'chrome-error:') {
-            if (writeLogs) {
+            if (writeLogsForm) {
                 logger.log({
                     level: 'error',
                     message: href,
@@ -258,7 +263,7 @@ async function checkLastUrl(driver, inputUrl) {
         else {
             console.log(`The limit (${countRedirect}) of clicks on links has been exceeded`, currentUrl.href);
             countRedirect = 0;
-            if (writeLogs) {
+            if (writeLogsForm) {
                 logger.log({
                     level: 'error',
                     message: `The limit (${countRedirect}) of clicks on links has been exceeded`,
@@ -276,7 +281,7 @@ async function checkLastUrl(driver, inputUrl) {
         if (processWebErrors) mainResult = webErrosrResult;
         return mainResult;
     } else {
-        if (writeLogs) {
+        if (writeLogsForm) {
             logger.log({
                 level: 'error',
                 message: 'Test send form failed',

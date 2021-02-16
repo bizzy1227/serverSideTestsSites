@@ -76,7 +76,7 @@ async function runLocal() {
 
     // запуск для теста формы для разных девайсов c browserstack
     for (let device of deviceSettings.DEVICES) {
-      await sendModule.checkSend(nodeUrl, false, device, false, true);
+      await sendModule.checkSend(nodeUrl, false, device, false, false, false);
     }
 
     // перезаписываю nodeUrl на relink, если илд будет отправлен с другого url
@@ -148,7 +148,7 @@ const runServer = async function(sites) {
   
       // запуск для теста формы для разных девайсов c browserstack
       for (let device of deviceSettings.DEVICES) {
-        sendFormResult.push(await sendModule.checkSend(nodeUrl, false, device, false, false));
+        sendFormResult.push(await sendModule.checkSend(nodeUrl, false, device, false, false, false));
       }
   
       // перезаписываю nodeUrl на relink, если илд будет отправлен с другого url
@@ -204,7 +204,7 @@ const runServerWebErrors = async function(sites) {
   
     let nodeUrl = new URL(inputURL);
 
-    webErrors = await sendModule.checkSend(nodeUrl, true, false, false, false);
+    webErrors = await sendModule.checkSend(nodeUrl, true, false, false, false, false);
 
 
     console.log('before mainRespone', mainRespone);
@@ -219,6 +219,29 @@ const runServerWebErrors = async function(sites) {
 
   console.log('log response mainRespone', JSON.stringify(mainRespone));
   return mainRespone;
+}
+
+const autoRunServerWebErrors = async function() {
+  // получаем список сайтов
+  let siteQuery = fs.readFileSync("../inputAutoWebErrors.txt", "utf8");
+  siteQuery = siteQuery.replace(/\r/g, '');
+  siteQuery = siteQuery.split('\n');
+
+  console.log('server side sites web errors auto', siteQuery);
+
+  for (let i of siteQuery) {
+
+    let inputURL = '';
+    // проверка на домен и если надо добавляем https://
+    if (i.match(/^https:\/\//)) inputURL = i;
+    else inputURL = 'https://' + i;
+  
+    let nodeUrl = new URL(inputURL);
+
+    await sendModule.checkSend(nodeUrl, true, false, false, true, false);
+
+
+  }
 }
 
 // runServerWebErrors(['poflsmkacikis.info/b.php']);
@@ -319,6 +342,8 @@ async function checkNeogara(startDate) {
 
 module.exports.runServer = runServer;
 module.exports.runServerWebErrors = runServerWebErrors;
+module.exports.autoRunServerWebErrors = autoRunServerWebErrors;
+
 
 // 'browserstack.user' : 'yaroslavsolovev1',
 // 'browserstack.key' : 'Y5QWsrsNx9pjNdHkZnKN'

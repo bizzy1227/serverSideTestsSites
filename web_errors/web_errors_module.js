@@ -29,7 +29,7 @@ const processUrl  = async function(URL, fastMode, driver, capabilities = false, 
       format: winston.format.json(),
       defaultMeta: { service: capabilities ? 'browser-stack' : 'browser' },
       transports: [
-        new winston.transports.File({ filename: 'web_console_errors.log', level: 'error' }),
+        new winston.transports.File({ filename: '../auto_web_console_errors.log', level: 'error' }),
       ]
     });
 
