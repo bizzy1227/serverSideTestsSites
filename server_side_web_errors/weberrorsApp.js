@@ -27,11 +27,16 @@ app.get('/', (request, response) => {
 
 app.post('/site', async (request, response) => {
 
-    addToSiteQuery(request.body.sites);
     console.log('req body', request.body);
     try {
         let res = await mainProcc.runServerWebErrors(request.body.sites);
-        console.log(res);
+        let goodSites = [];
+        for (key in res) {
+            if (res[key].webErrors.hasOwnProperty('error')) continue;
+            else goodSites.push(key);
+        }
+        console.log('goodSites', goodSites);
+        addToSiteQuery(goodSites);
         response.send(res);
     } catch (error) {
         console.log(error);
