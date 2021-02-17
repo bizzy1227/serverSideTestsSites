@@ -25,7 +25,7 @@ const BOT_TOKEN = '1668307994:AAGzNQ1wG8A2_0q2khMUhkPk7NzBi3wEvFE';
 
 		let lastresult = '';
 		
-		// try {
+		try {
 			let result = await request.post('/site', { "sites": domains }).then(res => {
 				console.log('11111111', res.data);
 				for (let site in res.data) {
@@ -49,9 +49,9 @@ const BOT_TOKEN = '1668307994:AAGzNQ1wG8A2_0q2khMUhkPk7NzBi3wEvFE';
 				}
 				ctx.reply(lastresult)
 			});
-		// } catch (error) {
-		// 	ctx.reply(error.message)
-		// }
+		} catch (error) {
+			ctx.reply(error.message)
+		}
 	})
 
 	bot.launch()
