@@ -31,6 +31,7 @@ app.post('/site', async (request, response) => {
     console.log('req body', request.body);
     try {
         let res = await mainProcc.runServerWebErrors(request.body.sites);
+        console.log(res);
         response.send(res);
     } catch (error) {
         console.log(error);

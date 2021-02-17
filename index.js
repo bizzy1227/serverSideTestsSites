@@ -209,7 +209,7 @@ const runServerWebErrors = async function(sites) {
 
     console.log('before mainRespone', mainRespone);
     
-    mainRespone[nodeUrl.origin] = {
+    mainRespone[nodeUrl.origin + nodeUrl.pathname] = {
       webErrors: webErrors
     }
 

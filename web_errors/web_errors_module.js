@@ -35,8 +35,8 @@ const processUrl  = async function(URL, fastMode, driver, capabilities = false, 
 
 
     // если есть ошибки
+    let allErrors =[];
     if (errors.length !== 0) {
-      let allErrors =[];
       for (let [i, err] of errors.entries()) {
         let obj = new Object(err);
         // если нужно скипать WARNING ошибки
@@ -50,10 +50,8 @@ const processUrl  = async function(URL, fastMode, driver, capabilities = false, 
         }
         allErrors.push({ level: 'error', message: obj.message, URL: await driver.getCurrentUrl() })
       }
-
-      return allErrors;
-
     }
+    return allErrors;
 
   } catch (e) {
     console.log(e);

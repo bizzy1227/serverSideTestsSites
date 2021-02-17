@@ -111,7 +111,7 @@ async function checkForm(driver, inputURL) {
     console.log('in checkForm');
     // получаем ошибки консоли
     if (processWebErrors) webErrosrResult[inputURL.origin + inputURL.pathname] = await webErrorsModule.processUrl(inputURL.href, false, driver, capabilities, writeLogsWeb);
-    console.log('11111111111111111', webErrosrResult)
+    console.log('tut?', webErrosrResult)
     let indexElements = 0;
     let form = await driver.findElements(By.css('form'));
     // console.log(await form[0].isDisplayed());
