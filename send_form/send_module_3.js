@@ -63,7 +63,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
     } else {
         console.log('useProxy', proxyAddress);
         if (proxyAddress) opts.setProxy(proxy.manual({https: proxyAddress}));
-        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless', '--disable-gpu', '--no-sandbox'])
+        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors'])
         driver = await new Builder().forBrowser('chrome')
         .setChromeOptions(opts)
         .build();
@@ -231,7 +231,7 @@ async function fillForm(driver, inputUrl, form) {
         // console.log(await submit[i].getText());
 
         // скролим к кнопке
-        driver.executeScript("arguments[0].scrollIntoView()", submit);
+        driver.executeScript("arguments[0].scrollIntoView(false)", submit);
         driver.sleep(300);
 
         await submit.click();
