@@ -40,6 +40,10 @@ const BOT_TOKEN = '1668307994:AAGzNQ1wG8A2_0q2khMUhkPk7NzBi3wEvFE';
 						}
 						console.log('test' , res.data[site].webErrors[page]);
 						
+						if (!res.data[site].webErrors[page]) {
+							lastresult += `error with site run`
+							continue;
+						} 
 						res.data[site].webErrors[page].forEach(error => {
 							lastresult += `error: ${error.message}\n`;
 						})
