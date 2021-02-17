@@ -41,6 +41,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
             - papgtekgdtefrvcrn.info/b.php
         2. Пересмотреть как возвращать результат с проклой.
         3. Автозапуск сбора консольных ошибок
+        4. проверить на тесте отправке формы patfctedarn.pl
 
     */
 
