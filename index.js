@@ -244,6 +244,37 @@ const autoRunServerWebErrors = async function() {
   }
 }
 
+const autoRunServerFormErrors = async function() {
+    // получаем список сайтов
+    let siteQuery = fs.readFileSync("../inputAutoWebErrors.txt", "utf8");
+    siteQuery = siteQuery.replace(/\r/g, '');
+    siteQuery = siteQuery.split('\n');
+  
+    console.log('server side sites form errors auto', siteQuery);
+
+    for (let i of siteQuery) {
+
+      let inputURL = '';
+      // проверка на домен и если надо добавляем https://
+      if (i.match(/^https:\/\//)) inputURL = i;
+      else inputURL = 'https://' + i;
+    
+      let nodeUrl = new URL(inputURL);
+  
+      // делаю selfUpdate для каждого сайта
+      await selfUpdateModule.selfUpdate(nodeUrl.href, true);
+  
+      // проверка settings.json на каждом сайте
+      await checkJsonModule.checkJson(nodeUrl.href, true);
+  
+      // запуск для теста формы для разных девайсов c browserstack
+      for (let device of deviceSettings.DEVICES) {
+        await sendModule.checkSend(nodeUrl, false, device, false, false, true);
+      }
+  
+    }
+}
+
 // runServerWebErrors(['poflsmkacikis.info/b.php']);
 
 
@@ -343,6 +374,7 @@ async function checkNeogara(startDate) {
 module.exports.runServer = runServer;
 module.exports.runServerWebErrors = runServerWebErrors;
 module.exports.autoRunServerWebErrors = autoRunServerWebErrors;
+module.exports.autoRunServerFormErrors = autoRunServerFormErrors;
 
 
 // 'browserstack.user' : 'yaroslavsolovev1',

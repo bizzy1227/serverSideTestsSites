@@ -50,7 +50,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
             format: winston.format.json(),
             defaultMeta: { service: capabilities ? 'browser-stack' : 'browser' },
             transports: [
-            new winston.transports.File({ filename: 'send_form_errors.log', level: 'error' }),
+            new winston.transports.File({ filename: '../send_form_errors.log', level: 'error' }),
             ]
         });
     }

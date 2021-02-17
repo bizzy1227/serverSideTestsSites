@@ -16,7 +16,7 @@ const selfUpdate  = async function(inputURL, withLogs) {
         format: winston.format.json(),
         defaultMeta: { service: 'headless browser' },
         transports: [
-          new winston.transports.File({ filename: 'self_update_errors.log', level: 'error' }),
+          new winston.transports.File({ filename: '../self_update_errors.log', level: 'error' }),
         ]
     });
     // '--headless'

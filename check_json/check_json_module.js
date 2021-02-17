@@ -16,7 +16,7 @@ const checkJson  = async function(inputURL, withLogs) {
         format: winston.format.json(),
         defaultMeta: { service: 'headless browser' },
         transports: [
-          new winston.transports.File({ filename: 'check_json_errors.log', level: 'error' }),
+          new winston.transports.File({ filename: '../check_json_errors.log', level: 'error' }),
         ]
     });
 
