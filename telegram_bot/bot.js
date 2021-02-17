@@ -47,7 +47,7 @@ const BOT_TOKEN = '1668307994:AAGzNQ1wG8A2_0q2khMUhkPk7NzBi3wEvFE';
 							lastresult += '\n';
 						} catch (error) {
 							console.log(error);
-							lastresult += `error with site run`
+							lastresult += `error with site run\n`
 							continue;
 						}
 
