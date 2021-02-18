@@ -54,7 +54,6 @@ const BOT_TOKEN = '1668307994:AAGzNQ1wG8A2_0q2khMUhkPk7NzBi3wEvFE';
 					}
 					lastresult += '---------------------------\n';
 				}
-				console.log('lastresult length', lastresult.length);
 				ctx.reply(lastresult)
 			});
 		} catch (error) {
