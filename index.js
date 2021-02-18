@@ -152,7 +152,11 @@ const runServer = async function(sites) {
       }
   
       // перезаписываю nodeUrl на relink, если илд будет отправлен с другого url
-      if (relink) nodeUrl = new URL(relink);
+      if (relink) {
+        console.log('nodeUrl it needed', nodeUrl);
+        if (relink.startsWith('/')) relink = nodeUrl.origin + relink
+        nodeUrl = new URL(relink);
+      } 
       // создаю массив коректных урлов 
       updatedSiteQuery.push(nodeUrl.href);
 
