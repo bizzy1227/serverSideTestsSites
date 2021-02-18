@@ -4,16 +4,31 @@ const axios = require('axios');
 // const NEOGARA_CRM_URL =  'https://admin.neogara.com/';
 const CONSTS = require('../consts');
 
-const request = axios.create({
-  baseURL: CONSTS.DEV_NEOGARA_CRM_URL,
-  headers: {
-    "accept": "application/json",
-    "authorization": `Bearer ${CONSTS.DEV_NEOGARA_AUTH_TOKEN}`,
-  }
-})
+
 
 const NeogaraGetConversions = async (startDate, page = 0) =>{
+  let token;
   try {
+
+    const requestToken = axios.create({
+      baseURL: 'https://dev.admin.neogara.com',
+      headers: {
+          "accept": "application/json"
+      }
+    })
+
+    await requestToken.post('/auth/login', {"username":"admin","password":"password"}).then(res => {
+      token = res.data.access_token
+      console.log('token', token);
+    })
+
+    const request = axios.create({
+      baseURL: CONSTS.DEV_NEOGARA_CRM_URL,
+      headers: {
+        "accept": "application/json",
+        "authorization": `Bearer ${token}`,
+      }
+    })
     
     const userMail = await encodeURIComponent(CONSTS.USER_DATA.email);
 
