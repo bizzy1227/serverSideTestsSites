@@ -27,7 +27,7 @@ const BOT_TOKEN = '1668307994:AAGzNQ1wG8A2_0q2khMUhkPk7NzBi3wEvFE';
 		
 		try {
 			let result = await request.post('/site', { "sites": domains }).then(res => {
-				console.log('11111111', res.data);
+				console.log('11111111 length', res.data.length);
 				for (let site in res.data) {
 					console.log('site', site);
 					lastresult += `>>>>>>>SITE: ${site}<<<<<<<\n`;
