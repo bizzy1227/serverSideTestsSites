@@ -34,14 +34,9 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
     console.log('run on', capabilities ? 'browser-stack' : 'browser');
 
     /*
-        
-        
-        1. Возвращая ошибки консоли приходит то путстой массив то пустой обьект
-            - maxigjmizer.info
-            - papgtekgdtefrvcrn.info/b.php
-        2. Пересмотреть как возвращать результат с проклой.
-        3. Автозапуск сбора консольных ошибок
-        4. проверить на тесте отправке формы patfctedarn.pl
+        1. Добавить использования разных емейлов для все видов запуска (4)
+        2. Тест видео
+        3. проверить на тесте отправке формы patfctedarn.pl
 
     */
 
@@ -64,7 +59,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
     } else {
         console.log('useProxy', proxyAddress);
         if (proxyAddress) opts.setProxy(proxy.manual({https: proxyAddress}));
-        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless', '--disable-gpu', '--no-sandbox'])
+        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors'])
         driver = await new Builder().forBrowser('chrome')
         .setChromeOptions(opts)
         .build();
