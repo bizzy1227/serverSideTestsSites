@@ -117,7 +117,7 @@ const runServer = async function(sites) {
 
     for (let i of sites) {
       // результаты обработок
-      let selfUpdateResult;
+      let selfUpdateResult = null;
       let checkJsonResult;
       let sendFormResult = [];
       let lighthouseResult;
@@ -131,7 +131,7 @@ const runServer = async function(sites) {
       let nodeUrl = new URL(inputURL);
   
       // делаю selfUpdate для каждого сайта
-      selfUpdateResult = await selfUpdateModule.selfUpdate(nodeUrl.href, false);
+      // selfUpdateResult = await selfUpdateModule.selfUpdate(nodeUrl.href, false);
   
       // проверка settings.json на каждом сайте
       checkJsonResult = await checkJsonModule.checkJson(nodeUrl.href, false);
