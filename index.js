@@ -266,7 +266,7 @@ const autoRunServerFormErrors = async function() {
       let nodeUrl = new URL(inputURL);
   
       // делаю selfUpdate для каждого сайта
-      await selfUpdateModule.selfUpdate(nodeUrl.href, true);
+      // await selfUpdateModule.selfUpdate(nodeUrl.href, true);
   
       // проверка settings.json на каждом сайте
       await checkJsonModule.checkJson(nodeUrl.href, true);

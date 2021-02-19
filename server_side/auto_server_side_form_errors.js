@@ -2,9 +2,16 @@ const mainProcc = require('../index');
 const hourse = 12;
 
 
-// setInterval(() => {
-//     mainProcc.autoRunServerFormErrors();
-// }, getMs());
+// setInterval(async () => {
+//     await mainProcc.autoRunServerFormErrors();
+// }, 10000);
+
+(async function foo() {
+    await mainProcc.autoRunServerFormErrors();
+    setTimeout(async () => {
+        await mainProcc.autoRunServerFormErrors();
+    }, 10000);
+})();
 
 async function autoRunServerFormErrorsIndex() {
     mainProcc.autoRunServerFormErrors();
