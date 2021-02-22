@@ -6,7 +6,7 @@ const CONSTS = require('../consts');
 
 
 
-const NeogaraGetConversions = async (startDate, page = 0) =>{
+const NeogaraGetConversions = async (startDate, page = 0, email) =>{
   let token;
   try {
 
@@ -30,7 +30,7 @@ const NeogaraGetConversions = async (startDate, page = 0) =>{
       }
     })
     
-    const userMail = await encodeURIComponent(CONSTS.USER_DATA.email);
+    const userMail = await encodeURIComponent(email);
 
     startDate = await encodeURIComponent(startDate);
     console.log(startDate);

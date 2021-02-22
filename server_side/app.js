@@ -29,7 +29,7 @@ app.get('/', (request, response) => {
 app.post('/site', async (request, response) => {
     console.log('req body', request.body);
     try {
-        let res = await mainProcc.runServer(request.body.sites);
+        let res = await mainProcc.runServer(request.body.sites, 'sendFormErrors');
         response.send(res);
     } catch (error) {
         console.log(error);

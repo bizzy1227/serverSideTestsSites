@@ -16,10 +16,11 @@ let proxyAddress = false;
 let writeLogsWeb = false;
 let writeLogsForm = false;
 let webErrosrResult = {};
+let usageEmail = false;
 
 let mainResult;
 
-const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, withLogsForm) {
+const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, withLogsForm, email) {
     webErrosrResult = {};
     
     console.log('in checkSend');
@@ -30,6 +31,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
     proxyAddress = myProxy;
     writeLogsWeb = withLogsWeb;
     writeLogsForm = withLogsForm;
+    usageEmail = email;
 
     console.log('run on', capabilities ? 'browser-stack' : 'browser');
 
@@ -60,7 +62,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
     } else {
         console.log('useProxy', proxyAddress);
         if (proxyAddress) opts.setProxy(proxy.manual({https: proxyAddress}));
-        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors'])
+        opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless', '--disable-gpu', '--no-sandbox'])
         driver = await new Builder().forBrowser('chrome')
         .setChromeOptions(opts)
         .build();
@@ -243,7 +245,7 @@ async function fillForm(driver, inputUrl, form) {
         await checkLastUrl(driver, inputUrl.href);
 
     } catch (error) {
-        console.log('test log', error.message);
+        console.log('test log', error);
         throw new Error('fill form failed');
     }
 
@@ -299,8 +301,9 @@ async function setValue(name, element) {
 
 
         await element.clear();
-        if (name === 'email' && processWebErrors) {
-            await element.sendKeys(CONSTS.USER_DATA['emailWebErrors']);
+        if (name === 'email') {
+            console.log('usageEmail', usageEmail);
+            await element.sendKeys(usageEmail);
             return;
         }
         await element.sendKeys(CONSTS.USER_DATA[name]);
@@ -313,7 +316,7 @@ async function clickBtn(submit, i) {
         console.log('in clickBtn');
         submit[i].click();
     } catch (error) {
-        console.log('test log', error.message);
+        console.log('test log', error);
         throw new Error('Click submit failed');
     }
 

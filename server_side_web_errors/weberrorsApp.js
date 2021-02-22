@@ -29,7 +29,7 @@ app.post('/site', async (request, response) => {
 
     console.log('req body', request.body);
     try {
-        let res = await mainProcc.runServerWebErrors(request.body.sites);
+        let res = await mainProcc.runServerWebErrors(request.body.sites, 'webErrors');
         let goodSites = [];
         for (key in res) {
             if (res[key].webErrors.hasOwnProperty('error')) continue;

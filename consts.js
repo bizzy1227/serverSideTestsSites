@@ -10,8 +10,10 @@ const PROXY = {
 const USER_DATA = {
     firstname: 'test',
     lastname: 'test',
-    email: 'testmail5@gmail.com',
+    sendFormEmailErrors: 'testmail5@gmail.com',
     emailWebErrors: 'testmail6@gmail.com',
+    autoSendFormEmailErrors: 'testmail7@gmail.com',
+    autoEmailWebErrors: 'testmail8@gmail.com',
     tel: 9111111111
 };
 
