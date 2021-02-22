@@ -227,8 +227,8 @@ async function fillForm(driver, inputUrl, form) {
         // console.log(await submit[i].getText());
 
         // скролим к кнопке
-        driver.executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'})", submit);
-        driver.sleep(300);
+        await driver.executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'})", submit);
+        await driver.sleep(300);
 
         await submit.click();
     
