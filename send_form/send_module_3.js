@@ -127,8 +127,8 @@ async function checkForm(driver, inputURL) {
     else {
         // если нет формы
         console.log('in block no form');
-        const originalWindow = await driver.getWindowHandle();
-        console.log('originalWindow.length',  originalWindow.length);
+        // const originalWindow = await driver.getWindowHandle();
+        // console.log('originalWindow.length',  originalWindow.length);
         let link = await driver.findElements(By.xpath('//a'));
         // проверить видна ли ссылка
         for(i of link) {
