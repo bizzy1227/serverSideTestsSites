@@ -37,6 +37,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
         1. Добавить использования разных емейлов для все видов запуска (4)
         2. Тест видео
         3. проверить на тесте отправке формы patfctedarn.pl
+        4. добавить driver.quit(); в проверках на /thanks.php
 
     */
 
