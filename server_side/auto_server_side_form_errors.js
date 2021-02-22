@@ -7,7 +7,8 @@ const hourse = 12;
 // }, 10000);
 
 (async function foo() {
-    await mainProcc.autoRunServerFormErrors();
+    // тут должен быть запрос старых сайтов с CRM и далее передать их первым аргументом в runServer
+    await mainProcc.runServer(request.body.sites, 'autoSendFormErrors');
     setTimeout(foo, 10000);
 })();
 
