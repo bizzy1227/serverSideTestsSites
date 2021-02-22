@@ -230,7 +230,9 @@ async function fillForm(driver, inputUrl, form) {
         await driver.executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'})", submit);
         await driver.sleep(300);
 
-        await submit.click();
+        await driver.executeScript("arguments[0].click()", submit);
+
+        // await submit.click();
     
         
         await driver.sleep(5000);
