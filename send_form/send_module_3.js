@@ -191,17 +191,17 @@ async function checkForm(driver, inputURL) {
 async function fillForm(driver, inputUrl, form) {
     
     try {
-        let firstname = await form.findElement(By.name('firstname'));
-        await setValue('firstname', firstname);
+        let firstname = await form.findElements(By.name('firstname'));
+        await setValue('firstname', firstname[0]);
 
-        let lastname = await form.findElement(By.name('lastname'));
-        await setValue('lastname',lastname);
+        let lastname = await form.findElements(By.name('lastname'));
+        await setValue('lastname',lastname[0]);
 
-        let tel = await form.findElement(By.name('phone_number'));
-        await setValue('tel',tel);
+        let tel = await form.findElements(By.name('phone_number'));
+        await setValue('tel',tel[0]);
     
-        let email = await form.findElement(By.name('email'));
-        await setValue('email', email);
+        let email = await form.findElements(By.name('email'));
+        await setValue('email', email[0]);
 
         let submit = await form.findElement(By.xpath(`//*[@type='submit']`));
         if (!await submit.isDisplayed()) submit = await form.findElement(By.css(`button`));
@@ -299,14 +299,15 @@ async function checkLastUrl(driver, inputUrl) {
 async function setValue(name, element) {
     console.log('in setValue');
 
-
-        await element.clear();
-        if (name === 'email') {
-            console.log('usageEmail', usageEmail);
-            await element.sendKeys(usageEmail);
-            return;
-        }
-        await element.sendKeys(CONSTS.USER_DATA[name]);
+    if (!element) return;
+    
+    await element.clear();
+    if (name === 'email') {
+        console.log('usageEmail', usageEmail);
+        await element.sendKeys(usageEmail);
+        return;
+    }
+    await element.sendKeys(CONSTS.USER_DATA[name]);
 
 
 }
