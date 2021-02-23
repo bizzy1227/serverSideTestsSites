@@ -21,6 +21,7 @@ let usageEmail = false;
 let mainResult;
 
 const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, withLogsForm, email) {
+    getDeviceName();
     webErrosrResult = {};
     
     console.log('in checkSend');
@@ -96,7 +97,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
             });
         }
         driver.quit();
-        mainResult = {error: e.message, capabilities: capabilities, URL: URL.href};
+        mainResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), result: {error: e.message, capabilities: capabilities, URL: URL.href} };
         return mainResult;
     }
 
@@ -153,7 +154,7 @@ async function checkForm(driver, inputURL) {
                 });
             }
             driver.quit();
-            mainResult = {error:  href, capabilities: capabilities, URL: inputURL.href};
+            mainResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), result: {error:  href, capabilities: capabilities, URL: inputURL.href} };
             return mainResult;
         }
 
@@ -264,7 +265,6 @@ async function checkLastUrl(driver, inputUrl) {
         if (countRedirect < 3) await checkForm(driver, currentUrl);
         else {
             console.log(`The limit (${countRedirect}) of clicks on links has been exceeded`, currentUrl.href);
-            countRedirect = 0;
             if (writeLogsForm) {
                 logger.log({
                     level: 'error',
@@ -272,14 +272,15 @@ async function checkLastUrl(driver, inputUrl) {
                     URL: currentUrl.href
                 });
             }
-            mainResult ={error: `The limit (${countRedirect}) of clicks on links has been exceeded`, capabilities: capabilities, URL: currentUrl.href};
+            mainResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), result: { error: `The limit (${countRedirect}) of clicks on links has been exceeded`, capabilities: capabilities, URL: currentUrl.href } };
+            countRedirect = 0;
             return mainResult;
         }
     } else if (currentUrl.pathname === '/thanks.php') {
         countRedirect = 0;
         console.log('Test send form done', currentUrl.href);
         driver.quit();
-        mainResult = true;
+        mainResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), result: true };
         if (processWebErrors) mainResult = webErrosrResult;
         return mainResult;
     } else {
@@ -291,7 +292,7 @@ async function checkLastUrl(driver, inputUrl) {
             });
         }
         driver.quit();
-        mainResult = {error: 'Test send form failed', URL: currentUrl.href};
+        mainResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), result: {error: 'Test send form failed', URL: currentUrl.href} };
         return mainResult;
     }
 }
@@ -300,7 +301,7 @@ async function setValue(name, element) {
     console.log('in setValue');
 
     if (!element) return;
-    
+
     await element.clear();
     if (name === 'email') {
         console.log('usageEmail', usageEmail);
@@ -321,6 +322,27 @@ async function clickBtn(submit, i) {
         throw new Error('Click submit failed');
     }
 
+}
+
+async function getDeviceName(requestField) {
+    let nameDevice;
+    if (capabilities) {
+        if (requestField === 'device') {
+            if (capabilities.device) {
+                nameDevice = `${capabilities.device}, ${capabilities.os_version}`;
+                return nameDevice;
+            }
+            else if (capabilities.os) {
+                nameDevice = `${capabilities.os}, ${capabilities.os_version}`;
+                return nameDevice;
+            }
+        }
+        if (requestField === 'browser') {
+            nameDevice = `${capabilities.browserName}`;
+            return nameDevice;
+        }
+
+    }
 }
 
 // checkSend('https://magxeomizpeper.pl/');
