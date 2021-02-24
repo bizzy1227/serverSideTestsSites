@@ -278,11 +278,16 @@ async function checkLastUrl(driver, inputUrl) {
             return mainResult;
         }
     } else if (currentUrl.pathname === '/thanks.php') {
+        if (processWebErrors) {
+           webErrosrResult[currentUrl.origin + currentUrl.pathname] = await webErrorsModule.processUrl(currentUrl.href, false, driver, capabilities, writeLogsWeb);
+           mainResult = webErrosrResult;
+           return mainResult;
+        } 
         countRedirect = 0;
         console.log('Test send form done', currentUrl.href);
         driver.quit();
         mainResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), result: true };
-        if (processWebErrors) mainResult = webErrosrResult;
+        // if (processWebErrors) mainResult = webErrosrResult;
         return mainResult;
     } else {
         if (writeLogsForm) {
