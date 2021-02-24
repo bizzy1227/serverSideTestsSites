@@ -41,6 +41,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
         2. Тест видео
         3. проверить на тесте отправке формы patfctedarn.pl
         4. добавить driver.quit(); в проверках на /thanks.php
+        5. рашить проблему с возвратом результата бота телеграм при лимите в 4000 символов
 
     */
 
