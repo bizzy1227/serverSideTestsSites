@@ -37,13 +37,10 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
     console.log('run on', capabilities ? 'browser-stack' : 'browser');
 
     /*
-        1. Добавить использования разных емейлов для все видов запуска (4)
-        2. Тест видео
-        3. проверить на тесте отправке формы patfctedarn.pl
-        4. добавить driver.quit(); в проверках на /thanks.php
-        5. обработка thanks.php на консольные ошиби
-        6. рашить проблему с возвратом результата бота телеграм при лимите в 4000 символов
-        7. добавить старые девайсы
+        1. Тест видео
+        2. обработка thanks.php на консольные ошиби
+        3. рашить проблему с возвратом результата бота телеграм при лимите в 4000 символов
+        4. добавить старые девайсы
 
     */
 
@@ -277,6 +274,7 @@ async function checkLastUrl(driver, inputUrl) {
             }
             mainResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), result: { error: `The limit (${countRedirect}) of clicks on links has been exceeded`, capabilities: capabilities, URL: currentUrl.href } };
             countRedirect = 0;
+            driver.quit();
             return mainResult;
         }
     } else if (currentUrl.pathname === '/thanks.php') {
