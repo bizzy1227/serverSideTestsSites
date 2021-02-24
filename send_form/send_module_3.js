@@ -106,6 +106,9 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
 
 async function checkForm(driver, inputURL) {
 
+    // проверка видео()
+    // await testVideo(driver);
+
     // записываем текущую вкладку
     // const originalWindow = await driver.getWindowHandle();
 
@@ -350,6 +353,20 @@ async function getDeviceName(requestField) {
         }
 
     }
+}
+
+async function testVideo(driver) {
+    // driver.sleep(10000);
+    await driver.switchTo().frame(0);
+    await driver.findElement(By.xpath('//i')).click();
+    await driver.sleep(5000);
+    let video = await driver.findElement(By.xpath('//video'));
+    await video.click();
+    let currentTime = await driver.executeScript('return arguments[0].currentTime', video);
+    if (currentTime !== 0) console.log('test video passed');
+    await driver.switchTo().defaultContent();
+    
+
 }
 
 // checkSend('https://magxeomizpeper.pl/');
