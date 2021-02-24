@@ -43,6 +43,7 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
         4. добавить driver.quit(); в проверках на /thanks.php
         5. обработка thanks.php на консольные ошиби
         6. рашить проблему с возвратом результата бота телеграм при лимите в 4000 символов
+        7. добавить старые девайсы
 
     */
 
