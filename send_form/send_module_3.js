@@ -43,6 +43,8 @@ const checkSend  = async function(URL, getWebErr, cp, myProxy, withLogsWeb, with
         2. добавить старые девайсы
         3. Удалить лишние коментарии
         4. Добавить lint
+        5. Тест на поляка не передает q.params для теста (pulszvqnesu.info). 
+            после перехода на страницу проверять q.params и если их нет - добавить
 
     */
 
