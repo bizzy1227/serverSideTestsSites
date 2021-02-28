@@ -15,6 +15,7 @@ var server = app.listen(port, (err) => {
 server.setTimeout(720000, () => {
     console.log('after wait 2m');
 });
+// для локальной проверки нужно установить maxConnections = 2
 server.maxConnections = 1;
 
 
@@ -29,7 +30,7 @@ app.get('/', (request, response) => {
 app.post('/site', async (request, response) => {
     console.log('req body', request.body);
     try {
-        let res = await mainProcc.runServer(request.body.sites, 'sendFormErrors');
+        let res = await mainProcc.runServer(request.body.sites, 'sendFormErrors', request.body.typeSites);
         response.send(res);
     } catch (error) {
         console.log(error);
