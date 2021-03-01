@@ -4,6 +4,9 @@
 const runConsoleErrors  = async function(inputURL, driver) {
     console.log('in runConsoleErrors');
 
+    let errorsArr = [];
+    let warningsArr = [];
+
     let consoleErrorsResults = {
         URL: false,
         countErrors: {
@@ -20,15 +23,14 @@ const runConsoleErrors  = async function(inputURL, driver) {
 
         let errors = await driver.manage().logs().get('browser');
 
-        // если есть ошибки
-        let errorsArr = [];
-        let warningsArr = [];
+        console.log('errors in page', errors);
         
         if (errors.length !== 0) {
+            
             for (let [i, err] of errors.entries()) {
                 let obj = new Object(err);
-
-                if (obj.level.name_ === 'ERROR') {
+                
+                if (obj.level.name_ === 'SEVERE') {
                     errorsArr.push({ level: 'error', message: obj.message, URL: await driver.getCurrentUrl() })
                 };
                 if (obj.level.name_ === 'WARNING') {

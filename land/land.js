@@ -126,6 +126,7 @@ async function fillForm(driver, inputURL, form) {
 
     } catch (error) {
         console.log('fill form failed');
+        console.log(error);
         landResult.thanks = { error: 'fill form failed', capabilities: capabilities, URL: inputURL.href };
         return landResult;
     }
