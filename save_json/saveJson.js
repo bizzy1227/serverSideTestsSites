@@ -27,6 +27,7 @@ const saveJson  = async function(inputURL) {
         return resultSaveJson;
 
     } catch (error) {
+        console.log(error);
         return resultSaveJson.error = { hasError: true, result: { err: error.message, URL: nodeURL.href } };
     } finally {
         driver.quit();
