@@ -17,7 +17,10 @@ const USER_DATA = {
     tel: 9111111111
 };
 
+const VIRUS_TOTAL_KEY = 'e90c1ec1f55ec17df28c4997bbde2ad019f3cfff8c9fe0914c5032ee00bd6bfc';
+
 module.exports.USER_DATA = USER_DATA;
 module.exports.PROXY = PROXY;
 module.exports.DEV_NEOGARA_CRM_URL = DEV_NEOGARA_CRM_URL;
 module.exports.DEV_NEOGARA_AUTH_TOKEN = DEV_NEOGARA_AUTH_TOKEN;
+module.exports.VIRUS_TOTAL_KEY = VIRUS_TOTAL_KEY;

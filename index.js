@@ -5,6 +5,7 @@ const parseNeogara = require('./parsers/neogaraParser');
 const CONSTS = require('./consts');
 const handlerSwitch = require('./siteHandlerSwitch');
 const SaveJson = require('./save_json/saveJson');
+const VirusTotal = require('./virusTotal/virusTotal');
 
 let startDate;
 let lastResultObj = {};
@@ -37,6 +38,7 @@ const runServer = async function(sites, typeRun, typeSites) {
         let checkJsonResult;
         const testResult = [];
         let lighthouseResult;
+        let virusTotal = false;
 
 
         let inputURL = '';
@@ -56,6 +58,8 @@ const runServer = async function(sites, typeRun, typeSites) {
 
         // тут можно вызвать switcher(options) с device: false для получения консольных ошибок 1 раз
 
+        virusTotal = await VirusTotal.runVirusTotal(nodeUrl.href);
+
         for (const device of deviceSettings.DEVICES) {
             options.device = device;
             testResult.push(await handlerSwitch.switcher(options));
@@ -70,6 +74,7 @@ const runServer = async function(sites, typeRun, typeSites) {
             checkJsonResult: checkJsonResult,
             testResult: testResult,
             lighthouseResult: lighthouseResult,
+            virusTotal: virusTotal,
             neogaraResults: true
         }
 
