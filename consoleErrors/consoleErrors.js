@@ -1,13 +1,16 @@
 
-let consoleErrorsResults = {
-    URL: false,
-    countErrors: false
-};
+
 
 const runConsoleErrors  = async function(inputURL, driver) {
     console.log('in runConsoleErrors');
 
-    consoleErrorsResults = {};
+    let consoleErrorsResults = {
+        URL: false,
+        countErrors: {
+            errors: false,
+            warnings: false
+        }
+    };
 
     console.log('start: ', await driver.getCurrentUrl());
 
@@ -18,20 +21,25 @@ const runConsoleErrors  = async function(inputURL, driver) {
         let errors = await driver.manage().logs().get('browser');
 
         // если есть ошибки
-        let allErrors = [];
+        let errorsArr = [];
+        let warningsArr = [];
         
         if (errors.length !== 0) {
             for (let [i, err] of errors.entries()) {
                 let obj = new Object(err);
-                // если нужно скипать WARNING ошибки
-                if (obj.level.name_ === 'WARNING') continue;
 
-                allErrors.push({ level: 'error', message: obj.message, URL: await driver.getCurrentUrl() })
+                if (obj.level.name_ === 'ERROR') {
+                    errorsArr.push({ level: 'error', message: obj.message, URL: await driver.getCurrentUrl() })
+                };
+                if (obj.level.name_ === 'WARNING') {
+                    warningsArr.push({ level: 'warning', message: obj.message, URL: await driver.getCurrentUrl() })
+                };
             }
         }
 
         consoleErrorsResults.URL = inputURL;
-        consoleErrorsResults.countErrors = allErrors.length;
+        consoleErrorsResults.countErrors.errors = errorsArr.length;
+        consoleErrorsResults.countErrors.warnings = warningsArr.length;
         return consoleErrorsResults;
 
     } catch (error) {

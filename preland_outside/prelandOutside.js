@@ -1,4 +1,5 @@
 const { By } = require('selenium-webdriver');
+const ConsoleErros = require('../consoleErrors/consoleErrors')
 
 let capabilities = false;
 let driver;
@@ -7,6 +8,7 @@ let prelandOutsideResult = {
     browser: false,
     relink: false,
     yandex: false,
+    consoleErrors: false,
     error: false
 };
 
@@ -30,6 +32,8 @@ const handlePrelandOutside = async function(optinos) {
 
         // переходим на ссылку с параметрами дял dev
         await driver.get(optinos.inputURL.href);
+
+        prelandOutsideResult.consoleErrors = await ConsoleErros.runConsoleErrors(optinos.inputURL.origin + optinos.inputURL.pathname, driver);
 
         await clickLink(driver, optinos.inputURL);
 
