@@ -20,6 +20,7 @@ const handlePrelandOutside = async function(optinos) {
         browser: false,
         relink: false,
         yandex: false,
+        consoleErrors: false,
         error: false
     };
 

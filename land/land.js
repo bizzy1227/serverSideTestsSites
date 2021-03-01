@@ -1,9 +1,15 @@
 const { By } = require('selenium-webdriver');
 const CONSTS = require('../consts');
+const ConsoleErros = require('../consoleErrors/consoleErrors')
 
 let capabilities = false;
 let driver;
-let landResult = {};
+let landResult = {
+    device: false,
+    browser: false,
+    thanks: false,
+    consoleErrors: []
+};
 let countRedirect = 0;
 let usageEmail = false;
 
@@ -11,13 +17,20 @@ let usageEmail = false;
 const handleLand = async function(options) {
     console.log('in handle land');
 
-    landResult = {};
-
+    landResult = {
+        device: false,
+        browser: false,
+        thanks: false,
+        consoleErrors: []
+    };
     capabilities = options.capabilities;
     driver = options.driver;
     usageEmail = options.email;
 
     try {
+        landResult.device = await getDeviceName('device');
+        landResult.browser = await getDeviceName('browser');
+        
         options.inputURL = await setTestQueryParams(options.inputURL);
 
         // переходим на ссылку с параметрами дял dev
@@ -38,7 +51,10 @@ async function checkLastUrl(driver, inputURL) {
     if (currentUrl.pathname === '/thanks.php') {
         countRedirect = 0;
         console.log('Test send form done', currentUrl.origin + currentUrl.pathname);
-        landResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), thanks: true };
+
+        landResult.thanks = true;
+        landResult.consoleErrors.push( await ConsoleErros.runConsoleErrors(currentUrl.origin + currentUrl.pathname, driver) );
+
         return landResult;
     }
     else if (currentUrl.pathname !== '/thanks.php') {
@@ -48,11 +64,11 @@ async function checkLastUrl(driver, inputURL) {
         }
         else {
             console.log(`The limit (${countRedirect}) of clicks on links has been exceeded`, currentUrl.href);
-            landResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), thanks: { error: `The limit (${countRedirect}) of clicks on links has been exceeded`, capabilities: capabilities, URL: currentUrl.href } };
+
+            landResult.thanks = { error: `The limit (${countRedirect}) of clicks on links has been exceeded`, capabilities: capabilities, URL: currentUrl.href };
             countRedirect = 0;
             return landResult;
         }
-
     }
 }
 
@@ -67,10 +83,14 @@ async function checkForm(driver, inputURL) {
                 break;
              } 
         }
+
+        landResult.consoleErrors.push( await ConsoleErros.runConsoleErrors(inputURL.origin + inputURL.pathname, driver) );
+
         await fillForm(driver, inputURL, form);
     } else {
         console.log('page without form');
-        landResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), thanks: { error: 'page without form', capabilities: capabilities, URL: inputURL.href} };
+
+        landResult.thanks = { error: 'page without form', capabilities: capabilities, URL: inputURL.href};
         return landResult;
     }
 }
@@ -106,7 +126,7 @@ async function fillForm(driver, inputURL, form) {
 
     } catch (error) {
         console.log('fill form failed');
-        landResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), thanks: {error: 'fill form failed', capabilities: capabilities, URL: inputURL.href} };
+        landResult.thanks = { error: 'fill form failed', capabilities: capabilities, URL: inputURL.href };
         return landResult;
     }
 
@@ -157,7 +177,7 @@ async function setValue(name, element, inputURL) {
         await element.sendKeys(CONSTS.USER_DATA[name]);
     } catch (error) {
         console.log(error);
-        landResult = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), thanks: {error: error.message, capabilities: capabilities, URL: inputURL.href} };
+        landResult.thanks = { error: error.message, capabilities: capabilities, URL: inputURL.href };
         return landResult;
     }
 
