@@ -20,7 +20,7 @@ const switcher = async function(optionsSwitcher) {
             .withCapabilities(optionsSwitcher.device).setChromeOptions(new chrome.Options().addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless']))
             .build();
         } else {
-            opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors'])
+            opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless', '--disable-gpu', '--no-sandbox'])
             driver = await new Builder().forBrowser('chrome')
             .setChromeOptions(opts)
             .build();
