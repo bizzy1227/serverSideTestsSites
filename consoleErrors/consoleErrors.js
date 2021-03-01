@@ -36,6 +36,7 @@ const runConsoleErrors  = async function(inputURL, driver) {
 
     } catch (error) {
         console.log(error);
+        return consoleErrorsResults;
     }
 }
 
