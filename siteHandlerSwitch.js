@@ -1,4 +1,3 @@
-const SaveJson = require('./save_json/saveJson');
 const {Builder, By, Key, until} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 let opts = new chrome.Options();
@@ -12,7 +11,7 @@ const switcher = async function(optionsSwitcher) {
 
     let driver;
     // console.log('optionsSwitcher', optionsSwitcher)
-    let jsonData = await SaveJson.saveJson(optionsSwitcher.inputURL);
+    let jsonData = optionsSwitcher.jsonData;
 
     try {
         

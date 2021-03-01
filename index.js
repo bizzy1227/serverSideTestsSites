@@ -3,7 +3,8 @@ const fs = require("fs");
 const deviceSettings = require('./devices');
 const parseNeogara = require('./parsers/neogaraParser');
 const CONSTS = require('./consts');
-const handlerSwitch = require('./siteHandlerSwitch')
+const handlerSwitch = require('./siteHandlerSwitch');
+const SaveJson = require('./save_json/saveJson');
 
 let startDate;
 let lastResultObj = {};
@@ -49,6 +50,7 @@ const runServer = async function(sites, typeRun, typeSites) {
             inputURL: nodeUrl.href,
             email: await getEmail(typeRun),
             device: false,
+            jsonData: await SaveJson.saveJson(nodeUrl.href),
             typeSite: typeSites
         }
 
