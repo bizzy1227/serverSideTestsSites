@@ -7,8 +7,7 @@ let driver;
 let landResult = {
     device: false,
     browser: false,
-    thanks: false,
-    consoleErrors: []
+    thanks: false
 };
 let countRedirect = 0;
 let usageEmail = false;
@@ -20,12 +19,13 @@ const handleLand = async function(options) {
     landResult = {
         device: false,
         browser: false,
-        thanks: false,
-        consoleErrors: []
+        thanks: false
     };
     capabilities = options.capabilities;
     driver = options.driver;
     usageEmail = options.email;
+
+    if (!capabilities) landResult.consoleErrors = [];
 
     try {
         landResult.device = await getDeviceName('device');
@@ -53,7 +53,7 @@ async function checkLastUrl(driver, inputURL) {
         console.log('Test send form done', currentUrl.origin + currentUrl.pathname);
 
         landResult.thanks = true;
-        landResult.consoleErrors.push( await ConsoleErros.runConsoleErrors(currentUrl.origin + currentUrl.pathname, driver) );
+        if (!capabilities) landResult.consoleErrors.push( await ConsoleErros.runConsoleErrors(currentUrl.origin + currentUrl.pathname, driver) );
 
         return landResult;
     }
@@ -84,7 +84,7 @@ async function checkForm(driver, inputURL) {
              } 
         }
 
-        landResult.consoleErrors.push( await ConsoleErros.runConsoleErrors(inputURL.origin + inputURL.pathname, driver) );
+        if (!capabilities) landResult.consoleErrors.push( await ConsoleErros.runConsoleErrors(inputURL.origin + inputURL.pathname, driver) );
 
         await fillForm(driver, inputURL, form);
     } else {

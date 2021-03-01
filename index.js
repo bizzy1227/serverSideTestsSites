@@ -9,14 +9,14 @@ const VirusTotal = require('./virusTotal/virusTotal');
 
 let startDate;
 let lastResultObj = {};
-let additionalСhecks = 0;
+let additionalСhecks = 1;
 let updatedSiteQuery = [];
 
 const runServer = async function(sites, typeRun, typeSites) {
     // обновляем при каждом запросе данные
     lastResultObj = {};
     updatedSiteQuery = [];
-    additionalСhecks = 0;
+    additionalСhecks = 1;
 
     let mainRespone = {};
 
@@ -39,6 +39,7 @@ const runServer = async function(sites, typeRun, typeSites) {
         const testResult = [];
         let lighthouseResult;
         let virusTotal = false;
+        let consoleErrors = false;
 
 
         let inputURL = '';
@@ -57,6 +58,8 @@ const runServer = async function(sites, typeRun, typeSites) {
         }
 
         // тут можно вызвать switcher(options) с device: false для получения консольных ошибок 1 раз
+        let returnedResultTest = await handlerSwitch.switcher(options);
+        consoleErrors = returnedResultTest.consoleErrors;
 
         virusTotal = await VirusTotal.runVirusTotal(nodeUrl.href);
 
@@ -75,6 +78,7 @@ const runServer = async function(sites, typeRun, typeSites) {
             testResult: testResult,
             lighthouseResult: lighthouseResult,
             virusTotal: virusTotal,
+            consoleErrors: consoleErrors,
             neogaraResults: true
         }
 

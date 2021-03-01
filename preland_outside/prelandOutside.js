@@ -8,7 +8,6 @@ let prelandOutsideResult = {
     browser: false,
     relink: false,
     yandex: false,
-    consoleErrors: false,
     error: false
 };
 
@@ -20,12 +19,13 @@ const handlePrelandOutside = async function(optinos) {
         browser: false,
         relink: false,
         yandex: false,
-        consoleErrors: false,
         error: false
     };
 
     capabilities = optinos.capabilities;
     driver = optinos.driver;
+
+    if (!capabilities) prelandOutsideResult.consoleErrors = [];
 
 
     try {    
@@ -34,7 +34,7 @@ const handlePrelandOutside = async function(optinos) {
         // переходим на ссылку с параметрами дял dev
         await driver.get(optinos.inputURL.href);
 
-        prelandOutsideResult.consoleErrors = await ConsoleErros.runConsoleErrors(optinos.inputURL.origin + optinos.inputURL.pathname, driver);
+        if (!capabilities) prelandOutsideResult.consoleErrors = await ConsoleErros.runConsoleErrors(optinos.inputURL.origin + optinos.inputURL.pathname, driver);
 
         await clickLink(driver, optinos.inputURL);
 
