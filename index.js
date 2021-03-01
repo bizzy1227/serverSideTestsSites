@@ -54,6 +54,8 @@ const runServer = async function(sites, typeRun, typeSites) {
             typeSite: typeSites
         }
 
+        // тут можно вызвать switcher(options) с device: false для получения консольных ошибок 1 раз
+
         for (const device of deviceSettings.DEVICES) {
             options.device = device;
             testResult.push(await handlerSwitch.switcher(options));
