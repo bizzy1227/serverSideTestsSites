@@ -19,7 +19,7 @@ const runVirusTotal = async function(inputUrl) {
     });
 
     while (typeof scanDate !== 'string') {
-        console.log('in run wait');
+        console.log('in run while iteration');
         await requestVirus.get('/report', { params: {
             resource: inputUrl,
             apikey: CONSTS.VIRUS_TOTAL_KEY
@@ -27,7 +27,7 @@ const runVirusTotal = async function(inputUrl) {
             scanDate = res.data.scan_date;
             virusTotalResult = res.data.positives;
         });
-        await sleep(2000);
+        await sleep(10000);
     }
 
 
