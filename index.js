@@ -65,7 +65,7 @@ const runServer = async function(sites, typeRun, typeSites) {
             inputURL: nodeUrl.href,
             email: await getEmail(typeRun),
             device: false,
-            jsonData: returnedJsonData,
+            jsonData: returnedJsonData.jsonData,
             typeSite: typeSites
         }
 
