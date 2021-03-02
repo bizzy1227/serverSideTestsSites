@@ -73,11 +73,9 @@ async function checkLastUrl(driver, inputURL) {
 }
 
 async function checkForm(driver, inputURL) {
-    let forms = await driver.findElements(By.xpath('//form'));
+    let forms = await driver.findElements(By.css('form'));
     let form;
     // если есть форма
-    console.log('1111111 forms.length 1', forms.length);
-
     if (forms.length > 0) {
         for (let item of forms) {
             if (await item.isDisplayed()) {
@@ -90,7 +88,6 @@ async function checkForm(driver, inputURL) {
 
         await fillForm(driver, inputURL, form);
     } else {
-        console.log('1111111 forms.length 2', forms.length);
         console.log('page without form');
 
         landResult.thanks = { error: 'page without form', capabilities: capabilities, URL: inputURL.href};
