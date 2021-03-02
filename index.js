@@ -51,6 +51,7 @@ const runServer = async function(sites, typeRun, typeSites) {
 
         let returnedJsonData;
 
+        // если тест сфейлился на получении settings.json
         try {
             returnedJsonData = await SaveJson.saveJson(nodeUrl.href);
         } catch (error) {

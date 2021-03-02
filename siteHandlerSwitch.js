@@ -11,7 +11,6 @@ const switcher = async function(optionsSwitcher) {
 
     let driver;
     // console.log('optionsSwitcher', optionsSwitcher)
-    let jsonData = optionsSwitcher.jsonData;
 
     try {
         
@@ -32,8 +31,8 @@ const switcher = async function(optionsSwitcher) {
             inputURL: new URL(optionsSwitcher.inputURL),
             email: optionsSwitcher.email,
             capabilities: optionsSwitcher.device,
-            relink: jsonData.relink,
-            yandex: jsonData.yandex
+            relink: optionsSwitcher.jsonData.relink,
+            yandex: optionsSwitcher.jsonData.yandex
         }
 
         if (optionsSwitcher.typeSite === 'preland') {
