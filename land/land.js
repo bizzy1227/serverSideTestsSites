@@ -73,7 +73,7 @@ async function checkLastUrl(driver, inputURL) {
 }
 
 async function checkForm(driver, inputURL) {
-    let forms = await driver.findElements(By.css('form'));
+    let forms = await driver.findElements(By.xpath('//form'));
     let form;
     // если есть форма
     console.log('1111111 forms.length 1', forms.length);
