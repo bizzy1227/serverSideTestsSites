@@ -88,6 +88,7 @@ async function checkForm(driver, inputURL) {
 
         await fillForm(driver, inputURL, form);
     } else {
+        console.log('1111111 forms.length', forms.length);
         console.log('page without form');
 
         landResult.thanks = { error: 'page without form', capabilities: capabilities, URL: inputURL.href};
