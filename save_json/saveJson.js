@@ -13,14 +13,18 @@ const saveJson  = async function(inputURL) {
     .build();
 
     try {
-        let nodeURL = new URL(inputURL);
+        let nodeURL = await new URL(inputURL);
+        console.log('in saveJson try nodeUrl', nodeURL);
 
         nodeURL.pathname = '/settings.json';
+        console.log('in saveJson try nodeUrl + path /settings.json', nodeURL);
         await driver.get(nodeURL.href);
 
         let elements = await driver.findElements(By.css('pre'));
+        console.log('in saveJson try elements', elements);
         let jsonData = JSON.parse(await elements[0].getText());
         resultSaveJson.jsonData = jsonData;
+        console.log('in saveJson try result', resultSaveJson);
 
         // console.log('resultSaveJson', resultSaveJson);
 
