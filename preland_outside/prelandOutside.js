@@ -144,7 +144,7 @@ async function checkRelink(driver, relink) {
             return false;
         }
     }
-
+    return false;
 }
 
 async function checkYandex(driver, yandex) {
