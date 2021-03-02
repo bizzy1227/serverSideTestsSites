@@ -49,11 +49,23 @@ const runServer = async function(sites, typeRun, typeSites) {
 
         let nodeUrl = new URL(inputURL);
 
+        let returnedJsonData;
+
+        try {
+            returnedJsonData = await SaveJson.saveJson(nodeUrl.href);
+        } catch (error) {
+            console.log(error)
+            mainRespone[nodeUrl.href] = {
+                testResult: false
+            };
+            continue;
+        }
+
         let options = {
             inputURL: nodeUrl.href,
             email: await getEmail(typeRun),
             device: false,
-            jsonData: await SaveJson.saveJson(nodeUrl.href),
+            jsonData: returnedJsonData,
             typeSite: typeSites
         }
 
