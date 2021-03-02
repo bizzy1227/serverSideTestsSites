@@ -21,6 +21,7 @@ const switcher = async function(optionsSwitcher) {
             .build();
         } else {
             opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless', '--disable-gpu', '--no-sandbox'])
+            // .addExtensions(['../extension_4_29_2_0.crx'])
             driver = await new Builder().forBrowser('chrome')
             .setChromeOptions(opts)
             .build();
