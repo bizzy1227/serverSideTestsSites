@@ -16,7 +16,7 @@ const runServer = async function(sites, typeRun, typeSites) {
     // обновляем при каждом запросе данные
     lastResultObj = {};
     updatedSiteQuery = [];
-    additionalСhecks = 0;
+    
 
     let mainRespone = {};
 
@@ -33,6 +33,8 @@ const runServer = async function(sites, typeRun, typeSites) {
 
     for (let i of sites) {
         console.log('in loop for', i);
+
+        additionalСhecks = 0;
         // результаты обработок
         let selfUpdateResult = null;
         let checkJsonResult;
@@ -75,11 +77,11 @@ const runServer = async function(sites, typeRun, typeSites) {
 
         let scanIdVirusTotal = await VirusTotal.scanVirusTotal(nodeUrl.href);
 
-        for (const device of deviceSettings.DEVICES) {
-            additionalСhecks++;
-            options.device = device;
-            testResult.push(await handlerSwitch.switcher(options));
-        }
+        // for (const device of deviceSettings.DEVICES) {
+        //     additionalСhecks++;
+        //     options.device = device;
+        //     testResult.push(await handlerSwitch.switcher(options));
+        // }
 
         virusTotal = await VirusTotal.getReportVirusTotal(scanIdVirusTotal);
 
