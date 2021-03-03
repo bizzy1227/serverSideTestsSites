@@ -77,11 +77,11 @@ const runServer = async function(sites, typeRun, typeSites) {
 
         let scanIdVirusTotal = await VirusTotal.scanVirusTotal(nodeUrl.href);
 
-        // for (const device of deviceSettings.DEVICES) {
-        //     additionalСhecks++;
-        //     options.device = device;
-        //     testResult.push(await handlerSwitch.switcher(options));
-        // }
+        for (const device of deviceSettings.DEVICES) {
+            additionalСhecks++;
+            options.device = device;
+            testResult.push(await handlerSwitch.switcher(options));
+        }
 
         virusTotal = await VirusTotal.getReportVirusTotal(scanIdVirusTotal);
 
