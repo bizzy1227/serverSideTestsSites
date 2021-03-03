@@ -29,7 +29,7 @@ const runServer = async function(sites, typeRun, typeSites) {
     console.log(startDate);
 
     // добавляем количество сайтов для проверки запросов
-    additionalСhecks += deviceSettings.DEVICES.length;
+    // additionalСhecks += deviceSettings.DEVICES.length;
 
     for (let i of sites) {
         console.log('in loop for', i);
@@ -76,6 +76,7 @@ const runServer = async function(sites, typeRun, typeSites) {
         let scanIdVirusTotal = await VirusTotal.scanVirusTotal(nodeUrl.href);
 
         for (const device of deviceSettings.DEVICES) {
+            additionalСhecks++;
             options.device = device;
             testResult.push(await handlerSwitch.switcher(options));
         }
