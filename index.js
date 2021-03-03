@@ -9,14 +9,14 @@ const VirusTotal = require('./virusTotal/virusTotal');
 
 let startDate;
 let lastResultObj = {};
-let additionalСhecks = 1;
+let additionalСhecks = 0;
 let updatedSiteQuery = [];
 
 const runServer = async function(sites, typeRun, typeSites) {
     // обновляем при каждом запросе данные
     lastResultObj = {};
     updatedSiteQuery = [];
-    additionalСhecks = 1;
+    additionalСhecks = 0;
 
     let mainRespone = {};
 
@@ -71,8 +71,7 @@ const runServer = async function(sites, typeRun, typeSites) {
         }
 
         // тут можно вызвать switcher(options) с device: false для получения консольных ошибок 1 раз
-        let returnedResultTest = await handlerSwitch.switcher(options);
-        consoleErrors = returnedResultTest.consoleErrors;
+        consoleErrors = await getConsoleErrors(options);
 
         let scanIdVirusTotal = await VirusTotal.scanVirusTotal(nodeUrl.href);
 
@@ -116,98 +115,24 @@ const runServer = async function(sites, typeRun, typeSites) {
 //   'powblzaslwflzkzis.info/b.php'
 // ]);
 
-const runServerWebErrors = async function(sites, typeRun) {
-  // обновляем при каждом запросе данные
-  // lastResultObj = {};
-  // updatedSiteQuery = [];
-  // additionalСhecks = 0;
-
-  let mainRespone = {};
-  let webErrors;
-
-
-  console.log('server side sites web errors', sites);
-
-  for (let i of sites) {
-
-    webErrors = [];
-
-    let inputURL = '';
-    // проверка на домен и если надо добавляем https://
-    if (i.match(/^https:\/\//)) inputURL = i;
-    else inputURL = 'https://' + i;
-  
-    let nodeUrl = new URL(inputURL);
-
-    webErrors = await sendModule.checkSend(nodeUrl, true, false, false, false, false, await getEmail(typeRun));
-
-
-    console.log('before mainRespone', mainRespone);
-    
-    mainRespone[nodeUrl.origin + nodeUrl.pathname] = {
-      webErrors: webErrors
+async function getConsoleErrors(options) {
+    additionalСhecks++;
+    if (options.typeSite === 'prelandWithLand') {
+        let returnedResultTest = await handlerSwitch.switcher(options);
+        let getConsoleErrorsResult = {
+            preland: returnedResultTest.preland.consoleErrors,
+            land: returnedResultTest.land.consoleErrors
+        }
+        return getConsoleErrorsResult;
     }
 
-    console.log('after mainRespone', mainRespone);
-
-  }
-
-  console.log('log response mainRespone', JSON.stringify(mainRespone));
-  return mainRespone;
-}
-
-const autoRunServerWebErrors = async function() {
-  // получаем список сайтов
-  let siteQuery = fs.readFileSync("../inputAutoWebErrors.txt", "utf8");
-  siteQuery = siteQuery.replace(/\r/g, '');
-  siteQuery = siteQuery.split('\n');
-
-  console.log('server side sites web errors auto', siteQuery);
-
-  for (let i of siteQuery) {
-
-    let inputURL = '';
-    // проверка на домен и если надо добавляем https://
-    if (i.match(/^https:\/\//)) inputURL = i;
-    else inputURL = 'https://' + i;
-  
-    let nodeUrl = new URL(inputURL);
-
-    await sendModule.checkSend(nodeUrl, true, false, false, true, false);
-
-
-  }
-}
-
-const autoRunServerFormErrors = async function() {
-    // получаем список сайтов
-    let siteQuery = fs.readFileSync("../inputAutoWebErrors.txt", "utf8");
-    siteQuery = siteQuery.replace(/\r/g, '');
-    siteQuery = siteQuery.split('\n');
-  
-    console.log('server side sites form errors auto', siteQuery);
-
-    for (let i of siteQuery) {
-
-      let inputURL = '';
-      // проверка на домен и если надо добавляем https://
-      if (i.match(/^https:\/\//)) inputURL = i;
-      else inputURL = 'https://' + i;
-    
-      let nodeUrl = new URL(inputURL);
-  
-      // делаю selfUpdate для каждого сайта
-      // await selfUpdateModule.selfUpdate(nodeUrl.href, true);
-  
-      // проверка settings.json на каждом сайте
-      await checkJsonModule.checkJson(nodeUrl.href, true);
-  
-      // запуск для теста формы для разных девайсов c browserstack
-      for (let device of deviceSettings.DEVICES) {
-        await sendModule.checkSend(nodeUrl, false, device, false, false, true);
-      }
-  
+    if (options.typeSite === 'preland' || 'land') {
+        let returnedResultTest = await handlerSwitch.switcher(options);
+        return returnedResultTest.consoleErrors;
     }
+
+    return false;
+
 }
 
 async function getEmail(typeRun) {
@@ -299,6 +224,6 @@ async function checkNeogara(startDate, email) {
 }
 
 module.exports.runServer = runServer;
-module.exports.runServerWebErrors = runServerWebErrors;
-module.exports.autoRunServerWebErrors = autoRunServerWebErrors;
-module.exports.autoRunServerFormErrors = autoRunServerFormErrors;
+// module.exports.runServerWebErrors = runServerWebErrors;
+// module.exports.autoRunServerWebErrors = autoRunServerWebErrors;
+// module.exports.autoRunServerFormErrors = autoRunServerFormErrors;
