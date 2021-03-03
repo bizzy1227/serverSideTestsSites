@@ -76,10 +76,12 @@ const clickLink = async function(driver, inputURL) {
             else continue;
         };        
         let href = await link.getAttribute('href');
-        let testNodeUrl = new URL(href);
-        if (testNodeUrl.protocol === 'chrome-error:') {
-            prelandOutsideResult.error = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), result: {error:  href, capabilities: capabilities, URL: inputURL.href} };
-            return prelandOutsideResult;
+        if (href) {
+            let testNodeUrl = new URL(href);
+            if (testNodeUrl.protocol === 'chrome-error:') {
+                prelandOutsideResult.error = { device: await getDeviceName('device'), browser: await getDeviceName('browser'), result: {error:  href, capabilities: capabilities, URL: inputURL.href} };
+                return prelandOutsideResult;
+            }
         }
     
         await link.click();
