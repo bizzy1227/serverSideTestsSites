@@ -74,12 +74,14 @@ const runServer = async function(sites, typeRun, typeSites) {
         let returnedResultTest = await handlerSwitch.switcher(options);
         consoleErrors = returnedResultTest.consoleErrors;
 
-        virusTotal = await VirusTotal.runVirusTotal(nodeUrl.href);
+        let scanIdVirusTotal = await VirusTotal.scanVirusTotal(nodeUrl.href);
 
         for (const device of deviceSettings.DEVICES) {
             options.device = device;
             testResult.push(await handlerSwitch.switcher(options));
         }
+
+        virusTotal = await VirusTotal.getReportVirusTotal(scanIdVirusTotal);
 
         console.log('testResult after loop', testResult)    
 
