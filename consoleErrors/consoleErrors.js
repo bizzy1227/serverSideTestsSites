@@ -6,13 +6,15 @@ const runConsoleErrors  = async function(inputURL, driver) {
 
     let errorsArr = [];
     let warningsArr = [];
+    let messageErrorsArr = [];
 
     let consoleErrorsResults = {
         URL: false,
         countErrors: {
             errors: false,
             warnings: false
-        }
+        },
+        messageErrors: false
     };
 
     console.log('start: ', await driver.getCurrentUrl());
@@ -31,10 +33,12 @@ const runConsoleErrors  = async function(inputURL, driver) {
                 let obj = new Object(err);
                 
                 if (obj.level.name_ === 'SEVERE') {
-                    errorsArr.push({ level: 'error', message: obj.message, URL: await driver.getCurrentUrl() })
+                    errorsArr.push({ level: 'error', message: obj.message, URL: await driver.getCurrentUrl() });
+                    messageErrorsArr.push({ level: 'error', message: obj.message, URL: await driver.getCurrentUrl() });
                 };
                 if (obj.level.name_ === 'WARNING') {
-                    warningsArr.push({ level: 'warning', message: obj.message, URL: await driver.getCurrentUrl() })
+                    warningsArr.push({ level: 'warning', message: obj.message, URL: await driver.getCurrentUrl() });
+                    messageErrorsArr.push({ level: 'warning', message: obj.message, URL: await driver.getCurrentUrl() });
                 };
             }
         }
@@ -42,6 +46,7 @@ const runConsoleErrors  = async function(inputURL, driver) {
         consoleErrorsResults.URL = inputURL;
         consoleErrorsResults.countErrors.errors = errorsArr.length;
         consoleErrorsResults.countErrors.warnings = warningsArr.length;
+        consoleErrorsResults.messageErrors = messageErrorsArr;
         return consoleErrorsResults;
 
     } catch (error) {
