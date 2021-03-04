@@ -21,7 +21,7 @@ const scanVirusTotal = async function(inputUrl) {
 const getReportVirusTotal = async function(scanId) {
     console.log('in getReportVirusTotal');
 
-    const countRequest = 0;
+    let countRequest = 0;
 
     let virusTotalResult = false;
     let scanDate = false;
