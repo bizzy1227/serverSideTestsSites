@@ -21,11 +21,17 @@ const scanVirusTotal = async function(inputUrl) {
 const getReportVirusTotal = async function(scanId) {
     console.log('in getReportVirusTotal');
 
+    const countRequest = 0;
+
     let virusTotalResult = false;
     let scanDate = false;
 
     while (typeof scanDate !== 'string') {
+        if (countRequest > 5) {
+            return virusTotalResult;
+        }
         console.log('in run while iteration');
+        countRequest++;
         await requestVirus.get('/report', { params: {
             resource: scanId,
             apikey: CONSTS.VIRUS_TOTAL_KEY
