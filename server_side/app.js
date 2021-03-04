@@ -18,7 +18,7 @@ server.setTimeout(720000, () => {
     console.log('after wait 2m');
 });
 // для локальной проверки нужно установить maxConnections = 2
-server.maxConnections = 1;
+// server.maxConnections = 1;
 
 
 app.use(express.urlencoded());
