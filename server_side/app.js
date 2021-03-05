@@ -14,9 +14,7 @@ var server = app.listen(port, (err) => {
     console.log(`server is listening on ${port}`)
 })
 
-server.setTimeout(720000, () => {
-    console.log('after wait 2m');
-});
+server.setTimeout(0);
 // для локальной проверки нужно установить maxConnections = 2
 // server.maxConnections = 1;
 
