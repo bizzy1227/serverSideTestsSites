@@ -3,13 +3,13 @@
       "name"        : "Auto Testing Sites",
       "script"      : "./server_side/auto_app.js",
       "env": {
-        "DISPLAY": ":98"
+        "DISPLAY": ":99"
       }
     },
       {
         "name"        : "Xvfb",
         "interpreter" : "none",
         "script"      : "Xvfb",
-        "args"        : ":98"
+        "args"        : ":99"
       }]
   }
