@@ -101,13 +101,16 @@ const runServer = async function(sites, typeRun, typeSites) {
 
     }
 
-    let neogaraRes = await checkNeogara(startDate, await getEmail(typeRun));
-    if (Object.keys(lastResultObj).length !== 0) {
-        for (let key in lastResultObj) {
-            if (neogaraRes === 'neogara is empty') mainRespone[key].neogaraResults = neogaraRes;
-            else mainRespone[key].neogaraResults = lastResultObj[key];
+    if (typeSites !== 'preland') {
+        let neogaraRes = await checkNeogara(startDate, await getEmail(typeRun));
+        if (Object.keys(lastResultObj).length !== 0) {
+            for (let key in lastResultObj) {
+                if (neogaraRes === 'neogara is empty') mainRespone[key].neogaraResults = neogaraRes;
+                else mainRespone[key].neogaraResults = lastResultObj[key];
+            }
         }
     }
+
 
 
     console.log('log response mainRespone', JSON.stringify(mainRespone));
