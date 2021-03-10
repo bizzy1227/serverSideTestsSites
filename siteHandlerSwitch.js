@@ -7,6 +7,8 @@ const Land = require('./land/land');
 const deviceSettings = require('./devices');
 
 const switcher = async function(optionsSwitcher) {
+    let timeInputInSwitcher = new Date();
+
     console.log('in switcher');
 
     let checkJsonFieldsResult = await checkJsonFields(optionsSwitcher.typeSite, optionsSwitcher.jsonData);
@@ -30,7 +32,7 @@ const switcher = async function(optionsSwitcher) {
             .setChromeOptions(opts)
             .build();
         }
-        console.log('in log after connect BS/build local');
+        console.log('in log after connect BS/build local\ntime to connect BS', (new Date() - timeInputInSwitcher) / 1000, 'seconds');
 
         let options = {
             driver: driver,
