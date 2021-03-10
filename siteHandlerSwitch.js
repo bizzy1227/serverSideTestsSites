@@ -30,6 +30,7 @@ const switcher = async function(optionsSwitcher) {
             .setChromeOptions(opts)
             .build();
         }
+        console.log('in log after connect BS/build local');
 
         let options = {
             driver: driver,
