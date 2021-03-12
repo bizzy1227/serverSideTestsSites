@@ -1,4 +1,5 @@
 const axios = require('axios');
+const https = require('https')
 
 
 
@@ -12,10 +13,6 @@ const checkJsonData = async function(site, typeSite) {
         baseURL: `${site}/settings.json`
     });
 
-    // const requestCloakit = axios.create({
-    //     baseURL: `${site}/settings.json`
-    // });
-
     try {
 
         let siteJson = await requestSiteJson.get().then(res => {return res.data});
@@ -25,7 +22,7 @@ const checkJsonData = async function(site, typeSite) {
         let yandex = await checkField(siteJson, 'yandex');
         console.log('yandex', yandex);
         if (yandex) {
-            // resultCheckJsonData.yandex = await requestYandexMetrika(siteJson.yandex);
+            resultCheckJsonData.yandex = await requestYandexMetrika(siteJson.yandex);
         }
         else {
             resultCheckJsonData.yandex = 'yandex empty';
@@ -47,7 +44,7 @@ const checkJsonData = async function(site, typeSite) {
         console.log('cloakit', cloakit);
 
         if (cloakit) {
-            resultCheckJsonData.yandex = await requestCloakit(siteJson.cloakit);
+            resultCheckJsonData.cloakit = await requestCloakit(siteJson.cloakit);
         }
         else {
             resultCheckJsonData.cloakit = 'cloakit empty';
@@ -104,23 +101,44 @@ async function requestYandexMetrika(yandex) {
 
 async function requestCloakit(cloakit) {
     console.log(+cloakit);
+    let allResultsRequestCloakit = null;
     let resultRequestCloakit = null;
 
     let requestCloakit = axios.create({
         baseURL: 'https://panel.cloakit.space/search',
         headers: {
-            "Cookie": '_ym_d=1610714955; _ym_uid=16107149555976594; _sd_demo_page_promo=true; _ym_isad=1; CLK_LOGED=1; CLK_USER=307; _sd_cs_visible=true; _ym_visorc=w; CLK_USER_HASH=91bef2ff1f1ca10f761ebc3052ed74eb',
-            "rejectUnauthorized": false
-        }
+            "Cookie": '_ym_d=1610714955; _ym_uid=16107149555976594; _sd_demo_page_promo=true; _ym_isad=1; CLK_LOGED=1; CLK_USER=307; _sd_cs_visible=true; _ym_visorc=w; CLK_USER_HASH=91bef2ff1f1ca10f761ebc3052ed74eb'
+        },
+        httpsAgent: new https.Agent({  
+            rejectUnauthorized: false
+        })
     });
 
-    resultRequestCloakit = await requestCloakit.get()
+    allResultsRequestCloakit = await requestCloakit.post()
     .then(res => {
         return res.data
     })
+    .catch(error => {
+        console.log('error', error);
+        return false;
+    });
 
-    console.log('resultRequestCloakit', resultRequestCloakit);
-
+    if (allResultsRequestCloakit) {
+        let findId = new RegExp(`id ${+cloakit} `, 'gm');
+        let matchData = allResultsRequestCloakit.match(findId);
+        if (matchData) {
+            resultRequestCloakit = true;
+        }
+        else {
+            console.log('cloakit not found');
+            resultRequestCloakit = false;
+        }
+        console.log(matchData);
+    }
+    else {
+        console.log('no response from cloakit');
+        resultRequestCloakit = false;
+    }
 
     if (resultRequestCloakit) return true;
     else return false;
