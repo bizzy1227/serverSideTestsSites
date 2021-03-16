@@ -5,6 +5,7 @@ const https = require('https')
 
 const checkJsonData = async function(site, typeSite) {
     let resultCheckJsonData = {
+        json: null,
         yandex: null,
         cloakit: null
     };
@@ -17,7 +18,12 @@ const checkJsonData = async function(site, typeSite) {
 
         let siteJson = await requestSiteJson.get().then(res => {return res.data});
         console.log('siteJson', siteJson);
-        if (!siteJson) return 'no settings.json';
+        
+        resultCheckJsonData.json = siteJson;
+        if (!siteJson) {
+           resultCheckJsonData.json = 'no settings.json';
+           return resultCheckJsonData;
+        } 
 
         let yandex = await checkField(siteJson, 'yandex');
         console.log('yandex', yandex);
@@ -25,7 +31,7 @@ const checkJsonData = async function(site, typeSite) {
             resultCheckJsonData.yandex = await requestYandexMetrika(siteJson.yandex);
         }
         else {
-            resultCheckJsonData.yandex = 'yandex empty';
+            resultCheckJsonData.yandex = 'field yandex empty';
         }
 
         if (typeSite === 'preland') {
@@ -36,7 +42,7 @@ const checkJsonData = async function(site, typeSite) {
                 resultCheckJsonData['relink'] = relink;
             }
             else {
-                resultCheckJsonData['relink'] = 'relink empty';
+                resultCheckJsonData['relink'] = 'field relink empty';
             } 
         }
 
@@ -47,7 +53,7 @@ const checkJsonData = async function(site, typeSite) {
             resultCheckJsonData.cloakit = await requestCloakit(siteJson.cloakit);
         }
         else {
-            resultCheckJsonData.cloakit = 'cloakit empty';
+            resultCheckJsonData.cloakit = 'field cloakit empty';
         }
         
 
@@ -55,8 +61,9 @@ const checkJsonData = async function(site, typeSite) {
         console.log(error);
     }
 
-
     console.log('resultCheckJsonData', resultCheckJsonData);
+
+    return resultCheckJsonData;
 }
 
 async function checkField(json, nameField) {
@@ -95,7 +102,7 @@ async function requestYandexMetrika(yandex) {
     }
 
     if (resultRequestYandexMetrika) return true;
-    else return false;
+    else return 'no metric in yandex';
 
 }
 
@@ -115,13 +122,13 @@ async function requestCloakit(cloakit) {
     });
 
     allResultsRequestCloakit = await requestCloakit.post()
-    .then(res => {
-        return res.data
-    })
-    .catch(error => {
-        console.log('error', error);
-        return false;
-    });
+        .then(res => {
+            return res.data
+        })
+        .catch(error => {
+            console.log('error', error);
+            return false;
+        });
 
     if (allResultsRequestCloakit) {
         let findId = new RegExp(`id ${+cloakit} `, 'gm');
@@ -131,17 +138,16 @@ async function requestCloakit(cloakit) {
         }
         else {
             console.log('cloakit not found');
-            resultRequestCloakit = false;
+            resultRequestCloakit = 'cloakit not found';
         }
-        console.log(matchData);
+        console.log('matchData', matchData);
     }
     else {
-        console.log('no response from cloakit');
-        resultRequestCloakit = false;
+        console.log('failed request to cloakit');
+        resultRequestCloakit = 'failed request to cloakit';
     }
 
-    if (resultRequestCloakit) return true;
-    else return false;
+    return resultRequestCloakit;
 
 }
 
