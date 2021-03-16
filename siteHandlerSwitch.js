@@ -22,15 +22,19 @@ const switcher = async function(optionsSwitcher) {
     try {
         
         if (optionsSwitcher.device) {
+            console.log('before BS build');
             driver = await new Builder().usingServer('http://hub-cloud.browserstack.com/wd/hub')
             .withCapabilities(optionsSwitcher.device).setChromeOptions(new chrome.Options().addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--headless']))
             .build();
+            console.log('after BS build');
         } else {
+            console.log('before local build');
             opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--disable-gpu', '--no-sandbox'])
             .addExtensions(['./extension_4_29_2_0.crx'])
             driver = await new Builder().forBrowser('chrome')
             .setChromeOptions(opts)
             .build();
+            console.log('after local build');
         }
         console.log('in log after connect BS/build local\ntime to connect BS', (new Date() - timeInputInSwitcher) / 1000, 'seconds');
 
