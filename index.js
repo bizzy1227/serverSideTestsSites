@@ -7,12 +7,12 @@ const handlerSwitch = require('./siteHandlerSwitch');
 const SaveJson = require('./save_json/saveJson');
 const CheckJsonData = require('./check_json_data/checkJsonData');
 const VirusTotal = require('./virusTotal/virusTotal');
+const CheckAvailability = require('./check_availability/checkAvailability');
 
 let startDate;
 let lastResultObj = {};
 let additionalСhecks = 0;
 let updatedSiteQuery = [];
-let exitSiteHandle = false;
 
 const runServer = async function(sites, typeRun, typeSites) {
     // обновляем при каждом запросе данные
@@ -44,7 +44,8 @@ const runServer = async function(sites, typeRun, typeSites) {
         let lighthouseResult;
         let virusTotal = false;
         let consoleErrors = false;
-        exitSiteHandle = false;
+        let exitSiteHandle = false;
+        let checkAvailability = false;
 
 
         let inputURL = '';
@@ -94,6 +95,8 @@ const runServer = async function(sites, typeRun, typeSites) {
 
         let scanIdVirusTotal = await VirusTotal.scanVirusTotal(nodeUrl.href);
 
+        let idCheckAvailability = await CheckAvailability.callToCheckAvailability(nodeUrl.href);
+        
         for (const device of deviceSettings.DEVICES) {
             additionalСhecks++;
             options.device = device;
@@ -101,6 +104,8 @@ const runServer = async function(sites, typeRun, typeSites) {
         }
 
         virusTotal = await VirusTotal.getReportVirusTotal(scanIdVirusTotal);
+
+        checkAvailability = await CheckAvailability.getReportCheckAvailability(idCheckAvailability);
 
         console.log('testResult after loop', testResult)    
 
@@ -112,6 +117,7 @@ const runServer = async function(sites, typeRun, typeSites) {
             testResult: testResult,
             lighthouseResult: lighthouseResult,
             virusTotal: virusTotal,
+            checkAvailability: checkAvailability,
             consoleErrors: consoleErrors,
             neogaraResults: true
         }
