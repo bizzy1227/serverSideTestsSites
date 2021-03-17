@@ -10,14 +10,17 @@ const checkJsonData = async function(site, typeSite) {
         cloakit: null
     };
 
+    
+    let nodeUrl = new URL(site);
+
     const requestSiteJson = axios.create({
-        baseURL: `${site}/settings.json`
+        baseURL: `${nodeUrl.origin}/settings.json`
     });
 
     try {
 
         let siteJson = await requestSiteJson.get().then(res => {return res.data});
-        console.log('siteJson', siteJson);
+        // console.log('siteJson', siteJson);
         
         resultCheckJsonData.json = siteJson;
         if (!siteJson) {
@@ -26,7 +29,7 @@ const checkJsonData = async function(site, typeSite) {
         } 
 
         let yandex = await checkField(siteJson, 'yandex');
-        console.log('yandex', yandex);
+        // console.log('yandex', yandex);
         if (yandex) {
             resultCheckJsonData.yandex = await requestYandexMetrika(siteJson.yandex);
         }
@@ -37,7 +40,7 @@ const checkJsonData = async function(site, typeSite) {
         if (typeSite === 'preland') {
             resultCheckJsonData['relink'] = null;
             let relink = await checkField(siteJson, 'relink');
-            console.log('relink', relink);
+            // console.log('relink', relink);
             if (relink) {
                 resultCheckJsonData['relink'] = relink;
             }
@@ -47,12 +50,15 @@ const checkJsonData = async function(site, typeSite) {
         }
 
         let cloakit = await checkField(siteJson, 'cloakit');
-        console.log('cloakit', cloakit);
+        // console.log('cloakit', cloakit);
 
-        if (cloakit) {
+        if (cloakit === true) {
             resultCheckJsonData.cloakit = await requestCloakit(siteJson.cloakit);
         }
-        else {
+        else if (cloakit === null) {
+            resultCheckJsonData.cloakit = true;
+        }
+        else if (cloakit === false) {
             resultCheckJsonData.cloakit = 'field cloakit empty';
         }
         
@@ -61,18 +67,19 @@ const checkJsonData = async function(site, typeSite) {
         console.log(error);
     }
 
-    console.log('resultCheckJsonData', resultCheckJsonData);
+    // console.log('resultCheckJsonData', resultCheckJsonData);
 
     return resultCheckJsonData;
 }
 
 async function checkField(json, nameField) {
+    if (json[nameField] === null) return null;
     if (!json[nameField]) return false;
     return true;
 }
 
 async function requestYandexMetrika(yandex) {
-    console.log(+yandex);
+    // console.log(+yandex);
     let statusCode = 0;
     let countTokens = 0;
     let resultRequestYandexMetrika = null;
@@ -107,7 +114,7 @@ async function requestYandexMetrika(yandex) {
 }
 
 async function requestCloakit(cloakit) {
-    console.log(+cloakit);
+    // console.log(+cloakit);
     let allResultsRequestCloakit = null;
     let resultRequestCloakit = null;
 
@@ -151,4 +158,6 @@ async function requestCloakit(cloakit) {
 
 }
 
-checkJsonData('https://fawjimxqsgwbjyp.info/', 'preland');
+// checkJsonData('https://fawjimxqsgwbjyp.info/', 'preland');
+
+module.exports.checkJsonData = checkJsonData;

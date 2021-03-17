@@ -5,12 +5,14 @@ const parseNeogara = require('./parsers/neogaraParser');
 const CONSTS = require('./consts');
 const handlerSwitch = require('./siteHandlerSwitch');
 const SaveJson = require('./save_json/saveJson');
+const CheckJsonData = require('./check_json_data/checkJsonData');
 const VirusTotal = require('./virusTotal/virusTotal');
 
 let startDate;
 let lastResultObj = {};
 let additionalСhecks = 0;
 let updatedSiteQuery = [];
+let exitSiteHandle = false;
 
 const runServer = async function(sites, typeRun, typeSites) {
     // обновляем при каждом запросе данные
@@ -42,6 +44,7 @@ const runServer = async function(sites, typeRun, typeSites) {
         let lighthouseResult;
         let virusTotal = false;
         let consoleErrors = false;
+        exitSiteHandle = false;
 
 
         let inputURL = '';
@@ -55,7 +58,7 @@ const runServer = async function(sites, typeRun, typeSites) {
 
         // если тест сфейлился на получении settings.json
         try {
-            returnedJsonData = await SaveJson.saveJson(nodeUrl.href);
+            returnedJsonData = await CheckJsonData.checkJsonData(nodeUrl.href, typeSites);
         } catch (error) {
             console.log(error)
             mainRespone[nodeUrl.href] = {
@@ -64,11 +67,25 @@ const runServer = async function(sites, typeRun, typeSites) {
             continue;
         }
 
+        console.log('returnedJsonData', returnedJsonData);
+
+        // если хоть одно поле неправильное - сохраняем результат и переходим к другому сайту
+        for (key in returnedJsonData) {
+            // console.log('typeof returnedJsonData[key]', typeof returnedJsonData[key]);
+            if (typeof returnedJsonData[key] !== 'object' && returnedJsonData[key] !== true ) {
+                mainRespone[nodeUrl.href] = {
+                    testResult: returnedJsonData
+                };
+                exitSiteHandle = true;
+            }
+        }
+        if (exitSiteHandle) continue;
+
         let options = {
             inputURL: nodeUrl.href,
             email: await getEmail(typeRun),
             device: false,
-            jsonData: returnedJsonData.jsonData,
+            jsonData: returnedJsonData.json,
             typeSite: typeSites
         }
 
