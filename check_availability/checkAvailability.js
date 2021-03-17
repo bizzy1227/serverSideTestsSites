@@ -50,7 +50,7 @@ const getReportCheckAvailability = async function(id) {
         let failedNodes = [];
         for (key in checkAvailabilityResult) {
             countAllNodes++;
-            if (checkAvailabilityResult[key][0][3] === '200') {
+            if (checkAvailabilityResult[key][0][3] == '200') {
                 countPassedNodes++;
             }
             else {
