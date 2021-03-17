@@ -103,8 +103,8 @@ async function requestYandexMetrika(yandex) {
                 return res.data
             })
             .catch(error => {
-                statusCode = error.response.status;
-                console.log('error.response.status', error.response.status);
+                // statusCode = error.response.status;
+                console.log('error.response.status', error);
             });
     }
 
