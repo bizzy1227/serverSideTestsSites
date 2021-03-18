@@ -49,19 +49,20 @@ const checkJsonData = async function(site, typeSite) {
             } 
         }
 
-        let cloakit = await checkField(siteJson, 'cloakit');
-        // console.log('cloakit', cloakit);
-
-        if (cloakit === true) {
-            resultCheckJsonData.cloakit = await requestCloakit(siteJson.cloakit);
+        if (siteJson.cloakit) {
+            let cloakit = await checkField(siteJson, 'cloakit');
+            // console.log('cloakit', cloakit);
+    
+            if (cloakit === true) {
+                resultCheckJsonData.cloakit = await requestCloakit(siteJson.cloakit);
+            }
+            else if (cloakit === null) {
+                resultCheckJsonData.cloakit = true;
+            }
+            else if (cloakit === false) {
+                resultCheckJsonData.cloakit = 'field cloakit empty';
+            }
         }
-        else if (cloakit === null) {
-            resultCheckJsonData.cloakit = true;
-        }
-        else if (cloakit === false) {
-            resultCheckJsonData.cloakit = 'field cloakit empty';
-        }
-        
 
     } catch (error) {
         console.log(error);
