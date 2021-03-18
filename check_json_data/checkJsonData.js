@@ -73,7 +73,7 @@ const checkJsonData = async function(site, typeSite) {
 }
 
 async function checkField(json, nameField) {
-    if (json[nameField] === null) return null;
+    if (json[nameField] === null || json[nameField] === '') return null;
     if (!json[nameField]) return false;
     return true;
 }
