@@ -119,7 +119,7 @@ const runServer = async function(sites, typeRun, typeSites) {
             virusTotal: virusTotal,
             checkAvailability: checkAvailability,
             consoleErrors: consoleErrors,
-            neogaraResults: null
+            neogaraResults: (typeSites === 'preland') ? null : true
         }
 
     }
