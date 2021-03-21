@@ -13,7 +13,6 @@ const callToCheckAvailability = async function(inputUrl) {
         .then(res => {
             checkAvailabilityResult = res.data.request_id;
         });
-
     return checkAvailabilityResult;
 }
 
@@ -45,27 +44,29 @@ const getReportCheckAvailability = async function(id) {
     }
 
     if (checkAvailabilityResult) {
-        try {
-            let countAllNodes = 0;
-            let countPassedNodes = 0;
-            let failedNodes = [];
-            for (key in checkAvailabilityResult) {
-                countAllNodes++;
+        console.log('checkAvailabilityResult', checkAvailabilityResult);
+        let countAllNodes = 0;
+        let countPassedNodes = 0;
+        let failedNodes = [];
+        for (key in checkAvailabilityResult) {
+            countAllNodes++;
+            try {
                 if (checkAvailabilityResult[key][0][3] && checkAvailabilityResult[key][0][3] == '200') {
                     countPassedNodes++;
                 }
                 else {
-                    failedNodes.push(checkAvailabilityResult[key][0]);
+                    failedNodes.push({[key]: checkAvailabilityResult[key]});
                 }
+            } catch (error) {
+                console.log('1', key, checkAvailabilityResult[key]);
+                failedNodes.push({[key]: checkAvailabilityResult[key]});
             }
-            checkAvailabilityResult = {
-                counts: `${countPassedNodes}/${countAllNodes}`,
-                failed: failedNodes
-            };
-        } catch (error) {
-            console.log(error);
-            checkAvailabilityResult = 'parse respone failed';
+
         }
+        checkAvailabilityResult = {
+            counts: `${countPassedNodes}/${countAllNodes}`,
+            failed: failedNodes
+        };
 
     }
 
