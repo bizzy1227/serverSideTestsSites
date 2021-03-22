@@ -120,7 +120,7 @@ const runServer = async function(sites, typeRun, typeSites) {
             checkAvailability: checkAvailability,
             consoleErrors: consoleErrors,
             neogaraResults: (typeSites === 'preland') ? null : true,
-            passed: await getMainResult(testResult, typeSites)
+            passed: false
         }
 
     }
@@ -135,6 +135,10 @@ const runServer = async function(sites, typeRun, typeSites) {
         }
     }
 
+    for (key in mainRespone) {
+        mainRespone[key].passed = await getMainResult(mainRespone[key], typeSites);
+    }
+ 
 
 
     console.log('log response mainRespone', JSON.stringify(mainRespone));
@@ -145,10 +149,10 @@ const runServer = async function(sites, typeRun, typeSites) {
 //   'powblzaslwflzkzis.info/b.php'
 // ]);
 
-async function getMainResult(testResult, typeSites) {
+async function getMainResult(responseData, typeSites) {
     if (typeSites === 'preland') {
         let result = false;
-        for (let device of testResult) {
+        for (let device of responseData.testResult) {
             if (device.relink === true && device.yandex === true) {
                 result = true;
             } 
@@ -161,8 +165,8 @@ async function getMainResult(testResult, typeSites) {
     }
     else if (typeSites === 'land') {
         let result = false;
-        for (let device of testResult) {
-            if (device.thanks === true) {
+        for (let device of responseData.testResult) {
+            if (device.thanks === true && responseData.neogaraResults === true) {
                 result = true;
             } 
             else {
@@ -174,7 +178,7 @@ async function getMainResult(testResult, typeSites) {
     }
     else if(typeSites === 'prelandWithLand') {
         let result = false;
-        for (let device of testResult) {
+        for (let device of responseData.testResult) {
             if (device.preland.relink === true && device.preland.yandex === true) {
                 result = true;
             } 
@@ -182,7 +186,7 @@ async function getMainResult(testResult, typeSites) {
                 result = false;
                 return result;
             } 
-            if (device.land.thanks === true) {
+            if (device.land.thanks === true && responseData.neogaraResults === true) {
                 result = true;
             } 
             else {
