@@ -1,4 +1,5 @@
 const CheckAvailability = require('../check_availability/checkAvailability');
+const axios = require('axios');
 
 
 const requestSites = [
@@ -57,10 +58,29 @@ async function asyncCallToresult(mapIds) {
 }
 
 async function getSites() {
-    // call to CRM api
+    let result;
+    const requestSites = axios.create({
+        headers: {
+            "accept": "application/json"
+        }
+    });
+
+    await requestSites.get(`http://138.68.94.189/api/sites_list`)
+    .then(res => {
+        console.log('res.data', res.data);
+        result = res.data;
+    });
+    return result;
 }
 
 (async () => {
+    let crmData = await getSites();
+    let crsDomains = crmData.map(item => {
+        return item.domain;
+    });
+    crsDomains = buitySites(crsDomains);
+    // console.log('crsDomains', crsDomains);
+    
     let mapWithCheckId;
     let mapWithCheckResult;
     // console.log('mapWithCheckId', mapWithCheckId);
