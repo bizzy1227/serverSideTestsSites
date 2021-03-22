@@ -119,7 +119,8 @@ const runServer = async function(sites, typeRun, typeSites) {
             virusTotal: virusTotal,
             checkAvailability: checkAvailability,
             consoleErrors: consoleErrors,
-            neogaraResults: (typeSites === 'preland') ? null : true
+            neogaraResults: (typeSites === 'preland') ? null : true,
+            passed: await getMainResult(testResult, typeSites)
         }
 
     }
@@ -143,6 +144,55 @@ const runServer = async function(sites, typeRun, typeSites) {
 // runServer([
 //   'powblzaslwflzkzis.info/b.php'
 // ]);
+
+async function getMainResult(testResult, typeSites) {
+    if (typeSites === 'preland') {
+        let result = false;
+        for (let device of testResult) {
+            if (device.relink === true && device.yandex === true) {
+                result = true;
+            } 
+            else {
+                result = false;
+                return result;
+            } 
+        }
+        return result;
+    }
+    else if (typeSites === 'land') {
+        let result = false;
+        for (let device of testResult) {
+            if (device.thanks === true) {
+                result = true;
+            } 
+            else {
+                result = false;
+                return result;
+            }
+        }
+        return result;
+    }
+    else if(typeSites === 'prelandWithLand') {
+        let result = false;
+        for (let device of testResult) {
+            if (device.preland.relink === true && device.preland.yandex === true) {
+                result = true;
+            } 
+            else {
+                result = false;
+                return result;
+            } 
+            if (device.land.thanks === true) {
+                result = true;
+            } 
+            else {
+                result = false;
+                return result;
+            } 
+        }
+        return result;
+    }
+}
 
 async function getConsoleErrors(options) {
     additionalСhecks++;
