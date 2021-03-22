@@ -40,11 +40,9 @@ async function asyncCallToresult(mapIds) {
     let checkResults = new Map();
     const promises = [];
     mapIds.forEach((value, key) => {
-        // console.log('element', key, value);
         promises.push(CheckAvailability.getReportCheckAvailability(value));
     });
     const result = await Promise.all(promises);
-    // console.log('res 2', result);
     let index = 0;
     mapIds.forEach((value, key) => {
         checkResults.set(key, result[index]);
@@ -53,13 +51,16 @@ async function asyncCallToresult(mapIds) {
     return checkResults; 
 }
 
+async function getSites() {
+    // call to CRM api
+}
 
 (async () => {
     let mapWithCheckId;
     let mapWithCheckResult;
     // console.log('mapWithCheckId', mapWithCheckId);
     mapWithCheckId = await asyncCallToCheck(requestSites);
-    // sleep(20000);
+    sleep(20000);
     mapWithCheckResult = await asyncCallToresult(mapWithCheckId);
     console.log('mapWithCheckResult', mapWithCheckResult);
 })();
@@ -68,16 +69,4 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-
-
-// async function someFunc1(){}
-// async function someFunc2(){}
-// async function someFunc3(){}
-
-// const promises = []
-// promises.push(someFunc1())
-// promises.push(someFunc2())
-// promises.push(someFunc3())
-
-// const result = await Promisses.All(promises)
 
