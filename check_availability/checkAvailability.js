@@ -13,6 +13,7 @@ const callToCheckAvailability = async function(inputUrl) {
         .then(res => {
             checkAvailabilityResult = res.data.request_id;
         });
+
     return checkAvailabilityResult;
 }
 
@@ -51,14 +52,19 @@ const getReportCheckAvailability = async function(id) {
         for (key in checkAvailabilityResult) {
             countAllNodes++;
             try {
-                if (checkAvailabilityResult[key][0][3] && checkAvailabilityResult[key][0][3] == '200') {
+                if (checkAvailabilityResult[key][0] === null) {
+                    console.log('check-host error side: No route to host');
+                    countAllNodes--;
+                    continue;
+                }
+                else if (checkAvailabilityResult[key][0][3] && checkAvailabilityResult[key][0][3] == '200') {
                     countPassedNodes++;
                 }
                 else {
                     failedNodes.push({[key]: checkAvailabilityResult[key]});
                 }
             } catch (error) {
-                console.log('1', key, checkAvailabilityResult[key]);
+                // console.log('1', key, checkAvailabilityResult[key]);
                 failedNodes.push({[key]: checkAvailabilityResult[key]});
             }
 
@@ -69,7 +75,6 @@ const getReportCheckAvailability = async function(id) {
         };
 
     }
-
     return checkAvailabilityResult;
 }
 
