@@ -4,9 +4,14 @@ const CheckAvailability = require('../check_availability/checkAvailability');
 const requestSites = [
     "adgcadloxode.info",
     "adgcdoxode.info",
-    "adgncdlodhde.info"
+    "adgncdlodhde.info",
+    "biiqbuilhhpaswdkwre.info",
+    "bizdyslkdutohyiyere.info",
+    "bifgdynnewftbyfuerre.info",
+    "gabfheohoedaqghst.info",
+    "gakhtbfsxjmnkjst.info",
+    "bastcoskatpl.info"
 ];
-
 
 async function buitySites(sites) {
     let buitySites = [];
@@ -33,7 +38,7 @@ async function asyncCallToCheck(sites) {
     for (let [index, site] of bSites.entries()) {
         checkIds.set(site, result[index]);
     }
-    return checkIds; 
+    return checkIds;
 }
 
 async function asyncCallToresult(mapIds) {
@@ -60,7 +65,7 @@ async function getSites() {
     let mapWithCheckResult;
     // console.log('mapWithCheckId', mapWithCheckId);
     mapWithCheckId = await asyncCallToCheck(requestSites);
-    sleep(20000);
+    await sleep(30000);
     mapWithCheckResult = await asyncCallToresult(mapWithCheckId);
     console.log('mapWithCheckResult', mapWithCheckResult);
 })();
