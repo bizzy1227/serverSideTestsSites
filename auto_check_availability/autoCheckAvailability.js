@@ -32,7 +32,7 @@ async function asyncCallToCheck(sites) {
     let bSites = await buitySites(sites);
     const promises = [];
     for (let site of bSites) {
-        console.log('1', site);
+        // console.log('1', site);
         promises.push(CheckAvailability.callToCheckAvailability(site));
     }
     const result = await Promise.all(promises);
@@ -42,8 +42,8 @@ async function asyncCallToCheck(sites) {
     return checkIds;
 }
 
-async function asyncCallToresult(mapIds) {
-    let checkResults = new Map();
+async function asyncCallToResult(mapIds) {
+    let checkResults = [];
     const promises = [];
     mapIds.forEach((value, key) => {
         promises.push(CheckAvailability.getReportCheckAvailability(value));
@@ -51,10 +51,10 @@ async function asyncCallToresult(mapIds) {
     const result = await Promise.all(promises);
     let index = 0;
     mapIds.forEach((value, key) => {
-        checkResults.set(key, result[index]);
+        checkResults.push({ node: key, result: result[index]} );
         index++;
     });
-    return checkResults; 
+    return checkResults;
 }
 
 async function getSites() {
@@ -67,28 +67,130 @@ async function getSites() {
 
     await requestSites.get(`http://138.68.94.189/api/sites_list`)
     .then(res => {
-        console.log('res.data', res.data);
+        // console.log('res.data', res.data);
         result = res.data;
     });
     return result;
 }
 
-(async () => {
+async function main() {
+    let mainResult = [];
     let crmData = await getSites();
+    // console.log('before sort', crmData);
+    crmData = await crmData.sort(compare);
+    crmData = crmData.slice(0, 8);
+    // console.log('after sort', crmData);
+
     let crsDomains = crmData.map(item => {
         return item.domain;
     });
-    crsDomains = buitySites(crsDomains);
-    // console.log('crsDomains', crsDomains);
+    console.log('crsDomains', crsDomains);
+    // throw Error('stop')
     
     let mapWithCheckId;
     let mapWithCheckResult;
     // console.log('mapWithCheckId', mapWithCheckId);
-    mapWithCheckId = await asyncCallToCheck(requestSites);
+    mapWithCheckId = await asyncCallToCheck(crsDomains);
     await sleep(30000);
-    mapWithCheckResult = await asyncCallToresult(mapWithCheckId);
-    console.log('mapWithCheckResult', mapWithCheckResult);
-})();
+    mapWithCheckResult = await asyncCallToResult(mapWithCheckId);
+    console.log('typeof mapWithCheckResult', typeof mapWithCheckResult);
+
+    for (let [index, domain] of crsDomains.entries()) {
+        // console.log('test_3', index, domain);
+        
+        mainResult.push({
+            'domain': domain,
+            'available': evaluationResult(mapWithCheckResult[index].result)
+        })
+    }
+    console.log('mainResult', mainResult);
+    await setResultToCrm(mainResult);
+    console.log('end');
+
+    setTimeout(main, 30000);
+}
+
+main();
+
+
+
+// (async () => {
+//     let mainResult = [];
+//     let crmData = await getSites();
+//     // console.log('before sort', crmData);
+//     crmData = await crmData.sort(compare);
+//     crmData = crmData.slice(0, 8);
+//     // console.log('after sort', crmData);
+
+//     let crsDomains = crmData.map(item => {
+//         return item.domain;
+//     });
+//     console.log('crsDomains', crsDomains);
+//     // throw Error('stop')
+    
+//     let mapWithCheckId;
+//     let mapWithCheckResult;
+//     // console.log('mapWithCheckId', mapWithCheckId);
+//     mapWithCheckId = await asyncCallToCheck(crsDomains);
+//     await sleep(30000);
+//     mapWithCheckResult = await asyncCallToResult(mapWithCheckId);
+//     console.log('typeof mapWithCheckResult', typeof mapWithCheckResult);
+
+//     for (let [index, domain] of crsDomains.entries()) {
+//         // console.log('test_3', index, domain);
+        
+//         mainResult.push({
+//             'domain': domain,
+//             'available': evaluationResult(mapWithCheckResult[index].result)
+//         })
+//     }
+//     console.log('mainResult', mainResult);
+//     await setResultToCrm(mainResult);
+//     console.log('end');
+// })();
+
+async function setResultToCrm(mainResult) {
+    const requestCRM = axios.create({
+        headers: {
+            "accept": "application/json"
+        }
+    });
+    mainResult.forEach(async res => {
+        await requestCRM.post('http://138.68.94.189/api/sites_test/available', res).then(res => {
+            console.log('Response CRM', res.data);
+            console.log('Result returned to CRM');
+        });
+    })
+}
+
+function evaluationResult(inputResult) {
+    let outputResult = true;
+    if (inputResult) {
+        if (inputResult.counts.startsWith('0')) {
+            outputResult = false;
+        }
+        else {
+            if (inputResult.failed.length !== 0) {
+                outputResult = false;
+            }
+        }
+    }
+    else {
+        outputResult = false;
+    }
+    
+    return outputResult;
+}
+
+function compare(a, b) {
+    if ( a.last_check < b.last_check ){
+      return -1;
+    }
+    if ( a.last_check > b.last_check ){
+      return 1;
+    }
+    return 0;
+}
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

@@ -1,28 +1,37 @@
 {
-    "apps" : [{
-      "name"        : "Testing Sites",
-      "script"      : "./server_side/app.js",
-      "env": {
-        "DISPLAY": ":99"
-      }
-    },
-    {
-      "name"        : "Auto Testing Sites",
-      "script"      : "./server_side/auto_app.js",
-      "env": {
-        "DISPLAY": ":98"
-      }
-    },
-    {
-      "name"        : "Xvfb",
-      "interpreter" : "none",
-      "script"      : "Xvfb",
-      "args"        : ":99"
-    },
-    {
-      "name"        : "Xvfb",
-      "interpreter" : "none",
-      "script"      : "Xvfb",
-      "args"        : ":98"
-    }]
-  }
+    "apps" : [
+        {
+            "name"        : "Testing Sites",
+            "script"      : "./server_side/app.js",
+            "env": {
+                "DISPLAY": ":99"
+            }
+        },
+        {
+            "name"        : "Auto Testing Sites",
+            "script"      : "./server_side/auto_app.js",
+            "env": {
+                "DISPLAY": ":98"
+            }
+        },
+        {
+            "name"        : "Website availability",
+            "script"      : "./auto_check_availability/autoCheckAvailability.js",
+            "env": {
+                "DISPLAY": ":98"
+            }
+        },
+        {
+            "name"        : "Xvfb",
+            "interpreter" : "none",
+            "script"      : "Xvfb",
+            "args"        : ":99"
+        },
+        {
+            "name"        : "Xvfb",
+            "interpreter" : "none",
+            "script"      : "Xvfb",
+            "args"        : ":98"
+        }
+    ]
+}
