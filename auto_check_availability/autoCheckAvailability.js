@@ -107,7 +107,7 @@ async function main() {
     await setResultToCrm(mainResult);
     console.log('end');
 
-    setTimeout(main, 30000);
+    setTimeout(main, 600000);
 }
 
 main();
@@ -178,7 +178,7 @@ function evaluationResult(inputResult) {
     else {
         outputResult = false;
     }
-    
+
     return outputResult;
 }
 
