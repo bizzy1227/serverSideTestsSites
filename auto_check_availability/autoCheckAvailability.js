@@ -112,55 +112,22 @@ async function main() {
 
 main();
 
-
-
-// (async () => {
-//     let mainResult = [];
-//     let crmData = await getSites();
-//     // console.log('before sort', crmData);
-//     crmData = await crmData.sort(compare);
-//     crmData = crmData.slice(0, 8);
-//     // console.log('after sort', crmData);
-
-//     let crsDomains = crmData.map(item => {
-//         return item.domain;
-//     });
-//     console.log('crsDomains', crsDomains);
-//     // throw Error('stop')
-    
-//     let mapWithCheckId;
-//     let mapWithCheckResult;
-//     // console.log('mapWithCheckId', mapWithCheckId);
-//     mapWithCheckId = await asyncCallToCheck(crsDomains);
-//     await sleep(30000);
-//     mapWithCheckResult = await asyncCallToResult(mapWithCheckId);
-//     console.log('typeof mapWithCheckResult', typeof mapWithCheckResult);
-
-//     for (let [index, domain] of crsDomains.entries()) {
-//         // console.log('test_3', index, domain);
-        
-//         mainResult.push({
-//             'domain': domain,
-//             'available': evaluationResult(mapWithCheckResult[index].result)
-//         })
-//     }
-//     console.log('mainResult', mainResult);
-//     await setResultToCrm(mainResult);
-//     console.log('end');
-// })();
-
 async function setResultToCrm(mainResult) {
     const requestCRM = axios.create({
         headers: {
             "accept": "application/json"
         }
     });
-    mainResult.forEach(async res => {
+    for (let res of mainResult) {
+        if (res.available === null) {
+            console.log('available === null');
+            continue;
+        }
         await requestCRM.post('http://138.68.94.189/api/sites_test/available', res).then(res => {
             console.log('Response CRM', res.data);
             console.log('Result returned to CRM');
         });
-    })
+    }
 }
 
 function evaluationResult(inputResult) {
@@ -176,7 +143,7 @@ function evaluationResult(inputResult) {
         }
     }
     else {
-        outputResult = false;
+        outputResult = null;
     }
 
     return outputResult;
