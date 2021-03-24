@@ -45,7 +45,7 @@ const getReportCheckAvailability = async function(id) {
     }
 
     if (checkAvailabilityResult) {
-        console.log('checkAvailabilityResult', checkAvailabilityResult);
+        // console.log('checkAvailabilityResult', checkAvailabilityResult);
         let countAllNodes = 0;
         let countPassedNodes = 0;
         let failedNodes = [];
