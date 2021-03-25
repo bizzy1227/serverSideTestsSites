@@ -32,7 +32,7 @@ async function asyncCallToCheck(sites) {
     let bSites = await buitySites(sites);
     const promises = [];
     for (let site of bSites) {
-        // console.log('1', site);
+        console.log('called', site);
         promises.push(CheckAvailability.callToCheckAvailability(site));
     }
     const result = await Promise.all(promises);
@@ -85,7 +85,6 @@ async function main() {
         return item.domain;
     });
     console.log('crsDomains', crsDomains);
-    // throw Error('stop')
     
     let mapWithCheckId;
     let mapWithCheckResult;
@@ -93,7 +92,7 @@ async function main() {
     mapWithCheckId = await asyncCallToCheck(crsDomains);
     await sleep(30000);
     mapWithCheckResult = await asyncCallToResult(mapWithCheckId);
-    console.log('typeof mapWithCheckResult', typeof mapWithCheckResult);
+    console.log('mapWithCheckResult', mapWithCheckResult);
 
     for (let [index, domain] of crsDomains.entries()) {
         // console.log('test_3', index, domain);
@@ -137,7 +136,7 @@ function evaluationResult(inputResult) {
             outputResult = false;
         }
         else {
-            if (inputResult.failed.length !== 0) {
+            if (inputResult.failed.length > 3) {
                 outputResult = false;
             }
         }
