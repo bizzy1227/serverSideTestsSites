@@ -152,48 +152,68 @@ const runServer = async function(sites, typeRun, typeSites) {
 async function getMainResult(responseData, typeSites) {
     if (typeSites === 'preland') {
         let result = false;
-        for (let device of responseData.testResult) {
-            if (device.relink === true && device.yandex === true) {
-                result = true;
-            } 
-            else {
+            try {
+                for (let device of responseData.testResult) {
+                    if (device.relink === true && device.yandex === true) {
+                        result = true;
+                    } 
+                    else {
+                        result = false;
+                        return result;
+                    } 
+                }
+            }
+            catch {
                 result = false;
                 return result;
-            } 
-        }
+            }
         return result;
     }
     else if (typeSites === 'land') {
         let result = false;
-        for (let device of responseData.testResult) {
-            if (device.thanks === true && responseData.neogaraResults === true) {
-                result = true;
-            } 
-            else {
+            try {
+                for (let device of responseData.testResult) {
+                    if (device.thanks === true && responseData.neogaraResults === true) {
+                        result = true;
+                    } 
+                    else {
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+            catch {
                 result = false;
                 return result;
             }
-        }
+
         return result;
     }
     else if(typeSites === 'prelandWithLand') {
         let result = false;
-        for (let device of responseData.testResult) {
-            if (device.preland.relink === true && device.preland.yandex === true) {
-                result = true;
-            } 
-            else {
+            try {
+                for (let device of responseData.testResult) {
+                    if (device.preland.relink === true && device.preland.yandex === true) {
+                        result = true;
+                    } 
+                    else {
+                        result = false;
+                        return result;
+                    } 
+                    if (device.land.thanks === true && responseData.neogaraResults === true) {
+                        result = true;
+                    } 
+                    else {
+                        result = false;
+                        return result;
+                    } 
+                }
+            }
+            catch {
                 result = false;
                 return result;
-            } 
-            if (device.land.thanks === true && responseData.neogaraResults === true) {
-                result = true;
-            } 
-            else {
-                result = false;
-                return result;
-            } 
-        }
+            }
+
         return result;
     }
 }
