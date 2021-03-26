@@ -57,7 +57,7 @@ const getReportCheckAvailability = async function(id) {
                     countAllNodes--;
                     continue;
                 }
-                else if (checkAvailabilityResult[key][0][3] && checkAvailabilityResult[key][0][3] == '200') {
+                else if (checkAvailabilityResult[key][0][3] && (checkAvailabilityResult[key][0][3] == '200' || checkAvailabilityResult[key][0][3] == '301')) {
                     countPassedNodes++;
                 }
                 else {
