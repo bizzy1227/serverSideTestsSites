@@ -10,8 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.20.0",
+    "axios-https-proxy-fix": "^0.17.1",
     "chrome-launcher": "^0.13.4",
     "express": "^4.17.1",
+    "https-proxy-agent": "^5.0.0",
     "lighthouse": "^7.0.0",
     "selenium-webdriver": "^3.6.0",
     "telegraf": "^4.0.3",
