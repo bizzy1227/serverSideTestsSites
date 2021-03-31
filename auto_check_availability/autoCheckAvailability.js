@@ -57,7 +57,7 @@ async function getProxyCheckAvailability(site) {
         await axiosFixed.get(`${site}`)
             .then(function (response) {
                 // let r = JSON.stringify(response.data);
-                console.log(`${site}`, response.status);
+                // console.log(`${site}`, response.status);
                 result.push({ country: proxyItem.country, status: response.status, contentLength: JSON.stringify(response.data).length });
             })
             .catch(function (error) {
