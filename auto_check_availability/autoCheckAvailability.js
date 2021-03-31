@@ -1,4 +1,4 @@
-const CheckAvailability = require('../check_availability/checkAvailability');
+// const CheckAvailability = require('../check_availability/checkAvailability');
 const axios = require('axios');
 
 
@@ -14,6 +14,21 @@ const requestSites = [
     "bastcoskatpl.info"
 ];
 
+const proxys = [
+    {
+        country: 'PL',
+        settings: {
+            host: '45.159.146.97',
+            port: 8000,
+            protocol: 'https',
+            auth: {
+                username: 'md9ZXK',
+                password: 'AvNguA'
+            }
+        }
+    }
+]
+
 async function buitySites(sites) {
     let buitySites = [];
     for (let site of sites) {
@@ -27,31 +42,45 @@ async function buitySites(sites) {
     return buitySites;
 }
 
-async function asyncCallToCheck(sites) {
-    let checkIds = new Map();
-    let bSites = await buitySites(sites);
-    const promises = [];
-    for (let site of bSites) {
-        console.log('called', site);
-        promises.push(CheckAvailability.callToCheckAvailability(site));
+async function getProxyCheckAvailability(site) {
+    let result = [];
+
+    for (let proxyItem of proxys) {
+
+        const axiosDefaultConfig = {
+            proxy: proxyItem.settings
+        };
+
+        console.log('wtf', axiosDefaultConfig.proxy);
+        
+
+        const axiosFixed = require ('axios-https-proxy-fix').create(axiosDefaultConfig);
+
+        await axiosFixed.get(`${site}`)
+            .then(function (response) {
+                // let r = JSON.stringify(response.data);
+                console.log(`${site}`, response.status);
+                result.push({ country: proxyItem.country, status: response.status, contentLength: JSON.stringify(response.data).length });
+            })
+            .catch(function (error) {
+                console.log(error);
+                result.push({ country: proxyItem.country, status: -1, contentLength: error.message.length });
+            });
     }
-    const result = await Promise.all(promises);
-    for (let [index, site] of bSites.entries()) {
-        checkIds.set(site, result[index]);
-    }
-    return checkIds;
+
+    return result;
 }
 
-async function asyncCallToResult(mapIds) {
+async function asyncCallToResult(sites) {
     let checkResults = [];
     const promises = [];
-    mapIds.forEach((value, key) => {
-        promises.push(CheckAvailability.getReportCheckAvailability(value));
+    sites.forEach((site, key) => {
+        promises.push(getProxyCheckAvailability(site));
     });
     const result = await Promise.all(promises);
     let index = 0;
-    mapIds.forEach((value, key) => {
-        checkResults.push({ node: key, result: result[index]} );
+    sites.forEach((site, indexItem) => {
+        checkResults.push({ index: indexItem, result: result[index]} );
         index++;
     });
     return checkResults;
@@ -78,35 +107,34 @@ async function main() {
     let crmData = await getSites();
     // console.log('before sort', crmData);
     crmData = await crmData.sort(compare);
-    crmData = crmData.slice(0, 8);
-    // console.log('after sort', crmData);
+    crmData = crmData.slice(0, 30);
+
 
     let crsDomains = crmData.map(item => {
         return item.domain;
     });
-    console.log('crsDomains', crsDomains);
+
+    let buityCrsDomains = await buitySites(crsDomains);
+    console.log('crsDomains buity', crsDomains);
     
-    let mapWithCheckId;
-    let mapWithCheckResult;
-    // console.log('mapWithCheckId', mapWithCheckId);
-    mapWithCheckId = await asyncCallToCheck(crsDomains);
-    await sleep(30000);
-    mapWithCheckResult = await asyncCallToResult(mapWithCheckId);
-    console.log('mapWithCheckResult', mapWithCheckResult);
+    let proxyCheckResult;
+
+    proxyCheckResult = await asyncCallToResult(buityCrsDomains);
+    console.log('proxyCheckResult', proxyCheckResult);
 
     for (let [index, domain] of crsDomains.entries()) {
         // console.log('test_3', index, domain);
         
         mainResult.push({
             'domain': domain,
-            'available': evaluationResult(mapWithCheckResult[index].result)
+            'available': evaluationResult(proxyCheckResult[index].result)
         })
     }
     console.log('mainResult', mainResult);
     await setResultToCrm(mainResult);
     console.log('end', new Date());
 
-    setTimeout(main, 600000);
+    setTimeout(main, 60000);
 }
 
 main();
@@ -130,22 +158,22 @@ async function setResultToCrm(mainResult) {
 }
 
 function evaluationResult(inputResult) {
-    let outputResult = true;
-    if (inputResult) {
-        if (inputResult.counts.startsWith('0')) {
-            outputResult = false;
-        }
-        else {
-            if (inputResult.failed.length > 3) {
-                outputResult = false;
+
+    for (let result of inputResult) {
+        if (result) {
+            console.log('1', result);
+            console.log('2', result.status !== 200, result.contentLength < 10000);
+    
+            if (result.status !== 200 || result.contentLength < 10000) {
+                return false;
             }
         }
-    }
-    else {
-        outputResult = null;
+        else {
+            return null;
+        }
     }
 
-    return outputResult;
+    return true;
 }
 
 function compare(a, b) {

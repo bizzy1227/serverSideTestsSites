@@ -16,8 +16,8 @@
 
 const axiosDefaultConfig = {
     proxy: {
-        host: '45.159.146.97',
-        port: 8000,
+        host: '009.28.50.133',
+        port: 8080,
         protocol: 'https',
         auth: {
             username: 'md9ZXK',
@@ -38,8 +38,8 @@ const axiosDefaultConfig = {
 const axiosFixed = require ('axios-https-proxy-fix').create(axiosDefaultConfig);
 axiosFixed.get('https://api.ipify.org?format=json')
     .then(function (response) {
-        let r = JSON.stringify(response.data);
-        console.log('Response with axios-https-proxy-fix was ok: ' + r);
+        // let r = JSON.stringify(response.data);
+        console.log('Response with axios-https-proxy-fix was ok: ' + response.status);
     })
     .catch(function (error) {
         console.log(error);
