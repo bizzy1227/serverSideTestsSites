@@ -43,6 +43,8 @@ async function buitySites(sites) {
 }
 
 async function getProxyCheckAvailability(site) {
+    console.log('in getProxyCheckAvailability');
+    
     let result = [];
 
     for (let proxyItem of proxys) {
