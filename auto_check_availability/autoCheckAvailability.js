@@ -50,8 +50,6 @@ async function getProxyCheckAvailability(site) {
         const axiosDefaultConfig = {
             proxy: proxyItem.settings
         };
-
-        console.log('wtf', axiosDefaultConfig.proxy);
         
 
         const axiosFixed = require ('axios-https-proxy-fix').create(axiosDefaultConfig);
@@ -161,8 +159,6 @@ function evaluationResult(inputResult) {
 
     for (let result of inputResult) {
         if (result) {
-            console.log('1', result);
-            console.log('2', result.status !== 200, result.contentLength < 10000);
     
             if (result.status !== 200 || result.contentLength < 10000) {
                 return false;
