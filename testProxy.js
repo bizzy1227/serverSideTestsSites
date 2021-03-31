@@ -16,12 +16,12 @@
 
 const axiosDefaultConfig = {
     proxy: {
-        host: '176.37.146.145',
-        port: 7001,
+        host: '45.159.146.97',
+        port: 8000,
         protocol: 'https',
         auth: {
-            username: '7g18mGBm',
-            password: '7u6pF4uL'
+            username: 'md9ZXK',
+            password: 'AvNguA'
         }
     }
 };
@@ -45,6 +45,8 @@ axiosFixed.get('https://api.ipify.org?format=json')
         console.log(error);
     });
 
+
+// 45.159.146.97:8000:md9ZXK:AvNguA
 
 // 176.37.146.145:7010:z53Tz5Fi:3Yze3E5r
 
