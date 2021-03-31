@@ -136,11 +136,7 @@ async function main() {
     await setResultToCrm(mainResult);
     console.log('end', new Date());
 
-    await sleep(60000);
-
-    await main();
-
-    // setTimeout(await main, 60000);
+    setTimeout(main, 60000);
 }
 
 main();
