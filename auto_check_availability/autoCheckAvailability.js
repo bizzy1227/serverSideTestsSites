@@ -70,6 +70,8 @@ async function getProxyCheckAvailability(site) {
 }
 
 async function asyncCallToResult(sites) {
+    console.log('in asyncCallToResult');
+    
     let checkResults = [];
     const promises = [];
     sites.forEach((site, key) => {
