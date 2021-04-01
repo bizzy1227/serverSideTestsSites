@@ -146,7 +146,13 @@ async function main() {
     setTimeout(main, 60000);
 }
 
-main();
+try {
+    main();
+} catch (error) {
+    console.log('trash');
+    
+}
+
 
 async function setResultToCrm(mainResult) {
     const requestCRM = axios.create({
