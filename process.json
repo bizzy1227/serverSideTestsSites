@@ -15,6 +15,10 @@
             }
         },
         {
+            "name"        : "Website availability",
+            "script"      : "./auto_check_availability/autoCheckAvailability.js",
+        },
+        {
             "name"        : "Xvfb",
             "interpreter" : "none",
             "script"      : "Xvfb",

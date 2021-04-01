@@ -44,19 +44,19 @@ async function buitySites(sites) {
 
 async function getProxyCheckAvailability(site) {
     console.log('in getProxyCheckAvailability');
-    
     let result = [];
 
-    for (let proxyItem of proxys) {
+        for (let proxyItem of proxys) {
+            result = [];
 
-        const axiosDefaultConfig = {
-            proxy: proxyItem.settings
-        };
-        
+            const axiosDefaultConfig = {
+                proxy: proxyItem.settings
+            };
+            
 
-        const axiosFixed = require ('axios-https-proxy-fix').create(axiosDefaultConfig);
+            const axiosFixed = require ('axios-https-proxy-fix').create(axiosDefaultConfig);
 
-        try {
+            
             await axiosFixed.get(`${site}`)
             .then(function (response) {
                 // let r = JSON.stringify(response.data);
@@ -64,14 +64,11 @@ async function getProxyCheckAvailability(site) {
                 result.push({ country: proxyItem.country, status: response.status, contentLength: JSON.stringify(response.data).length });
             })
             .catch(function (error) {
-                console.log(error);
+                console.log('error 1', 1);
                 result.push({ country: proxyItem.country, status: -1, contentLength: error.message.length });
             });
-        } catch (error) {
-            result.push({ country: proxyItem.country, status: -1, contentLength: error.message.length });
-        }
 
-    }
+        }
 
     return result;
 }
@@ -80,16 +77,21 @@ async function asyncCallToResult(sites) {
     console.log('in asyncCallToResult');
     
     let checkResults = [];
-    const promises = [];
-    sites.forEach((site, key) => {
-        promises.push(getProxyCheckAvailability(site));
-    });
-    const result = await Promise.all(promises);
-    let index = 0;
-    sites.forEach((site, indexItem) => {
-        checkResults.push({ index: indexItem, result: result[index]} );
-        index++;
-    });
+    try {
+        const promises = [];
+        sites.forEach((site, key) => {
+            promises.push(getProxyCheckAvailability(site));
+        });
+        const result = await Promise.all(promises);
+        let index = 0;
+        sites.forEach((site, indexItem) => {
+            checkResults.push({ index: indexItem, result: result[index]} );
+            index++;
+        });
+    } catch (error) {
+        console.log('eeror 2', 2);
+    }
+
     return checkResults;
 }
 
