@@ -34,7 +34,8 @@ const checkJsonData = async function(site, typeSite) {
             resultCheckJsonData.yandex = await requestYandexMetrika(siteJson.yandex);
         }
         else {
-            resultCheckJsonData.yandex = 'field yandex empty';
+            // resultCheckJsonData.yandex = 'field yandex empty';
+            resultCheckJsonData.yandex = true;
         }
 
         if (typeSite === 'preland') {
