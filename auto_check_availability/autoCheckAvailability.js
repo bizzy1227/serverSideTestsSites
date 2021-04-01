@@ -57,48 +57,19 @@ async function getProxyCheckAvailability(site) {
 
             const axiosFixed = require ('axios-https-proxy-fix').create(axiosDefaultConfig);
             console.log('prik 4');
-
-            try {
-                const response = await axiosFixed.get(`${site}`)
-                // Success 🎉
-                console.log(response);
-                result.push({ country: proxyItem.country, status: response.status, contentLength: JSON.stringify(response.data).length });
-            } catch (error) {
-                // Error 😨
-                if (error.response) {
-                    /*
-                     * The request was made and the server responded with a
-                     * status code that falls out of the range of 2xx
-                     */
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                } else if (error.request) {
-                    /*
-                     * The request was made but no response was received, `error.request`
-                     * is an instance of XMLHttpRequest in the browser and an instance
-                     * of http.ClientRequest in Node.js
-                     */
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request and triggered an Error
-                    console.log('Error', error.message);
-                }
-                console.log(error);
-            }
             
-            // await axiosFixed.get(`${site}`)
-            // .then(function (response) {
-            //     console.log('prik 5');
-            //     // let r = JSON.stringify(response.data);
-            //     // console.log(`${site}`, response.status);
-            //     result.push({ country: proxyItem.country, status: response.status, contentLength: JSON.stringify(response.data).length });
-            // })
-            // .catch(function (error) {
-            //     console.log('prik 6');
-            //     console.log('error 1', 1);
-            //     result.push({ country: proxyItem.country, status: -1, contentLength: error.message.length });
-            // });
+            await axiosFixed.get(`${site}`)
+            .then(function (response) {
+                console.log('prik 5');
+                // let r = JSON.stringify(response.data);
+                // console.log(`${site}`, response.status);
+                result.push({ country: proxyItem.country, status: response.status, contentLength: JSON.stringify(response.data).length });
+            })
+            .catch(function (error) {
+                console.log('prik 6');
+                console.log('error 1', 1);
+                result.push({ country: proxyItem.country, status: -1, contentLength: error.message.length });
+            });
             console.log('prik 7');
         }
     console.log('prik 8');
@@ -203,7 +174,7 @@ function evaluationResult(inputResult) {
     for (let result of inputResult) {
         if (result) {
     
-            if (result.status !== 200 || result.contentLength < 5000) {
+            if (result.status !== 200 || result.contentLength < 4000) {
                 return false;
             }
         }
