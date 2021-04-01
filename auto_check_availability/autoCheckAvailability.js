@@ -58,19 +58,18 @@ async function getProxyCheckAvailability(site) {
             const axiosFixed = require ('axios-https-proxy-fix').create(axiosDefaultConfig);
             console.log('prik 4');
             
-            let test = await axiosFixed.get(`${site}`)
+            await axiosFixed.get(`${site}`)
             .then(function (response) {
                 console.log('prik 5');
                 // let r = JSON.stringify(response.data);
                 // console.log(`${site}`, response.status);
-                return { country: proxyItem.country, status: response.status, contentLength: JSON.stringify(response.data).length };
+                result.push({ country: proxyItem.country, status: response.status, contentLength: JSON.stringify(response.data).length });
             })
             .catch(function (error) {
                 console.log('prik 6');
                 console.log('error 1', 1);
-                return { country: proxyItem.country, status: -1, contentLength: error.message.length };
+                result.push({ country: proxyItem.country, status: -1, contentLength: error.message.length });
             });
-            result.push(test);
             console.log('prik 7');
         }
     console.log('prik 8');
