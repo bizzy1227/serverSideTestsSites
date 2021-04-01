@@ -15,13 +15,6 @@
             }
         },
         {
-            "name"        : "Website availability",
-            "script"      : "./auto_check_availability/autoCheckAvailability.js",
-            "env": {
-                "DISPLAY": ":98"
-            }
-        },
-        {
             "name"        : "Xvfb",
             "interpreter" : "none",
             "script"      : "Xvfb",
