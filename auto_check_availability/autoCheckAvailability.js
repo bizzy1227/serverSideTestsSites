@@ -43,46 +43,38 @@ async function buitySites(sites) {
 }
 
 async function getProxyCheckAvailability(site) {
-        try {
+    console.log('in getProxyCheckAvailability');
+    let result = [];
+        console.log('prik 1');
+        
+        for (let proxyItem of proxys) {
+            result = [];
+            console.log('prik 2');
+            const axiosDefaultConfig = {
+                proxy: proxyItem.settings
+            };
+            console.log('prik 3');
+
+            const axiosFixed = require ('axios-https-proxy-fix').create(axiosDefaultConfig);
+            console.log('prik 4');
             
-
-            console.log('in getProxyCheckAvailability');
-            let result = [];
-                console.log('prik 1');
-                
-                for (let proxyItem of proxys) {
-                    result = [];
-                    console.log('prik 2');
-                    const axiosDefaultConfig = {
-                        proxy: proxyItem.settings
-                    };
-                    console.log('prik 3');
-
-                    const axiosFixed = require ('axios-https-proxy-fix').create(axiosDefaultConfig);
-                    console.log('prik 4');
-                    
-                    let test = await axiosFixed.get(`${site}`)
-                    .then(function (response) {
-                        console.log('prik 5');
-                        // let r = JSON.stringify(response.data);
-                        // console.log(`${site}`, response.status);
-                        return { country: proxyItem.country, status: response.status, contentLength: JSON.stringify(response.data).length };
-                    })
-                    .catch(function (error) {
-                        console.log('prik 6');
-                        console.log('error 1', 1);
-                        return { country: proxyItem.country, status: -1, contentLength: error.message.length };
-                    });
-                    result.push(test);
-                    console.log('prik 7');
-                }
-            console.log('prik 8');
-            return result;
-
-        } catch (error) {
-            console.log('ou no');
-            
+            let test = await axiosFixed.get(`${site}`)
+            .then(function (response) {
+                console.log('prik 5');
+                // let r = JSON.stringify(response.data);
+                // console.log(`${site}`, response.status);
+                return { country: proxyItem.country, status: response.status, contentLength: JSON.stringify(response.data).length };
+            })
+            .catch(function (error) {
+                console.log('prik 6');
+                console.log('error 1', 1);
+                return { country: proxyItem.country, status: -1, contentLength: error.message.length };
+            });
+            result.push(test);
+            console.log('prik 7');
         }
+    console.log('prik 8');
+    return result;
 }
 
 async function asyncCallToResult(sites) {
