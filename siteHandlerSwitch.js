@@ -82,16 +82,27 @@ const switcher = async function(optionsSwitcher) {
 }
 
 async function checkJsonFields(typeSite, options) {
-    if (typeSite === 'preland' && (!options.relink || !options.yandex)) {
-        return 'no relink or yandex';
+    if (typeSite === 'preland' && !options.relink) {
+        return 'no relink';
     }
-    if (typeSite === 'land' && !options.yandex) {
-        return 'no yandex';
-    }
-    if (typeSite === 'prelandWithLand' && (!options.relink || !options.yandex)) {
-        return 'no relink or yandex';
+    if (typeSite === 'prelandWithLand' && !options.relink) {
+        return 'no relink';
     }
     return true;
 }
+
+// old function with check yandex
+// async function checkJsonFields(typeSite, options) {
+//     if (typeSite === 'preland' && (!options.relink || !options.yandex)) {
+//         return 'no relink or yandex';
+//     }
+//     if (typeSite === 'land' && !options.yandex) {
+//         return 'no yandex';
+//     }
+//     if (typeSite === 'prelandWithLand' && (!options.relink || !options.yandex)) {
+//         return 'no relink or yandex';
+//     }
+//     return true;
+// }
 
 module.exports.switcher = switcher;
