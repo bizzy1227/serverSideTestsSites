@@ -43,7 +43,7 @@ async function buitySites(sites) {
 }
 
 async function getProxyCheckAvailability(site) {
-    console.log('in getProxyCheckAvailability');
+    // console.log('in getProxyCheckAvailability');
     let result = [];
         
         for (let proxyItem of proxys) {
@@ -138,7 +138,7 @@ async function main() {
     await setResultToCrm(mainResult);
     console.log('end', new Date());
 
-    setTimeout(main, 60000);
+    setTimeout(main, 180000);
 }
 
 main();
