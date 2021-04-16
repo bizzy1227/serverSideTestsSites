@@ -95,7 +95,7 @@ const runServer = async function(sites, typeRun, typeSites) {
 
         let scanIdVirusTotal = await VirusTotal.scanVirusTotal(nodeUrl.href);
 
-        let idCheckAvailability = await CheckAvailability.callToCheckAvailability(nodeUrl.href);
+        // let idCheckAvailability = await CheckAvailability.callToCheckAvailability(nodeUrl.href);
         
         for (const device of deviceSettings.DEVICES) {
             additionalСhecks++;
@@ -105,7 +105,7 @@ const runServer = async function(sites, typeRun, typeSites) {
 
         virusTotal = await VirusTotal.getReportVirusTotal(scanIdVirusTotal);
 
-        checkAvailability = await CheckAvailability.getReportCheckAvailability(idCheckAvailability);
+        // checkAvailability = await CheckAvailability.getReportCheckAvailability(idCheckAvailability);
 
         console.log('testResult after loop', testResult)    
 
@@ -117,7 +117,7 @@ const runServer = async function(sites, typeRun, typeSites) {
             testResult: testResult,
             lighthouseResult: lighthouseResult,
             virusTotal: virusTotal,
-            checkAvailability: checkAvailability,
+            // checkAvailability: checkAvailability,
             consoleErrors: consoleErrors,
             neogaraResults: (typeSites === 'preland') ? null : true,
             passed: false
