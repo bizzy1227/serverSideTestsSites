@@ -31,7 +31,10 @@ const checkJsonData = async function(site, typeSite) {
         let yandex = await checkField(siteJson, 'yandex');
         // console.log('yandex', yandex);
         if (yandex) {
+            let timeBeforeYandexRequests = new Date();
             resultCheckJsonData.yandex = await requestYandexMetrika(siteJson.yandex);
+            console.log('in log after requests to yandex', (new Date() - timeBeforeYandexRequests) / 1000, 'seconds');
+
         }
         else {
             // resultCheckJsonData.yandex = 'field yandex empty';

@@ -7,7 +7,7 @@ const Land = require('./land/land');
 const deviceSettings = require('./devices');
 
 const switcher = async function(optionsSwitcher) {
-    let timeInputInSwitcher = new Date();
+    
 
     console.log('in switcher');
 
@@ -16,11 +16,11 @@ const switcher = async function(optionsSwitcher) {
         return checkJsonFieldsResult;
     }
 
-    let driver;
+    let driver = null;
     // console.log('optionsSwitcher', optionsSwitcher)
 
     try {
-        
+        let timeInputInSwitcher = new Date();
         if (optionsSwitcher.device) {
             console.log('before BS build');
             driver = await new Builder().usingServer('http://hub-cloud.browserstack.com/wd/hub')
