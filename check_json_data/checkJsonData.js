@@ -58,7 +58,10 @@ const checkJsonData = async function(site, typeSite) {
             // console.log('cloakit', cloakit);
     
             if (cloakit === true) {
+                let timeBeforeCloakitRequests = new Date();
                 resultCheckJsonData.cloakit = await requestCloakit(siteJson.cloakit);
+                console.log('in log after requests to cloakit', (new Date() - timeBeforeCloakitRequests) / 1000, 'seconds');
+
             }
             else if (cloakit === null) {
                 resultCheckJsonData.cloakit = true;
