@@ -1,6 +1,5 @@
 const {Builder, By, Key, until} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
-let opts = new chrome.Options();
 
 const PrelandOutside = require('./preland_outside/prelandOutside');
 const Land = require('./land/land');
@@ -28,6 +27,7 @@ const switcher = async function(optionsSwitcher) {
             .build();
             console.log('after BS build');
         } else {
+            let opts = new chrome.Options();
             console.log('before local build');
             opts.addArguments(['--ignore-certificate-errors', '--ignore-ssl-errors', '--disable-gpu', '--no-sandbox'])
             .addExtensions(['./extension_4_29_2_0.crx'])
