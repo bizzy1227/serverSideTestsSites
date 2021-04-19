@@ -26,6 +26,18 @@ const proxys = [
                 password: 'AvNguA'
             }
         }
+    },
+    {
+        country: 'DE',
+        settings: {
+            host: '45.150.112.120',
+            port: 58077,
+            protocol: 'http',
+            auth: {
+                username: 'ayAbxMAX',
+                password: '4YZJtPGF'
+            }
+        }
     }
 ]
 
@@ -47,7 +59,7 @@ async function getProxyCheckAvailability(site) {
     let result = [];
         
         for (let proxyItem of proxys) {
-            result = [];
+            // result = [];
             const axiosDefaultConfig = {
                 proxy: proxyItem.settings
             };
@@ -65,6 +77,7 @@ async function getProxyCheckAvailability(site) {
                 result.push({ country: proxyItem.country, status: -1, contentLength: error.message.length });
             });
         }
+    // console.log('test log result', result);
     return result;
 }
 
@@ -162,8 +175,8 @@ async function setResultToCrm(mainResult) {
 }
 
 function evaluationResult(inputResult) {
-
     for (let result of inputResult) {
+        // console.log('test log result', result);
         if (result) {
     
             if (result.status !== 200 || result.contentLength < 4000) {
