@@ -124,7 +124,7 @@ async function main() {
     let crmData = await getSites();
     // console.log('before sort', crmData);
     crmData = await crmData.sort(compare);
-    crmData = crmData.slice(0, 30);
+    crmData = crmData.slice(0, 50);
 
 
     let crsDomains = crmData.map(item => {
