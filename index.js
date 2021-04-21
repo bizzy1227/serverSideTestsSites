@@ -82,13 +82,13 @@ const runServer = async function(sites, typeRun, typeSites) {
         // }
         // if (exitSiteHandle) continue;
 
-        // let options = {
-        //     inputURL: nodeUrl.href,
-        //     email: await getEmail(typeRun),
-        //     device: false,
-        //     jsonData: returnedJsonData.json,
-        //     typeSite: typeSites
-        // }
+        let options = {
+            inputURL: nodeUrl.href,
+            email: await getEmail(typeRun),
+            device: false,
+            // jsonData: returnedJsonData.json,
+            typeSite: typeSites
+        }
 
         // тут можно вызвать switcher(options) с device: false для получения консольных ошибок 1 раз
         consoleErrors = await getConsoleErrors(options);
