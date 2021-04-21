@@ -43,8 +43,8 @@ const switcher = async function(optionsSwitcher) {
             inputURL: new URL(optionsSwitcher.inputURL),
             email: optionsSwitcher.email,
             capabilities: optionsSwitcher.device,
-            // relink: optionsSwitcher.jsonData.relink,
-            // yandex: optionsSwitcher.jsonData.yandex
+            relink: optionsSwitcher.jsonData.relink,
+            yandex: optionsSwitcher.jsonData.yandex
         }
 
         if (optionsSwitcher.typeSite === 'preland') {
