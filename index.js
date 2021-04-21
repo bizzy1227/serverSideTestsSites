@@ -55,38 +55,38 @@ const runServer = async function(sites, typeRun, typeSites) {
 
         let nodeUrl = new URL(inputURL);
 
-        // let returnedJsonData;
+        let returnedJsonData;
 
-        // // если тест сфейлился на получении settings.json
-        // try {
-        //     returnedJsonData = await CheckJsonData.checkJsonData(nodeUrl.href, typeSites);
-        // } catch (error) {
-        //     console.log(error)
-        //     mainRespone[nodeUrl.href] = {
-        //         testResult: false
-        //     };
-        //     continue;
-        // }
+        // если тест сфейлился на получении settings.json
+        try {
+            returnedJsonData = await CheckJsonData.checkJsonData(nodeUrl.href, typeSites);
+        } catch (error) {
+            console.log(error)
+            mainRespone[nodeUrl.href] = {
+                testResult: false
+            };
+            continue;
+        }
 
-        // console.log('returnedJsonData', returnedJsonData);
+        console.log('returnedJsonData', returnedJsonData);
 
-        // // если хоть одно поле неправильное - сохраняем результат и переходим к другому сайту
-        // for (key in returnedJsonData) {
-        //     // console.log('typeof returnedJsonData[key]', typeof returnedJsonData[key]);
-        //     if (typeof returnedJsonData[key] !== 'object' && returnedJsonData[key] !== true ) {
-        //         mainRespone[nodeUrl.href] = {
-        //             testResult: returnedJsonData
-        //         };
-        //         exitSiteHandle = true;
-        //     }
-        // }
-        // if (exitSiteHandle) continue;
+        // если хоть одно поле неправильное - сохраняем результат и переходим к другому сайту
+        for (key in returnedJsonData) {
+            // console.log('typeof returnedJsonData[key]', typeof returnedJsonData[key]);
+            if (typeof returnedJsonData[key] !== 'object' && returnedJsonData[key] !== true ) {
+                mainRespone[nodeUrl.href] = {
+                    testResult: returnedJsonData
+                };
+                exitSiteHandle = true;
+            }
+        }
+        if (exitSiteHandle) continue;
 
         let options = {
             inputURL: nodeUrl.href,
             email: await getEmail(typeRun),
             device: false,
-            // jsonData: returnedJsonData.json,
+            jsonData: returnedJsonData.json,
             typeSite: typeSites
         }
 
