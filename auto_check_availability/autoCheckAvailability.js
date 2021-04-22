@@ -179,7 +179,7 @@ function evaluationResult(inputResult) {
         // console.log('test log result', result);
         if (result) {
     
-            if (result.status !== 200 || result.contentLength < 4000) {
+            if (result.status !== 200 || result.contentLength < 300) {
                 return false;
             }
         }
