@@ -73,6 +73,32 @@ async function getProxyCheckAvailability(site) {
     return result;
 }
 
+async function testAvailabilityProxy() {
+        
+    for (let proxyItem of proxys) {
+        // result = [];
+        const axiosDefaultConfig = {
+            proxy: proxyItem.settings
+        };
+
+        const axiosFixed = require ('axios-https-proxy-fix').create(axiosDefaultConfig);
+        
+        await axiosFixed.get('https://google.com')
+        .then(function (response) {
+            // let r = JSON.stringify(response.data);
+            // console.log(`${site}`, response.status);
+            if (response.status !== 200) {
+                console.log(`Proxy ${proxyItem.country} not avaible`);
+                throw Error(`Proxy ${proxyItem.country} not avaible`);
+            }         })
+        .catch(function (error) {
+            console.log(`Proxy ${proxyItem.country} not avaible`);
+            throw Error(`Proxy ${proxyItem.country} not avaible`);
+        });
+    }
+    console.log('All proxy avaible');
+}
+
 async function asyncCallToResult(sites) {
     console.log('in asyncCallToResult');
     
@@ -112,6 +138,8 @@ async function getSites() {
 }
 
 async function main() {
+    await testAvailabilityProxy();
+
     let mainResult = [];
     let crmData = await getSites();
     // console.log('before sort', crmData);
