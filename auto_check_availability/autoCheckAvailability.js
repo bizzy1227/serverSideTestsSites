@@ -19,18 +19,18 @@ const proxys = [
             }
         }
     },
-    // {
-    //     country: 'DE',
-    //     settings: {
-    //         host: '45.150.112.120',
-    //         port: 58077,
-    //         protocol: 'http',
-    //         auth: {
-    //             username: 'ayAbxMAX',
-    //             password: '4YZJtPGF'
-    //         }
-    //     }
-    // }
+    {
+        country: 'DE',
+        settings: {
+            host: '45.150.112.120',
+            port: 58077,
+            protocol: 'http',
+            auth: {
+                username: 'ayAbxMAX',
+                password: '4YZJtPGF'
+            }
+        }
+    }
 ]
 
 async function buitySites(sites) {
@@ -119,10 +119,10 @@ async function main() {
     crmData = crmData.slice(0, 50);
 
 
-    let crsDomains = requestSites; // ---> для локального теста
-    // let crsDomains = crmData.map(item => {
-    //     return item.domain;
-    // });
+    // let crsDomains = requestSites; // ---> для локального теста
+    let crsDomains = crmData.map(item => {
+        return item.domain;
+    });
 
     let buityCrsDomains = await buitySites(crsDomains);
     console.log('crsDomains buity', crsDomains);
