@@ -54,23 +54,23 @@ const checkJsonData = async function(site, typeSite) {
         }
 
         // закоментировал блок if из за долгого ответа от клоаки
-        // if (siteJson.cloakit) {
-        //     let cloakit = await checkField(siteJson, 'cloakit');
-        //     // console.log('cloakit', cloakit);
+        if (siteJson.cloakit) {
+            let cloakit = await checkField(siteJson, 'cloakit');
+            // console.log('cloakit', cloakit);
     
-        //     if (cloakit === true) {
-        //         let timeBeforeCloakitRequests = new Date();
-        //         resultCheckJsonData.cloakit = await requestCloakit(siteJson.cloakit);
-        //         console.log('in log after requests to cloakit', (new Date() - timeBeforeCloakitRequests) / 1000, 'seconds');
+            if (cloakit === true) {
+                let timeBeforeCloakitRequests = new Date();
+                resultCheckJsonData.cloakit = await requestCloakit(siteJson.cloakit);
+                console.log('in log after requests to cloakit', (new Date() - timeBeforeCloakitRequests) / 1000, 'seconds');
 
-        //     }
-        //     else if (cloakit === null) {
-        //         resultCheckJsonData.cloakit = true;
-        //     }
-        //     else if (cloakit === false) {
-        //         resultCheckJsonData.cloakit = 'field cloakit empty';
-        //     }
-        // }
+            }
+            else if (cloakit === null) {
+                resultCheckJsonData.cloakit = true;
+            }
+            else if (cloakit === false) {
+                resultCheckJsonData.cloakit = 'field cloakit empty';
+            }
+        }
 
     } catch (error) {
         console.log(error);
