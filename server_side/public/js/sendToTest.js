@@ -13,7 +13,6 @@ $( ".sendToTest" ).click(function() {
         alert('Поставь на тест не более 10 сайтов за 1 раз.');
         return;
     } else {
-        console.log('here');
 
         $.ajax({
             url: "http://138.68.69.213:8080/site",
@@ -22,41 +21,36 @@ $( ".sendToTest" ).click(function() {
             data: data,
             dataType: "json",
             success: function (response) {
-                const resp = JSON.parse(response)
-                console.log(resp.status);
-                console.log(resp);
+                // const resp = JSON.parse(response)
+                console.log('response', response);
+                // console.log(resp);
             },
             error: function (xhr, status) {
-                console.log('xhr', xhr);
-                console.log('status', status);
-                alert("error");
+                console.log('xhr', xhr.responseText);
+                if (xhr.responseText === 'The tests are currently running') {
+                    console.log('in 9000 post');
+                    $.ajax({
+                        url: "http://138.68.69.213:9000/site",
+                        type: "POST",
+                        crossDomain: true,
+                        data: data,
+                        dataType: "json",
+                        success: function (response) {
+                            console.log('response', response);
+                        },
+                        error: function (xhr, status) {
+                            console.log('xhr', xhr.responseText);
+                            if (xhr.responseText === 'The tests are currently running') {
+                                alert("Все тесты сейчас заняты. Попробуй чуть позже");
+                            }
+                            console.log('status', status);
+                            
+                        }
+                    });
+                }
+                // console.log('status', status);
+                // alert("error");
             }
         });
-
-        // const posting = $.post( 'http://138.68.69.213:8080/site', data );
-
-        // posting.done(function( data ) {
-        //     const content = $( data );
-        //     console.log('content', content);
-        //     $("body").empty().append(content);
-        // });
-
-        // $.post("http://138.68.69.213:8080/site", function(data) {
-        //     $('body').append(data)
-        // }, "json");
-
-        
-        // $.post( "http://138.68.69.213:8080/site", data)
-        //     .done(function( res ) {
-        //         console.log( "Data Loaded: " + res );
-        //     })
-        //     .fail(function( err ) {
-        //         console.log( err );
-        //     })
-        // axios({
-        //     method: 'post',
-        //     url: 'http://138.68.69.213:8080/site',
-        //     data: data
-        // });
     }
 });

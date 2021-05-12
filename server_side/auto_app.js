@@ -28,6 +28,7 @@ app.get('/', (request, response) => {
 })
 
 app.post('/site', async (request, response) => {
+    response.set('Access-Control-Allow-Origin', '*');
     console.log('req body', request.body);
     try {
 
