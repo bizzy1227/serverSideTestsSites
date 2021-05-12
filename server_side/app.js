@@ -22,14 +22,16 @@ server.setTimeout(0);
 
 app.use(express.urlencoded());
 app.use(express.json());
+app.use(express.static(__dirname + '/public'));
 
 
 app.get('/', (request, response) => {
-    response.sendFile(path.join(__dirname, '/front_files/index.html'));
+    response.sendFile('index.html');
     // response.send('Hello from Express!')
 })
 
 app.post('/site', async (request, response) => {
+    response.set('Access-Control-Allow-Origin', '*');
     console.log('req body', request.body);
     try {
 
