@@ -25,7 +25,7 @@ app.use(express.json());
 
 
 app.get('/', (request, response) => {
-    response.sendFile(path.join(__dirname, '/index.html'));
+    response.sendFile(path.join(__dirname, '/front_files/index.html'));
     // response.send('Hello from Express!')
 })
 
