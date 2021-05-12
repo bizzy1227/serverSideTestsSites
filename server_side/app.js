@@ -4,6 +4,7 @@ const { request } = require('express');
 const app = express();
 const port = 8080;
 const mainProcc = require('../index');
+const path = require('path');
 
 let testInProcess = false;
 
@@ -24,7 +25,8 @@ app.use(express.json());
 
 
 app.get('/', (request, response) => {
-    response.send('Hello from Express!')
+    response.sendFile(path.join(__dirname, '/index.html'));
+    // response.send('Hello from Express!')
 })
 
 app.post('/site', async (request, response) => {
