@@ -2,6 +2,7 @@
 
 
 $( ".sendToTest" ).click(function() {
+    $( ".sendToTest" ).attr('disabled','disabled');
     const typeSites = $('#exampleFormControlSelect1  option:selected').text();
     const sitesString = $('#exampleFormControlTextarea1').val();
     const sitesArray = sitesString.split('\n');
@@ -23,6 +24,12 @@ $( ".sendToTest" ).click(function() {
             success: function (response) {
                 // const resp = JSON.parse(response)
                 console.log('response', response);
+                for (let site in response) {
+                    console.log(JSON.parse(response[site]));
+                    $('body').append(JSON.parse(response[site]));
+                    
+                }
+                
                 // console.log(resp);
             },
             error: function (xhr, status) {
@@ -37,10 +44,12 @@ $( ".sendToTest" ).click(function() {
                         dataType: "json",
                         success: function (response) {
                             console.log('response', response);
+                            $('.test').append('response');
                         },
                         error: function (xhr, status) {
                             console.log('xhr', xhr.responseText);
                             if (xhr.responseText === 'The tests are currently running') {
+                                $( ".sendToTest" ).removeAttr('disabled');
                                 alert("Все тесты сейчас заняты. Попробуй чуть позже");
                             }
                             console.log('status', status);
