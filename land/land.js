@@ -1,6 +1,7 @@
 const { By } = require('selenium-webdriver');
 const CONSTS = require('../consts');
-const ConsoleErros = require('../consoleErrors/consoleErrors')
+const ConsoleErros = require('../consoleErrors/consoleErrors');
+const axios = require('axios');
 
 let capabilities = false;
 let driver;
@@ -47,7 +48,7 @@ const handleLand = async function(options) {
 
 async function checkLastUrl(driver, inputURL) {
     let currentUrl = new URL(inputURL);
-
+    getStatusCode(inputURL)
     if (currentUrl.pathname === '/thanks.php') {
         countRedirect = 0;
         console.log('Test send form done', currentUrl.origin + currentUrl.pathname);
