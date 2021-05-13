@@ -50,7 +50,7 @@ async function checkLastUrl(driver, inputURL) {
     let currentUrl = new URL(inputURL);
 
     if (await getStatusCode(inputURL) !== 200) {
-        landResult.thanks = { error: `The status code ${getStatusCode(inputURL)} !== 200`, capabilities: capabilities, URL: currentUrl.href };
+        landResult.thanks = { error: `The status code thanks.php is not 200`, capabilities: capabilities, URL: currentUrl.href };
         return landResult;
     } 
     
