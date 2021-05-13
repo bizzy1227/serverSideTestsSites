@@ -58,7 +58,7 @@ const runServer = async function(sites, typeRun, typeSites) {
             nodeUrl = new URL(inputURL);
         } catch (error) {
             mainRespone[inputURL] = {
-                testResult: false
+                testResult: 'Incorrect domain'
             };
             continue;
         }
