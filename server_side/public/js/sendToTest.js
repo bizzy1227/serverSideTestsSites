@@ -1,8 +1,9 @@
-// const axios = require('axios');
 
-
-$( ".sendToTest" ).click(function() {
-    $( ".sendToTest" ).attr('disabled','disabled');
+$('.sendToTest').click(function() {
+    var jsonViewer = new JSONViewer();
+    $('.sendToTest').attr('disabled','disabled');
+    $('.sendToTest').removeClass('btn-primary').addClass('btn-warning');
+    $('.sendToTest').html('Test is running');
     const typeSites = $('#exampleFormControlSelect1  option:selected').text();
     const sitesString = $('#exampleFormControlTextarea1').val();
     const sitesArray = sitesString.split('\n');
@@ -22,15 +23,10 @@ $( ".sendToTest" ).click(function() {
             data: data,
             dataType: "json",
             success: function (response) {
-                // const resp = JSON.parse(response)
-                console.log('response', response);
-                for (let site in response) {
-                    console.log(JSON.parse(response[site]));
-                    $('body').append(JSON.parse(response[site]));
-                    
-                }
-                
-                // console.log(resp);
+                $('.body').empty();
+                $('.body').append('<div id="json"></div>');
+                $('#json').append(jsonViewer.getContainer());
+                jsonViewer.showJSON(response);
             },
             error: function (xhr, status) {
                 console.log('xhr', xhr.responseText);
@@ -43,13 +39,17 @@ $( ".sendToTest" ).click(function() {
                         data: data,
                         dataType: "json",
                         success: function (response) {
-                            console.log('response', response);
-                            $('.test').append('response');
+                            $('.body').empty();
+                            $('.body').append('<div id="json"></div>');
+                            $('#json').append(jsonViewer.getContainer());
+                            jsonViewer.showJSON(response);
                         },
                         error: function (xhr, status) {
                             console.log('xhr', xhr.responseText);
                             if (xhr.responseText === 'The tests are currently running') {
-                                $( ".sendToTest" ).removeAttr('disabled');
+                                $('.sendToTest').removeClass('btn-warning').addClass('btn-primary');
+                                $('.sendToTest').html('Test');
+                                $('.sendToTest').removeAttr('disabled');
                                 alert("Все тесты сейчас заняты. Попробуй чуть позже");
                             }
                             console.log('status', status);
@@ -57,8 +57,6 @@ $( ".sendToTest" ).click(function() {
                         }
                     });
                 }
-                // console.log('status', status);
-                // alert("error");
             }
         });
     }
