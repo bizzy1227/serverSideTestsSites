@@ -84,7 +84,7 @@ async function getStatusCode(inputURL) {
     })
     await request.get()
         .then(res => {
-            console.log('helloo +++++++++++++++++++++=================', res);
+            console.log('helloo +++++++++++++++++++++=================', res, res.status, typeof res.status);
             // return res.data
         })
 
