@@ -79,15 +79,10 @@ async function checkLastUrl(driver, inputURL) {
 }
 
 async function getStatusCode(inputURL) {
-    let statusCode = 0;
-    const request = axios.create({
+    let request = axios.create({
         baseURL: inputURL,
     })
-    await request.get().then(res => { statusCode = res.status });
-
-    console.log('statusCode in thanks.php', statusCode);
-
-    return statusCode;
+    await request.get().then(res => { return res.status });
 }
 
 async function checkForm(driver, inputURL) {
