@@ -72,6 +72,24 @@ async function checkLastUrl(driver, inputURL) {
     }
 }
 
+async function getStatusCode(inputURL) {
+    const statusCode = 0;
+    const request = axios.create({
+        baseURL: inputURL,
+        // headers: {
+        //   "accept": "application/json",
+        //   "authorization": `Bearer ${token}`,
+        // }
+    })
+    await request.get()
+        .then(res => {
+            console.log('helloo +++++++++++++++++++++=================', res);
+            // return res.data
+        })
+
+    return statusCode;
+}
+
 async function checkForm(driver, inputURL) {
     let forms = await driver.findElements(By.css('form'));
     let form;
