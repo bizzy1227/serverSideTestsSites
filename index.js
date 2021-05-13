@@ -53,7 +53,16 @@ const runServer = async function(sites, typeRun, typeSites) {
         if (i.match(/^https:\/\//)) inputURL = i;
         else inputURL = 'https://' + i;
 
-        let nodeUrl = new URL(inputURL);
+        let nodeUrl;
+        try {
+            nodeUrl = new URL(inputURL);
+        } catch (error) {
+            mainRespone[inputURL] = {
+                testResult: false
+            };
+            continue;
+        }
+        
 
         let returnedJsonData;
 
