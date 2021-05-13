@@ -76,7 +76,7 @@ async function checkLastUrl(driver, inputURL) {
 }
 
 async function getStatusCode(inputURL) {
-    const statusCode = 0;
+    let statusCode = 0;
     const request = axios.create({
         baseURL: inputURL,
     })
