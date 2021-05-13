@@ -49,7 +49,10 @@ const handleLand = async function(options) {
 async function checkLastUrl(driver, inputURL) {
     let currentUrl = new URL(inputURL);
 
-    if (getStatusCode(inputURL) !== 200) return landResult;
+    if (getStatusCode(inputURL) !== 200) {
+        landResult.thanks = { error: `The status code ${getStatusCode(inputURL)} !== 200`, capabilities: capabilities, URL: currentUrl.href };
+        return landResult;
+    } 
     
     if (currentUrl.pathname === '/thanks.php') {
         countRedirect = 0;
