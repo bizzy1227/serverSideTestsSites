@@ -13,6 +13,7 @@ $('.sendToTest').click(function() {
                 }
     if (sitesArray.length > 10) {
         alert('Поставь на тест не более 10 сайтов за 1 раз.');
+        enabledButton();
         return;
     } else {
 
@@ -29,7 +30,7 @@ $('.sendToTest').click(function() {
                 jsonViewer.showJSON(response);
             },
             error: function (xhr, status) {
-                console.log('xhr', xhr.responseText);
+                // console.log('xhr', xhr.responseText);
                 if (xhr.responseText === 'The tests are currently running') {
                     console.log('in 9000 post');
                     $.ajax({
@@ -47,17 +48,25 @@ $('.sendToTest').click(function() {
                         error: function (xhr, status) {
                             console.log('xhr', xhr.responseText);
                             if (xhr.responseText === 'The tests are currently running') {
-                                $('.sendToTest').removeClass('btn-warning').addClass('btn-primary');
-                                $('.sendToTest').html('Test');
-                                $('.sendToTest').removeAttr('disabled');
+                                enabledButton();
                                 alert("Все тесты сейчас заняты. Попробуй чуть позже");
-                            }
-                            console.log('status', status);
-                            
+                            } else {
+                                alert(xhr.responseText);
+                                enabledButton();
+                            }   
                         }
                     });
+                } else {
+                    alert(xhr.responseText);
+                    enabledButton();
                 }
             }
         });
     }
 });
+
+function enabledButton() {
+    $('.sendToTest').removeClass('btn-warning').addClass('btn-primary');
+    $('.sendToTest').html('Test');
+    $('.sendToTest').removeAttr('disabled');
+}
