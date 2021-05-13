@@ -60,6 +60,12 @@ const runServer = async function(sites, typeRun, typeSites) {
         // если тест сфейлился на получении settings.json
         try {
             returnedJsonData = await CheckJsonData.checkJsonData(nodeUrl.href, typeSites);
+            if (returnedJsonData === false) {
+                mainRespone[nodeUrl.href] = {
+                    testResult: false
+                };
+                continue;
+            }
         } catch (error) {
             console.log(error)
             mainRespone[nodeUrl.href] = {

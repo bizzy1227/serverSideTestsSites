@@ -19,7 +19,13 @@ const checkJsonData = async function(site, typeSite) {
 
     try {
 
-        let siteJson = await requestSiteJson.get().then(res => {return res.data});
+        let siteJson = await requestSiteJson.get()
+            .then(res => {
+                return res.data
+            })
+            .catch(error => {
+                return false;
+            });
         // console.log('siteJson', siteJson);
         
         resultCheckJsonData.json = siteJson;
