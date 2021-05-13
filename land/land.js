@@ -48,7 +48,9 @@ const handleLand = async function(options) {
 
 async function checkLastUrl(driver, inputURL) {
     let currentUrl = new URL(inputURL);
-    getStatusCode(inputURL)
+
+    if (getStatusCode(inputURL) !== 200) return landResult;
+    
     if (currentUrl.pathname === '/thanks.php') {
         countRedirect = 0;
         console.log('Test send form done', currentUrl.origin + currentUrl.pathname);
@@ -77,16 +79,10 @@ async function getStatusCode(inputURL) {
     const statusCode = 0;
     const request = axios.create({
         baseURL: inputURL,
-        // headers: {
-        //   "accept": "application/json",
-        //   "authorization": `Bearer ${token}`,
-        // }
     })
-    await request.get()
-        .then(res => {
-            console.log('helloo +++++++++++++++++++++=================', res, res.status, typeof res.status);
-            // return res.data
-        })
+    await request.get().then(res => { statusCode = res.status });
+
+    console.log('statusCode in thanks.php', statusCode);
 
     return statusCode;
 }
