@@ -49,7 +49,7 @@ const handleLand = async function(options) {
 async function checkLastUrl(driver, inputURL) {
     let currentUrl = new URL(inputURL);
 
-    if (getStatusCode(inputURL) !== 200) {
+    if (await getStatusCode(inputURL) !== 200) {
         landResult.thanks = { error: `The status code ${getStatusCode(inputURL)} !== 200`, capabilities: capabilities, URL: currentUrl.href };
         return landResult;
     } 
