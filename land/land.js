@@ -83,7 +83,13 @@ async function getStatusCode(inputURL) {
     let request = axios.create({
         baseURL: inputURL,
     })
-    await request.get().then(res => { statusCode = res.status });
+    await request.get()
+        .then(res => { 
+            statusCode = res.status 
+        })
+        .catch((error) => {
+            statusCode = error.response.status;
+        });
 
     console.log('statusCode in thanks.php', statusCode);
 
