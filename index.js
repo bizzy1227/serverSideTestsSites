@@ -279,8 +279,7 @@ async function checkNeogara(startDate, email) {
 
   console.log('codesCounty', codesCounty);
   
-
-//   if (!codesCounty) return 'phone number without country code';
+  if (!codesCounty) return 'phone number without country code';
   
   let count = neogararesults[0].totals.count;
   let total = neogararesults[0].totals.total;
