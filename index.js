@@ -349,7 +349,7 @@ async function checkNeogara(startDate, email) {
 
 function chekCodeCounty(neogararesults) {
     neogararesults.forEach(item => {
-        console.log(item.phone);
+        console.log('111111', item.phone.startsWith('+'));
         if (!item.phone.startsWith('+')) {
             return false;
         } 
