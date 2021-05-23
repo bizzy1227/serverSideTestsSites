@@ -112,11 +112,11 @@ const runServer = async function(sites, typeRun, typeSites) {
 
         // let idCheckAvailability = await CheckAvailability.callToCheckAvailability(nodeUrl.href);
         
-        // for (const device of deviceSettings.DEVICES) {
-        //     additionalСhecks++;
-        //     options.device = device;
-        //     testResult.push(await handlerSwitch.switcher(options));
-        // }
+        for (const device of deviceSettings.DEVICES) {
+            additionalСhecks++;
+            options.device = device;
+            testResult.push(await handlerSwitch.switcher(options));
+        }
 
         virusTotal = await VirusTotal.getReportVirusTotal(scanIdVirusTotal);
 
@@ -276,8 +276,6 @@ async function checkNeogara(startDate, email) {
   if (neogararesults.length === 0) return 'neogara is empty';
 
   const codesCounty = chekCodeCounty(neogararesults);
-
-  console.log('codesCounty', codesCounty);
   
   if (!codesCounty) return 'phone number without country code';
   
