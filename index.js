@@ -276,6 +276,8 @@ async function checkNeogara(startDate, email) {
   if (neogararesults.length === 0) return 'neogara is empty';
 
   const codesCounty = chekCodeCounty(neogararesults);
+
+  if (!codesCounty) return 'phone number without country code';
   
   let count = neogararesults[0].totals.count;
   let total = neogararesults[0].totals.total;
@@ -344,7 +346,13 @@ async function checkNeogara(startDate, email) {
 }
 
 function chekCodeCounty(neogararesults) {
-    console.log(neogararesults);
+    neogararesults.forEach(item => {
+        console.log(item.phone);
+        if (!item.phone.startsWith('+')) {
+            return false;
+        } 
+        return true;
+    })
 }
 
 module.exports.runServer = runServer;
