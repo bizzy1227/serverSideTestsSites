@@ -273,7 +273,9 @@ async function checkNeogara(startDate, email) {
   console.log('lastResultObj empty: ', lastResultObj);
   console.log('neogararesults', neogararesults);
 
-  if (neogararesults.length === 0) return 'neogara is empty'
+  if (neogararesults.length === 0) return 'neogara is empty';
+
+  const codesCounty = chekCodeCounty(neogararesults);
   
   let count = neogararesults[0].totals.count;
   let total = neogararesults[0].totals.total;
@@ -339,6 +341,10 @@ async function checkNeogara(startDate, email) {
     console.log('results saved!');
   }
 
+}
+
+function chekCodeCounty(neogararesults) {
+    console.log(neogararesults);
 }
 
 module.exports.runServer = runServer;
