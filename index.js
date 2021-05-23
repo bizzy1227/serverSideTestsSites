@@ -348,12 +348,11 @@ async function checkNeogara(startDate, email) {
 }
 
 function chekCodeCounty(neogararesults) {
-    neogararesults.forEach(item => {
-        console.log('111111', item.phone.startsWith('+'));
-        if (!item.phone.startsWith('+')) {
+    for (let index = 0; index < neogararesults.length; index++) {
+        if (!neogararesults.phone[index].startsWith('+')) {
             return false;
-        } 
-    })
+        }
+    }
     return true;
 }
 
