@@ -275,7 +275,10 @@ async function checkNeogara(startDate, email) {
 
   if (neogararesults.length === 0) return 'neogara is empty';
 
-//   const codesCounty = chekCodeCounty(neogararesults);
+  const codesCounty = chekCodeCounty(neogararesults);
+
+  console.log('codesCounty', codesCounty);
+  
 
 //   if (!codesCounty) return 'phone number without country code';
   
