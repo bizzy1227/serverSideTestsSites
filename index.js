@@ -354,8 +354,8 @@ function chekCodeCounty(neogararesults) {
         if (!item.phone.startsWith('+')) {
             return false;
         } 
-        return true;
     })
+    return true;
 }
 
 module.exports.runServer = runServer;
