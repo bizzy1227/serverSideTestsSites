@@ -144,7 +144,7 @@ const runServer = async function(sites, typeRun, typeSites) {
         let neogaraRes = await checkNeogara(startDate, await getEmail(typeRun));
         if (Object.keys(lastResultObj).length !== 0) {
             for (let key in lastResultObj) {
-                if (neogaraRes === 'neogara is empty') mainRespone[key].neogaraResults = neogaraRes;
+                if (neogaraRes === 'neogara is empty' || neogaraRes === 'phone number without country code') mainRespone[key].neogaraResults = neogaraRes;
                 else mainRespone[key].neogaraResults = lastResultObj[key];
             }
         }
@@ -273,7 +273,11 @@ async function checkNeogara(startDate, email) {
   console.log('lastResultObj empty: ', lastResultObj);
   console.log('neogararesults', neogararesults);
 
-  if (neogararesults.length === 0) return 'neogara is empty'
+  if (neogararesults.length === 0) return 'neogara is empty';
+
+  const codesCounty = chekCodeCounty(neogararesults);
+  
+  if (!codesCounty) return 'phone number without country code';
   
   let count = neogararesults[0].totals.count;
   let total = neogararesults[0].totals.total;
@@ -339,6 +343,15 @@ async function checkNeogara(startDate, email) {
     console.log('results saved!');
   }
 
+}
+
+function chekCodeCounty(neogararesults) {
+    for (let index = 0; index < neogararesults.length; index++) {
+        if (!neogararesults[index].phone.startsWith('+')) {
+            return false;
+        }
+    }
+    return true;
 }
 
 module.exports.runServer = runServer;

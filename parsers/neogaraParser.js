@@ -47,7 +47,7 @@ const NeogaraGetConversions = async (startDate, page = 0, email) =>{
       page: data.page,
       pageCount: data.pageCount
     }
-    return data.data.map(l => {return {email: l.lid.email, device: l.lid.userAgent, ref: l.lid.ref, createdAt: l.lid.createdAt, totals: totals}})
+    return data.data.map(l => {return {email: l.lid.email, device: l.lid.userAgent, ref: l.lid.ref, createdAt: l.lid.createdAt, totals: totals, phone: l.lid.phone}})
   } catch (error) {
     return error
   }
