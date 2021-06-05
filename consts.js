@@ -1,6 +1,17 @@
 
 const DEV_NEOGARA_CRM_URL = 'https://dev.admin.neogara.com/';
-const DEV_NEOGARA_AUTH_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibG9naW4iOiJhZG1pbiIsInJvbGVzIjpbIlBJUEVMSU5FX1JFQUQiLCJQSVBFTElORV9FRElUIiwiU1VQRVJfQURNSU4iXSwiY3JlYXRlZEF0IjoxNjEzNjQxNDQ4MjAyLCJpYXQiOjE2MTM2NDE0NDh9.MVBz_c8DMyxjXpepw_q_sHx0xcFlQ_I_MSVnULJIzTo';
+const STAGE_NEOGARA_CRM_URL = 'https://stage.admin.neogara.com/';
+
+const DEV_NEOGARA_CREDENTIALS = {
+    username: 'admin',
+    password: 'password'
+}
+
+const STAGE_NEOGARA_CREDENTIALS = {
+    username: 'yaroslav',
+    password: 'yaroslav1'
+}
+
 
 const PROXY = {
     'US': '206.189.189.81:3128',
@@ -22,5 +33,7 @@ const VIRUS_TOTAL_KEY = 'e90c1ec1f55ec17df28c4997bbde2ad019f3cfff8c9fe0914c5032e
 module.exports.USER_DATA = USER_DATA;
 module.exports.PROXY = PROXY;
 module.exports.DEV_NEOGARA_CRM_URL = DEV_NEOGARA_CRM_URL;
-module.exports.DEV_NEOGARA_AUTH_TOKEN = DEV_NEOGARA_AUTH_TOKEN;
+module.exports.STAGE_NEOGARA_CRM_URL = STAGE_NEOGARA_CRM_URL;
+module.exports.DEV_NEOGARA_CREDENTIALS = DEV_NEOGARA_CREDENTIALS;
+module.exports.STAGE_NEOGARA_CREDENTIALS = STAGE_NEOGARA_CREDENTIALS;
 module.exports.VIRUS_TOTAL_KEY = VIRUS_TOTAL_KEY;
