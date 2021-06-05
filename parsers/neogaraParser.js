@@ -9,7 +9,7 @@ const NeogaraGetConversions = async (startDate, page = 0, email) =>{
   try {
 
     const requestToken = axios.create({
-      baseURL: CONSTS.STAGE_NEOGARA_CRM_URL,
+      baseURL: CONSTS.DEV_NEOGARA_CRM_URL,
       headers: {
           "accept": "application/json"
       }
@@ -18,8 +18,8 @@ const NeogaraGetConversions = async (startDate, page = 0, email) =>{
     await requestToken.post(
         '/auth/login', 
         {
-          'username': CONSTS.STAGE_NEOGARA_CREDENTIALS.username, 
-          'password': CONSTS.STAGE_NEOGARA_CREDENTIALS.password
+          'username': CONSTS.DEV_NEOGARA_CREDENTIALS.username, 
+          'password': CONSTS.DEV_NEOGARA_CREDENTIALS.password
         }
       )
       .then(res => {
@@ -27,7 +27,7 @@ const NeogaraGetConversions = async (startDate, page = 0, email) =>{
       })
 
     const request = axios.create({
-      baseURL: CONSTS.STAGE_NEOGARA_CRM_URL,
+      baseURL: CONSTS.DEV_NEOGARA_CRM_URL,
       headers: {
         "accept": "application/json",
         "authorization": `Bearer ${token}`,
